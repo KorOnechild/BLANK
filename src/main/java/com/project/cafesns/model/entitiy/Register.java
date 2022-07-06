@@ -30,4 +30,10 @@ public class Register {
 
     @Column
     private Long cafeid;
+
+    @Column(nullable = false)
+    private String latitude;
+
+    @Column(nullable = false)
+    private String longitude;
 }
