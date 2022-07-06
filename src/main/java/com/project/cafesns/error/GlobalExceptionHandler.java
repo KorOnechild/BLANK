@@ -2,6 +2,7 @@ package com.project.cafesns.error;
 
 import com.project.cafesns.error.exceptions.EmailDupblicateException;
 import com.project.cafesns.error.exceptions.NicknameDubplicateException;
+import com.project.cafesns.error.exceptions.NotMatchUserException;
 import com.project.cafesns.error.exceptions.NotmatchKeyException;
 import com.project.cafesns.model.dto.ResponseDto;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,11 @@ public class GlobalExceptionHandler {
     //관리자 회원가입시 잘못된 키값 예외 핸들러
     @ExceptionHandler(NotmatchKeyException.class)
     public ResponseEntity<?> handleNotmatchKeyException(NotmatchKeyException ex){
+        return ResponseEntity.status(ex.getErrorCode().getStatus()).body(ResponseDto.builder().result(false));
+    }
+
+    @ExceptionHandler(NotMatchUserException.class)
+    public ResponseEntity<?> handleNotmatchUserException(NotMatchUserException ex){
         return ResponseEntity.status(ex.getErrorCode().getStatus()).body(ResponseDto.builder().result(false));
     }
 }
