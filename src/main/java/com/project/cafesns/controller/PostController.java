@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
+
 @RequiredArgsConstructor
 @RestController
 public class PostController {
@@ -17,17 +19,19 @@ public class PostController {
 
     //게시글 작성
     @PostMapping("/{cafeId}/posts")
-    public Post addPost(@PathVariable Long cafeId,
+    public ResponseEntity<?> addPost(@PathVariable Long cafeId,
                         @RequestBody PostRequestDto postRequestDto,
-                        Long httpRequest){
+                        Long httpRequest) throws NoSuchAlgorithmException {
         Long userId =httpRequest;
-        return postService.addPost(cafeId,postRequestDto,userId);
+        postService.addPost(cafeId,postRequestDto,userId);
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("게시글이 작성되었습니다.").build());
     }
 
     @PatchMapping("/posts/{postId}")
-    public Post updatePost(@PathVariable Long postId, @RequestBody PostPatchDto postPatchDto, Long httpRequest){
+    public ResponseEntity<?> updatePost(@PathVariable Long postId, @RequestBody PostPatchDto postPatchDto, Long httpRequest){
         Long userId =httpRequest;
-        return postService.updatePost(postId,postPatchDto,userId);
+        postService.updatePost(postId,postPatchDto,userId);
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("게시글이 작성되었습니다.").build());
     }
 
     @DeleteMapping("/posts/{postId}")

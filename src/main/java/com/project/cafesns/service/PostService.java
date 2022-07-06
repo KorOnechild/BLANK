@@ -1,5 +1,7 @@
 package com.project.cafesns.service;
 
+import com.project.cafesns.error.ErrorCode;
+import com.project.cafesns.error.exceptions.NotMatchUserException;
 import com.project.cafesns.model.dto.post.PostPatchDto;
 import com.project.cafesns.model.dto.post.PostRequestDto;
 import com.project.cafesns.model.entitiy.Cafe;
@@ -13,7 +15,6 @@ import com.project.cafesns.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -49,7 +50,7 @@ public class PostService {
             return post;
         }
         else {
-            throw new NullPointerException("다른사람의 게시글입니다");
+            throw new NotMatchUserException(ErrorCode.NOTMATCH_USER_EXCEPTION);
         }
     }
 
@@ -60,7 +61,7 @@ public class PostService {
             postRepository.deleteById(postId);
         }
         else {
-            throw new NullPointerException("다른사람의 게시글입니다");
+            throw new NotMatchUserException(ErrorCode.NOTMATCH_USER_EXCEPTION);
         }
     }
 }
