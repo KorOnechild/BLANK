@@ -1,5 +1,7 @@
 package com.project.cafesns.service;
 
+import com.project.cafesns.error.ErrorCode;
+import com.project.cafesns.error.exceptions.NotMatchUserException;
 import com.project.cafesns.model.dto.comment.CommentRequestDto;
 import com.project.cafesns.model.entitiy.Comment;
 import com.project.cafesns.model.entitiy.Post;
@@ -18,24 +20,22 @@ public class CommentService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
 
-        public Comment addComment(Long postId, CommentRequestDto commentRequestDto, Long userId) {
+        public void addComment(Long postId, CommentRequestDto commentRequestDto, Long userId) {
             Post post = postRepository.findById(postId).orElseThrow(() -> new NullPointerException("해당 카페가 존재하지 않습니다."));
             User user = userRepository.findById(userId).orElseThrow( () -> new NullPointerException("해당 유저가 존재하지 않습니다."));
             Comment comment = new Comment(commentRequestDto,user,post);
             commentRepository.save(comment);
-            return comment;
         }
 
 
-        public Comment updateComment(Long commentId, CommentRequestDto commentRequestDto, Long userId) {
+        public void updateComment(Long commentId, CommentRequestDto commentRequestDto, Long userId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new NullPointerException("해당 댓글이 존재하지 않습니다."));
         if(comment.getUser().getId().equals(userId)){
             comment.setContents(commentRequestDto.getContents());
             commentRepository.save(comment);
-            return comment;
         }
         else {
-            throw new NullPointerException("다른사람의 게시글입니다");
+            throw new NotMatchUserException(ErrorCode.NOTMATCH_USER_EXCEPTION);
         }
     }
 
@@ -45,7 +45,7 @@ public class CommentService {
             commentRepository.deleteById(commentId);
         }
         else {
-            throw new NullPointerException("다른사람의 댓글입니다");
+            throw new NotMatchUserException(ErrorCode.NOTMATCH_USER_EXCEPTION);
         }
     }
 }
