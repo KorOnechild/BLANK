@@ -27,7 +27,7 @@ public class PostService {
     private final HashtagRepository hashtagRepository;
 
     //게시글 작성
-    public Post addPost(Long cafeId, PostRequestDto postRequestDto, Long userId) {
+    public void addPost(Long cafeId, PostRequestDto postRequestDto, Long userId) {
         Cafe cafe = cafeRepository.findById(cafeId).orElseThrow( () -> new NullPointerException("해당 카페가 존재하지 않습니다."));
         User user = userRepository.findById(userId).orElseThrow( () -> new NullPointerException("해당 유저가 존재하지 않습니다."));
         List<String>hashkeys = postRequestDto.getHashtag();
@@ -37,17 +37,15 @@ public class PostService {
             hashtagRepository.save(hashtag);
         }
         postRepository.save(post);
-        return post;
     }
 
     //게시글 수정
-    public Post updatePost(Long postId, PostPatchDto postPatchDto, Long userId) {
+    public void updatePost(Long postId, PostPatchDto postPatchDto, Long userId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NullPointerException("해당 게시글이 존재하지 않습니다."));
         if(post.getUser().getId().equals(userId)){
             post.setContents(postPatchDto.getContent());
             post.setStar(postPatchDto.getStar());
             postRepository.save(post);
-            return post;
         }
         else {
             throw new NotMatchUserException(ErrorCode.NOTMATCH_USER_EXCEPTION);
