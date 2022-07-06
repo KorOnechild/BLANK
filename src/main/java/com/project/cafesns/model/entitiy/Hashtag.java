@@ -24,7 +24,8 @@ public class Hashtag {
     @JsonBackReference(value = "hashtag-post-FK")
     private Post post;
 
-    public Hashtag(String hashkey){
+    public Hashtag(String hashkey, Post post ){
+        this.post = post;
         this.hashtag= hashkey;
     }
 }

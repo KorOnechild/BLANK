@@ -35,16 +35,15 @@ public class Post {
     @JsonBackReference(value = "cafe-post-FK")
     private Cafe cafe;
 
-    @OneToMany
+    @OneToMany(mappedBy = "post")
     @JsonManagedReference(value = "hashtag-post-FK")
     private List<Hashtag> hashtagList;
 
-    public Post(PostRequestDto postRequestDto, User user, Cafe cafe, List<Hashtag>hashtagList){
+    public Post(PostRequestDto postRequestDto, User user, Cafe cafe){
         this.contents = postRequestDto.getContent();
         this.star = postRequestDto.getStar();
         this.user = user;
         this.cafe = cafe;
-        this.hashtagList = hashtagList;
-    }
 
+    }
 }

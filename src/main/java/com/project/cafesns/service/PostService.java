@@ -29,14 +29,12 @@ public class PostService {
     public Post addPost(Long cafeId, PostRequestDto postRequestDto, Long userId) {
         Cafe cafe = cafeRepository.findById(cafeId).orElseThrow( () -> new NullPointerException("해당 카페가 존재하지 않습니다."));
         User user = userRepository.findById(userId).orElseThrow( () -> new NullPointerException("해당 유저가 존재하지 않습니다."));
-        List<Hashtag>hashtagList = new ArrayList<>();
         List<String>hashkeys = postRequestDto.getHashtag();
+        Post post = new Post(postRequestDto,user,cafe);
         for(String hashkey:hashkeys){
-            Hashtag hashtag = new Hashtag(hashkey);
+            Hashtag hashtag = new Hashtag(hashkey,post);
             hashtagRepository.save(hashtag);
-            hashtagList.add(hashtag);
         }
-        Post post = new Post(postRequestDto,user,cafe,hashtagList);
         postRepository.save(post);
         return post;
     }
