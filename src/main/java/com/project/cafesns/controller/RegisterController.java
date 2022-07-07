@@ -6,8 +6,7 @@ import com.project.cafesns.model.dto.register.RegisterResponseDto;
 import com.project.cafesns.service.RegisterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,6 +28,34 @@ public class RegisterController {
     public ResponseEntity<?> readno(Long httpRequest){
         Long userId = httpRequest;
         return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("거절 목록 조회에 성공헀습니다").data(registerService.readno()).build());
+    }
+
+    //미처리 내역 승인/거절
+    @PatchMapping("/api/registers/{registerId}/{permit}")
+    public ResponseEntity<?> permitset(@PathVariable Long registerId,
+                                       @PathVariable  Boolean permit){
+        registerService.permitset(registerId,permit);
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("내역변경에 성공헀습니다").build());
+    }
+
+    //관리자 카페생성 승인
+    @PostMapping("/api/registers/{registerId}")
+    public ResponseEntity<?> addcafe(@PathVariable Long registerId){
+        registerService.addcafe(registerId);
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("카페 생성에 성공헀습니다").build());
+    }
+
+    //관리자 승인카페삭제
+    @DeleteMapping("/api/registers/{cafeId}")
+    public ResponseEntity<?> deletecafe(@PathVariable Long cafeId){
+        registerService.deletecafe(cafeId);
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("카페 삭제에 성공헀습니다").build());
+    }
+
+    //등록된 모든 카페 조회
+    @GetMapping("/api/registeredcafe")
+    public ResponseEntity<?> showcafe(){
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("등록카페 조회에 성공헀습니다").data(registerService.showcafe()).build());
     }
 }
 

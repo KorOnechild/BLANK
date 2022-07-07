@@ -61,4 +61,13 @@ public class Cafe {
     @OneToMany(mappedBy = "cafe")
     @JsonManagedReference(value = "cafe-post-FK")
     List<Post> postList;
+
+    public Cafe(Register register){
+        this.cafename = register.getCafename();
+        this.address = register.getAddress();
+        this.addressdetail = register.getAddressdetail();
+        this.zonenum = register.getZonenum();
+        this.latitude =register.getLatitude();
+        this.longitude = register.getLongitude();
+    }
 }
