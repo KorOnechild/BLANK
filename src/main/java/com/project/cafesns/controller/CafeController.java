@@ -38,5 +38,11 @@ public class CafeController {
     public ResponseEntity<?> getOwnerCafe(HttpServletRequest httpServletRequest){ // 카페아이디를 알아오고싶어요 userId가 필요할 것 같습니다
         return cafeService.getOwnerCafe(httpServletRequest);
     }
+
+    // 사장님 카페 메뉴 조회
+    @GetMapping("/api/owner/menus")
+    public ResponseEntity<?> getOwnerCafeMenus(HttpServletRequest httpServletRequest){
+        return cafeService.getOwnerCafeMenus(httpServletRequest);
+    }
 }
 

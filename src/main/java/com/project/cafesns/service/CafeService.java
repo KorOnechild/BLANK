@@ -8,6 +8,7 @@ import com.project.cafesns.model.dto.cafe.CafeMenusDto;
 import com.project.cafesns.model.entitiy.Image;
 import com.project.cafesns.model.entitiy.Menu;
 import com.project.cafesns.model.entitiy.Post;
+import com.project.cafesns.model.entitiy.User;
 import com.project.cafesns.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -133,6 +134,22 @@ public class CafeService {
                         .zonenum(zonenum)
                         .latitude(latitude)
                         .longitude(longitude)
+                        .build())
+                .build());
+    }
+
+    // 사장님 카페 메뉴 조회
+    public ResponseEntity<?> getOwnerCafeMenus(HttpServletRequest httpServletRequest) {
+        Long userId = userInfoInJwt.getUserId_InJWT(httpServletRequest.getHeader("Authorization"));
+        User user = userRepository.findByUserId(userId);
+        Long cafeId = cafeRepository.findByUser(user).getId();
+        List<Menu> menuList = cafeRepository.findAllByCafeId(cafeId);
+
+        return ResponseEntity.ok().body(ResponseDto.builder()
+                .result(true)
+                .message("메뉴 조회에 성공했습니다.")
+                .data(CafeMenusDto.builder()
+                        .menuList(menuList)
                         .build())
                 .build());
     }
