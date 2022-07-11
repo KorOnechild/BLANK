@@ -31,11 +31,18 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry
                 .addInterceptor(jwtTokenInterceptor) //로그인이 필요한 서비스 요청시 Interceptor가 그 요청을 가로챔
+                //공통
                 .addPathPatterns("/api/user/signout")
                 .addPathPatterns("/api/auth/refresh")
                 .addPathPatterns("/api/upload")
-                //게시글 작성,수정,삭제
-                .addPathPatterns("/{cafeId}/posts", "/posts/{postId}", "/posts/{postId}")
+                //일반유저
+                .addPathPatterns("/{cafeId}/posts")
+                .addPathPatterns("/posts/{postId}")
+                .addPathPatterns("/api/user/regist-cafe")
+                //사장유저
+                .addPathPatterns("/api/owner/regist-cafe")
+                //관리자
+                .addPathPatterns("/api/registers")
                 .addPathPatterns("/admin/**");
     }
 }
