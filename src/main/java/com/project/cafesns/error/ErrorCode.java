@@ -19,7 +19,7 @@ public enum ErrorCode {
     REISSUE_TOKEN_EXCEPTION(401),
 
     BEARER_TOKEN_EXCEPTION(401),
-    NULL_TOKEN_EXCEPTION(401);;
+    NULL_TOKEN_EXCEPTION(401);
 
     private final int status;
 }
