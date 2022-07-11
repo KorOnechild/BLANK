@@ -20,7 +20,7 @@ public class RegisterController {
     public ResponseEntity<?> readok(HttpServletRequest httpRequest){
         userInfoInJwt.getUserInfo_InJwt(httpRequest.getHeader("Authorization"));
         String userRole = UserInfoInJWT.getRole();
-        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("승인 목록 조회에 성공헀습니다").data(registerService.readok()).build());
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("승인 목록 조회에 성공헀습니다").data(registerService.readok(userRole)).build());
     }
 
     //거절목록조회
@@ -28,7 +28,7 @@ public class RegisterController {
     public ResponseEntity<?> readno(HttpServletRequest httpRequest){
         userInfoInJwt.getUserInfo_InJwt(httpRequest.getHeader("Authorization"));
         String userRole = UserInfoInJWT.getRole();
-        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("거절 목록 조회에 성공헀습니다").data(registerService.readno()).build());
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("거절 목록 조회에 성공헀습니다").data(registerService.readno(userRole)).build());
     }
 
     //미처리 내역 승인/거절
@@ -37,28 +37,34 @@ public class RegisterController {
                                        @PathVariable  Boolean permit,HttpServletRequest httpRequest){
         userInfoInJwt.getUserInfo_InJwt(httpRequest.getHeader("Authorization"));
         String userRole = UserInfoInJWT.getRole();
-        registerService.permitset(registerId,permit);
+        registerService.permitset(registerId,permit,userRole);
         return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("내역변경에 성공헀습니다").build());
     }
 
     //관리자 카페생성 승인
     @PostMapping("/api/registers/{registerId}")
-    public ResponseEntity<?> addcafe(@PathVariable Long registerId){
-        registerService.addcafe(registerId);
+    public ResponseEntity<?> addcafe(@PathVariable Long registerId,HttpServletRequest httpRequest){
+        userInfoInJwt.getUserInfo_InJwt(httpRequest.getHeader("Authorization"));
+        String userRole = UserInfoInJWT.getRole();
+        registerService.addcafe(registerId,userRole);
         return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("카페 생성에 성공헀습니다").build());
     }
 
     //관리자 승인카페삭제
     @DeleteMapping("/api/registers/{cafeId}")
-    public ResponseEntity<?> deletecafe(@PathVariable Long cafeId){
-        registerService.deletecafe(cafeId);
+    public ResponseEntity<?> deletecafe(@PathVariable Long cafeId,HttpServletRequest httpRequest){
+        userInfoInJwt.getUserInfo_InJwt(httpRequest.getHeader("Authorization"));
+        String userRole = UserInfoInJWT.getRole();
+        registerService.deletecafe(cafeId,userRole);
         return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("카페 삭제에 성공헀습니다").build());
     }
 
     //등록된 모든 카페 조회
     @GetMapping("/api/registeredcafe")
-    public ResponseEntity<?> showcafe(){
-        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("등록카페 조회에 성공헀습니다").data(registerService.showcafe()).build());
+    public ResponseEntity<?> showcafe(HttpServletRequest httpRequest){
+        userInfoInJwt.getUserInfo_InJwt(httpRequest.getHeader("Authorization"));
+        String userRole = UserInfoInJWT.getRole();
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("등록카페 조회에 성공헀습니다").data(registerService.showcafe(userRole)).build());
     }
 }
 
