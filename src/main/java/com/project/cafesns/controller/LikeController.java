@@ -16,7 +16,7 @@ import java.security.NoSuchAlgorithmException;
 @RequiredArgsConstructor
 public class LikeController {
 
-    public LikeService likeService;
+    private final LikeService likeService;
 
     // 좋아요 여부 체크
     @GetMapping("/api/{postId}/like")

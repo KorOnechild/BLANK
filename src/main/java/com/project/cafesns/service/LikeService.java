@@ -18,11 +18,11 @@ import java.security.NoSuchAlgorithmException;
 @RequiredArgsConstructor
 public class LikeService {
 
-    public UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public LikeRepository likeRepository;
+    private final LikeRepository likeRepository;
 
-    public PostRepository postRepository;
+    private final PostRepository postRepository;
 
     // 좋아요 체크 로직
     public ResponseEntity<?> checkLike(Long postId, Long userId) throws NoSuchAlgorithmException {//NosuchAlgorithmException 쓰는이유
