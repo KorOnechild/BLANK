@@ -43,4 +43,4 @@ jobs:
       - name: Code Deploy
         run: aws deploy create-deployment --application-name testapp 
           --deployment-config-name CodeDeployDefault.AllAtOnce 
-          --deployment-group-name final --s3-location bucket=s3cafe/jar,bundleType=zip,key=$GITHUB_SHA.zip
+          --deployment-group-name final --s3-location bucket=s3cafe/jar,bundleType=zip,key=$jar/GITHUB_SHA.zip
