@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,5 +102,37 @@ public class CafeService {
                         .build())
                 .build());
 
+    }
+
+    // 사장님 카페조회
+    public ResponseEntity<?> getOwnerCafe(HttpServletRequest httpServletRequest) {
+        Long userId = userInfoInJwt.getUserId_InJWT(httpServletRequest.getHeader("Authorization"));
+        User user = userRepository.findByUserId(userId);
+        Long cafeId = cafeRepository.findByUser(user).getId();
+        Boolean delivery = cafeRepository.findByCafeId(cafeId).getDelivery();
+        String intro = cafeRepository.findByCafeId(cafeId).getIntro();
+        String notice = cafeRepository.findByCafeId(cafeId).getNotice();
+        String address = cafeRepository.findByCafeId(cafeId).getAddress();
+        String addressdetail = cafeRepository.findByCafeId(cafeId).getAddressdetail();
+        String zonenum = cafeRepository.findByCafeId(cafeId).getZonenum();
+        String latitude = cafeRepository.findByCafeId(cafeId).getLatitude();
+        String longitude = cafeRepository.findByCafeId(cafeId).getLongitude();
+
+
+        return ResponseEntity.ok().body(ResponseDto.builder()
+                .result(true)
+                .message("카페 홈 조회에 성공했습니다.")
+                .data(CafeDetailDto.builder()
+                        .cafeId(cafeId)
+                        .delivery(delivery)
+                        .intro(intro)
+                        .notice(notice)
+                        .address(address)
+                        .addressdetail(addressdetail)
+                        .zonenum(zonenum)
+                        .latitude(latitude)
+                        .longitude(longitude)
+                        .build())
+                .build());
     }
 }

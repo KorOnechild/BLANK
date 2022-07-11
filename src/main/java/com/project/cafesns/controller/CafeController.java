@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequiredArgsConstructor
 public class CafeController {
@@ -29,6 +31,12 @@ public class CafeController {
     @GetMapping("/api/cafes/{cafeId}/menus")
     public ResponseEntity<?> getMenus(Long cafeId){
         return cafeService.getMenus(cafeId);
+    }
+
+    // 사장님 카페조회
+    @GetMapping("/api/owner/info")
+    public ResponseEntity<?> getOwnerCafe(HttpServletRequest httpServletRequest){ // 카페아이디를 알아오고싶어요 userId가 필요할 것 같습니다
+        return cafeService.getOwnerCafe(httpServletRequest);
     }
 }
 
