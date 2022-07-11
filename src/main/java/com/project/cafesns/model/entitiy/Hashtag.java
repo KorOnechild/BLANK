@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,4 +23,9 @@ public class Hashtag {
     @JoinColumn(name = "postid")
     @JsonBackReference(value = "hashtag-post-FK")
     private Post post;
+
+    public Hashtag(String hashkey, Post post ){
+        this.post = post;
+        this.hashtag= hashkey;
+    }
 }
