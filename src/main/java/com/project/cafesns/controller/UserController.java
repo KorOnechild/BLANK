@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.NoSuchAlgorithmException;
 
 @RestController
@@ -30,6 +31,12 @@ public class UserController {
     @PostMapping("/api/user/signin")
     public ResponseEntity<?> signin(@RequestBody SigninReqeustDto signinReqeustDto) throws NoSuchAlgorithmException {
         return userService.signin(signinReqeustDto);
+    }
+
+    //로그아웃
+    @PostMapping("/api/user/signout")
+    public ResponseEntity<?> signout(HttpServletRequest httpServletRequest){
+        return userService.signout(httpServletRequest);
     }
 }
 

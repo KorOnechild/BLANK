@@ -22,6 +22,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
 
 @Service
@@ -92,5 +94,22 @@ public class UserService {
                 .build();
 
         return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("로그인 되었습니다.").data(signinDto).build());
+    }
+
+    //로그아웃
+    //TODO : 로그아웃 처리를 현재 토큰을 받아서 처리하도록 함 이메일만 받아서 처리해도 되면 변경할 것
+    @Transactional
+    public ResponseEntity<?> signout(HttpServletRequest httpServletRequest) {
+        userInfoInJwt.getUserInfo_InJwt(httpServletRequest.getHeader("Authorization"));
+
+
+        User user = userRepository.findById(userInfoInJwt.getUserid()).orElseThrow(
+                ()-> new NullPointerException("사용자 정보가 없습니다.")
+        );
+
+        RefreshToken refreshToken = refreshTokenRepository.findByUser(user);
+        refreshTokenRepository.delete(refreshToken);
+
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("로그아웃 되었습니다.").build());
     }
 }
