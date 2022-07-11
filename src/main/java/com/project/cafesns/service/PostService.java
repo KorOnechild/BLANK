@@ -1,6 +1,7 @@
 package com.project.cafesns.service;
 
 import com.project.cafesns.error.ErrorCode;
+import com.project.cafesns.error.exceptions.allow.NotAllowedException;
 import com.project.cafesns.error.exceptions.user.NotmatchUserException;
 import com.project.cafesns.model.dto.post.PostPatchDto;
 import com.project.cafesns.model.dto.post.PostRequestDto;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -50,27 +52,40 @@ public class PostService {
         }
     }
 
+    @Transactional
     //게시글 수정
     public void updatePost(Long postId, PostPatchDto postPatchDto, Long userId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NullPointerException("해당 게시글이 존재하지 않습니다."));
         if(post.getUser().getId().equals(userId)){
-            post.setContents(postPatchDto.getContent());
-            post.setStar(postPatchDto.getStar());
+            post.changeContents(postPatchDto.getContent(),postPatchDto.getStar());
             postRepository.save(post);
         }
         else {
-            throw new NotmatchUserException(ErrorCode.NOTMATCH_USER_EXCEPTION);
+            throw new NotAllowedException(ErrorCode.NOT_ALLOWED_EXCEPTION);
         }
     }
 
+    @Transactional
     //게시글 삭제
     public void deletePost(Long postId, Long userId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NullPointerException("해당 게시글이 존재하지 않습니다."));
         if(post.getUser().getId().equals(userId)){
+            hashtagRepository.deleteAllByPost(post);
+            List<Image> imageList = imageRepository.findAllByPost(post);
+            deleteImage(imageList);
+            imageRepository.deleteAllByPost(post);
             postRepository.deleteById(postId);
         }
         else {
-            throw new NotmatchUserException(ErrorCode.NOTMATCH_USER_EXCEPTION);
+            throw new NotAllowedException(ErrorCode.NOT_ALLOWED_EXCEPTION);
         }
+    }
+    public void deleteImage(List<Image> imageList){
+        for(Image image : imageList){
+            int length = image.getImg().length();
+            String filePath = image.getImg().substring(47,length); //
+            fileUploadService.deleteFile(filePath);
+        }
+        System.out.printf("이미지 삭제가 완료되었습니다.");
     }
 }

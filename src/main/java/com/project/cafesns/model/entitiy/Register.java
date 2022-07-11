@@ -1,6 +1,5 @@
 package com.project.cafesns.model.entitiy;
 
-import com.project.cafesns.model.dto.register.RegisterOwnerRequestDto;
 import com.project.cafesns.model.dto.register.RegisterRequestDto;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Register extends Cafe {
+public class Register{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,7 +33,7 @@ public class Register extends Cafe {
     @Column(nullable = false)
     private String longitude;
 
-    @Column(nullable = false)
+    @Column
     private Boolean permit;
 
     @Column
@@ -52,6 +51,7 @@ public class Register extends Cafe {
         this.zonenum = registerRequestDto.getZonenum();
         this.latitude = registerRequestDto.getLatitude();
         this.longitude = registerRequestDto.getLongitude();
+        this.permit = null;
         this.user = user;
     }
 }

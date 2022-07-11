@@ -21,7 +21,7 @@ public class PostController {
     private final UserInfoInJwt userInfoInJwt;
 
     //게시글 작성
-    @PostMapping("/{cafeId}/posts")
+    @PostMapping("api/{cafeId}/posts")
     public ResponseEntity<?> addPost(@PathVariable Long cafeId,
                                      @RequestPart(value = "file") List<MultipartFile> fileList,
                                      @RequestPart(value = "data") PostRequestDto postRequestDto,
@@ -33,7 +33,7 @@ public class PostController {
     }
 
     //게시글 수정
-    @PatchMapping("/posts/{postId}")
+    @PatchMapping("api/posts/{postId}")
     public ResponseEntity<?> updatePost(@PathVariable Long postId, @RequestBody PostPatchDto postPatchDto, HttpServletRequest httpRequest){
         userInfoInJwt.getUserInfo_InJwt(httpRequest.getHeader("Authorization"));
         Long userId = userInfoInJwt.getUserid();
@@ -42,8 +42,8 @@ public class PostController {
     }
 
     //게시글 삭제
-    @DeleteMapping("/posts/{postId}")
-    public ResponseEntity<?>  deletePost(@PathVariable Long postId,HttpServletRequest httpRequest){
+    @DeleteMapping("api/posts/{postId}")
+    public ResponseEntity<?>  deletePost(@PathVariable Long postId, HttpServletRequest httpRequest){
         userInfoInJwt.getUserInfo_InJwt(httpRequest.getHeader("Authorization"));
         Long userId = userInfoInJwt.getUserid();
         postService.deletePost(postId,userId);

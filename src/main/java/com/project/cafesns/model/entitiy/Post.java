@@ -3,6 +3,7 @@ package com.project.cafesns.model.entitiy;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.cafesns.model.dto.post.PostRequestDto;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +13,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 public class Post {
     @Id
@@ -48,6 +48,10 @@ public class Post {
         this.star = postRequestDto.getStar();
         this.user = user;
         this.cafe = cafe;
+    }
 
+    public void changeContents(String contents, int star){
+        this.contents = contents;
+        this.star  = star;
     }
 }

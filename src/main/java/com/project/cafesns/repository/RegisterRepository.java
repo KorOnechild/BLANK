@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface RegisterRepository extends JpaRepository<Register, Long> {
     List<Register> findAllByPermit(Boolean permit);
+
+    boolean existsByAddressAndCafename(String address, String cafename);
 }
