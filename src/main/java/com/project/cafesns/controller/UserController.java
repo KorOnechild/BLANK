@@ -38,5 +38,11 @@ public class UserController {
     public ResponseEntity<?> signout(HttpServletRequest httpServletRequest){
         return userService.signout(httpServletRequest);
     }
+
+    //액세스 토큰 재발급
+    @PostMapping("/api/auth/refresh")
+    public ResponseEntity<?> reissueAccessToken(HttpServletRequest httpServletRequest) throws RuntimeException{
+        return userService.reissueAccessToken(httpServletRequest);
+    }
 }
 

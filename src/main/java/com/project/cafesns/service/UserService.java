@@ -2,12 +2,14 @@ package com.project.cafesns.service;
 
 import com.project.cafesns.encoder.SHA256;
 import com.project.cafesns.error.ErrorCode;
+import com.project.cafesns.error.exceptions.token.NotExistTokenException;
 import com.project.cafesns.error.exceptions.user.EmailDupblicateException;
 import com.project.cafesns.error.exceptions.user.NicknameDubplicateException;
 import com.project.cafesns.error.exceptions.user.NotmatchUserException;
 import com.project.cafesns.jwt.JwtTokenProvider;
 import com.project.cafesns.jwt.UserInfoInJwt;
 import com.project.cafesns.model.dto.ResponseDto;
+import com.project.cafesns.model.dto.user.ReissueTokenDto;
 import com.project.cafesns.model.dto.user.SigninDto;
 import com.project.cafesns.model.dto.user.SigninReqeustDto;
 import com.project.cafesns.model.dto.user.SignupRequestDto;
@@ -111,5 +113,26 @@ public class UserService {
         refreshTokenRepository.delete(refreshToken);
 
         return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("로그아웃 되었습니다.").build());
+    }
+
+    //액세스 토큰 재발급
+
+    public ResponseEntity<?> reissueAccessToken(HttpServletRequest httpServletRequest) throws RuntimeException {
+        userInfoInJwt.getUserInfo_InJwt(httpServletRequest.getHeader("Authorization"));
+        String refreshToken = httpServletRequest.getHeader("RefreshToken");
+
+        User user = userRepository.findById(userInfoInJwt.getUserid()).orElseThrow(
+                ()-> new NullPointerException("사용자 정보가 없습니다.")
+        );
+
+        if(!userValidator.checkexistRefreshToken(refreshToken, user)){
+            throw new NotExistTokenException(ErrorCode.NOTEXIST_TOKEN_EXCEPTION);
+            //존재하지 않는 토큰이라는 예외처리
+        }
+
+        String accessToken = jwtTokenProvider.createAccessToken(user);
+        ReissueTokenDto reissueTokenDto = ReissueTokenDto.builder().accessToken(accessToken).refreshToken(refreshToken).build();
+
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("액세스 토큰이 재발급되었습니다.").data(reissueTokenDto).build());
     }
 }
