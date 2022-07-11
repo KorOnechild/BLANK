@@ -62,8 +62,11 @@ public class RegisterService {
     public void addcafe(Long registerId, String userRole) {
         adminCheck(userRole);
         Register register = registerRepository.findById(registerId).orElseThrow( () -> new NullPointerException("존재하지않는 신청입니다"));
+        if(cafeRepository.existsByAddressAndCafename(register.getAddress(),register.getCafename())){
+            //이미존재하는 카페 엑셉션
+        } else {
         Cafe cafe = new Cafe(register);
-        cafeRepository.save(cafe);
+        cafeRepository.save(cafe);}
     }
 
     // 관리자승인 카페 삭제
