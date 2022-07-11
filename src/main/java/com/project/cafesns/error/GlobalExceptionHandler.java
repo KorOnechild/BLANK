@@ -1,5 +1,9 @@
 package com.project.cafesns.error;
 
+import com.project.cafesns.error.exceptions.token.BearerTokenException;
+import com.project.cafesns.error.exceptions.token.NotExistTokenException;
+import com.project.cafesns.error.exceptions.token.NullTokenException;
+import com.project.cafesns.error.exceptions.token.ReissueTokenException;
 import com.project.cafesns.error.exceptions.user.EmailDupblicateException;
 import com.project.cafesns.error.exceptions.user.NicknameDubplicateException;
 import com.project.cafesns.error.exceptions.user.NotmatchUserException;
@@ -28,5 +32,26 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotmatchUserException.class)
     public ResponseEntity<?> handleNotmatchUserException(NotmatchUserException ex){
         return ResponseEntity.status(ex.getErrorCode().getStatus()).body(ResponseDto.builder().result(false).message("아이디 혹은 비밀번호가 틀렸습니다.").build());
+    }
+
+    //토큰
+    @ExceptionHandler(NotExistTokenException.class)
+    public ResponseEntity<?> handleNotexistTokenException(NotExistTokenException ex){
+        return ResponseEntity.status(ex.getErrorCode().getStatus()).body(ResponseDto.builder().result(false).message("일치하는 토큰이 없습니다.").build());
+    }
+
+    @ExceptionHandler(NullTokenException.class)
+    public ResponseEntity<?> handleNullTokenException(NullTokenException ex){
+        return ResponseEntity.status(ex.getErrorCode().getStatus()).body(ResponseDto.builder().result(false).message("토큰이 비었습니다.").build());
+    }
+
+    @ExceptionHandler(BearerTokenException.class)
+    public ResponseEntity<?> BearerTokenException(BearerTokenException ex){
+        return ResponseEntity.status(ex.getErrorCode().getStatus()).body(ResponseDto.builder().result(false).message("Bearer 토큰 형식이 아닙니다.").build());
+    }
+
+    @ExceptionHandler(ReissueTokenException.class)
+    public ResponseEntity<?> handleReissueTokenException(ReissueTokenException ex){
+        return ResponseEntity.status(ex.getErrorCode().getStatus()).body(ResponseDto.builder().result(false).message("토큰을 재발급 해주세요.").build());
     }
 }
