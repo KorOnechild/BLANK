@@ -39,27 +39,4 @@ public class PostService {
         postRepository.save(post);
     }
 
-    //게시글 수정
-    public void updatePost(Long postId, PostPatchDto postPatchDto, Long userId) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new NullPointerException("해당 게시글이 존재하지 않습니다."));
-        if(post.getUser().getId().equals(userId)){
-            post.setContents(postPatchDto.getContent());
-            post.setStar(postPatchDto.getStar());
-            postRepository.save(post);
-        }
-        else {
-            throw new NotMatchUserException(ErrorCode.NOTMATCH_USER_EXCEPTION);
-        }
-    }
-
-    //게시글 삭제
-    public void deletePost(Long postId, Long userId) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new NullPointerException("해당 게시글이 존재하지 않습니다."));
-        if(post.getUser().getId().equals(userId)){
-            postRepository.deleteById(postId);
-        }
-        else {
-            throw new NotMatchUserException(ErrorCode.NOTMATCH_USER_EXCEPTION);
-        }
-    }
 }
