@@ -35,7 +35,7 @@ public class Cafe {
     private String notice;
 
     @Column
-    private String delivery;
+    private Boolean delivery;
 
     @Column
     private String opentime;

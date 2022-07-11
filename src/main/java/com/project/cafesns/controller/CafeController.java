@@ -19,5 +19,10 @@ public class CafeController {
         return cafeService.getBanner(cafeId);
     }
 
+    // 카페 상세 페이지 홈 조회
+    @GetMapping("/api/cafes/{cafeId}/info")
+    public ResponseEntity<?> getHome(Long cafeId){
+        return cafeService.getHome(cafeId);
+    }
 }
 

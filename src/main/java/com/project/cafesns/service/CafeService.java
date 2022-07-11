@@ -59,4 +59,32 @@ public class CafeService {
                 .build());
 
     }
+
+    // 카페 상세 페이지 홈 조회
+    public ResponseEntity<?> getHome(Long cafeId) {
+        Boolean delivery = cafeRepository.findByCafeId(cafeId).getDelivery();
+        String intro = cafeRepository.findByCafeId(cafeId).getIntro();
+        String notice = cafeRepository.findByCafeId(cafeId).getNotice();
+        String address = cafeRepository.findByCafeId(cafeId).getAddress();
+        String addressdetail = cafeRepository.findByCafeId(cafeId).getAddressdetail();
+        String zonenum = cafeRepository.findByCafeId(cafeId).getZonenum();
+        String latitude = cafeRepository.findByCafeId(cafeId).getLatitude();
+        String longitude = cafeRepository.findByCafeId(cafeId).getLongitude();
+
+        return ResponseEntity.ok().body(ResponseDto.builder()
+                .result(true)
+                .message("홈 조회에 성공했습니다.")
+                .data(CafeHomeDto.builder()
+                        .delivery(delivery)
+                        .intro(intro)
+                        .notice(notice)
+                        .address(address)
+                        .addressdetail(addressdetail)
+                        .zonenum(zonenum)
+                        .latitude(latitude)
+                        .longitude(longitude)
+                        .build())
+                .build());
+    }
+
 }
