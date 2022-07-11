@@ -34,6 +34,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/api/user/signout")
                 .addPathPatterns("/api/auth/refresh")
                 .addPathPatterns("/api/upload")
+                //게시글 작성,수정,삭제
+                .addPathPatterns("/{cafeId}/posts", "/posts/{postId}", "/posts/{postId}")
                 .addPathPatterns("/admin/**");
     }
 }

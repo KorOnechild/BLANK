@@ -1,7 +1,7 @@
 package com.project.cafesns.service;
 
 import com.project.cafesns.error.ErrorCode;
-import com.project.cafesns.error.exceptions.NotMatchUserException;
+import com.project.cafesns.error.exceptions.user.NotmatchUserException;
 import com.project.cafesns.model.dto.post.PostPatchDto;
 import com.project.cafesns.model.dto.post.PostRequestDto;
 import com.project.cafesns.model.entitiy.*;
@@ -48,7 +48,6 @@ public class PostService {
             Hashtag hashtag = new Hashtag(hashkey,post);
             hashtagRepository.save(hashtag);
         }
-
     }
 
     //게시글 수정
@@ -60,7 +59,7 @@ public class PostService {
             postRepository.save(post);
         }
         else {
-            throw new NotMatchUserException(ErrorCode.NOTMATCH_USER_EXCEPTION);
+            throw new NotmatchUserException(ErrorCode.NOTMATCH_USER_EXCEPTION);
         }
     }
 
@@ -71,7 +70,7 @@ public class PostService {
             postRepository.deleteById(postId);
         }
         else {
-            throw new NotMatchUserException(ErrorCode.NOTMATCH_USER_EXCEPTION);
+            throw new NotmatchUserException(ErrorCode.NOTMATCH_USER_EXCEPTION);
         }
     }
 }
