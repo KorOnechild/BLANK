@@ -4,11 +4,11 @@ import com.project.cafesns.error.ErrorCode;
 import lombok.Getter;
 
 @Getter
-public class AlreadyExistCafeException extends RuntimeException{
+public class NotExistUserException extends RuntimeException{
 
     private final ErrorCode errorCode;
 
-    public AlreadyExistCafeException(ErrorCode errorCode){
+    public NotExistUserException(ErrorCode errorCode){
         this.errorCode = errorCode;
     }
 }
