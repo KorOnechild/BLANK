@@ -1,8 +1,11 @@
 package com.project.cafesns.repository;
 
 import com.project.cafesns.model.entitiy.Hashtag;
+import com.project.cafesns.model.entitiy.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface HashtagRepository extends JpaRepository<Hashtag, Long> {
+import java.util.List;
 
+public interface HashtagRepository extends JpaRepository<Hashtag, Long> {
+    List<Hashtag> findAllByPost(Post post);
 }
