@@ -31,7 +31,7 @@ public class CommentService {
         public void updateComment(Long commentId, CommentRequestDto commentRequestDto, Long userId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new NullPointerException("해당 댓글이 존재하지 않습니다."));
         if(comment.getUser().getId().equals(userId)){
-            comment.setContents(commentRequestDto.getContents());
+            comment.ChangeComment(commentRequestDto.getContents());
             commentRepository.save(comment);
         }
         else {

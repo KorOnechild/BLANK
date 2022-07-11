@@ -10,7 +10,6 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 public class Comment {
     @Id
@@ -32,5 +31,8 @@ public class Comment {
         this.contents=commentRequestDto.getContents();
         this.user = user;
         this.post = post;
+    }
+    public void ChangeComment(String contents){
+        this.contents=contents;
     }
 }
