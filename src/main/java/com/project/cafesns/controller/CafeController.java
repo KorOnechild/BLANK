@@ -5,6 +5,7 @@ import com.project.cafesns.service.CafeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,6 +44,12 @@ public class CafeController {
     @GetMapping("/api/owner/menus")
     public ResponseEntity<?> getOwnerCafeMenus(HttpServletRequest httpServletRequest){
         return cafeService.getOwnerCafeMenus(httpServletRequest);
+    }
+
+    // 카페 홈 정보 수정
+    @PatchMapping("/api/owner/info")
+    public ResponseEntity<?> modifyCafe(ModifyCafeRequestDto modifyCafeRequestDto){
+        return cafeService.modifyCafe(modifyCafeRequestDto);
     }
 }
 

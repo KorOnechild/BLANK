@@ -5,10 +5,7 @@ import com.project.cafesns.model.dto.cafe.CafeBannerDto;
 import com.project.cafesns.model.dto.cafe.CafeDetailDto;
 import com.project.cafesns.model.dto.cafe.CafeHomeDto;
 import com.project.cafesns.model.dto.cafe.CafeMenusDto;
-import com.project.cafesns.model.entitiy.Image;
-import com.project.cafesns.model.entitiy.Menu;
-import com.project.cafesns.model.entitiy.Post;
-import com.project.cafesns.model.entitiy.User;
+import com.project.cafesns.model.entitiy.*;
 import com.project.cafesns.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -152,5 +149,17 @@ public class CafeService {
                         .menuList(menuList)
                         .build())
                 .build());
+    }
+
+    // 사장님 카페 홈 정보 수정
+    public ResponseEntity<?> modifyCafe(ModifyCafeRequestDto modifyCafeRequestDto) {
+        Cafe cafe = Cafe.builder().modifyCafeRequestDto(modifyCafeRequestDto).build();
+        cafeRepository.save(cafe);
+
+        return ResponseEntity.ok().body(ResponseDto.builder()
+                .result(true)
+                .message("카페 홈 수정에 성공했습니다.")
+                .build());
+
     }
 }
