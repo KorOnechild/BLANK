@@ -1,6 +1,7 @@
 package com.project.cafesns.service;
 
 import com.project.cafesns.model.dto.ResponseDto;
+import com.project.cafesns.model.dto.cafe.CafeBannerDto;
 import com.project.cafesns.model.entitiy.Image;
 import com.project.cafesns.model.entitiy.Post;
 import com.project.cafesns.repository.*;
