@@ -56,22 +56,48 @@ public class PostListService {
         );
 
         List<Post> postList = postListRepository.findAllByUserOrderByModifiedAtDesc(user);
-        List<UserPostListDto> userPostListDtos = new ArrayList<>();
+        List<PostListDto> PostListDtos = new ArrayList<>();
 
         for(Post post : postList){
-            userPostListDtos.add(
-                    UserPostListDto.builder().postid(post.getId())
-                    .nickname(user.getNickname())
+            PostListDtos.add(
+                    PostListDto.builder().postid(post.getId())
+                    .nickname(post.getUser().getNickname())
                     .image(getImageDtoList(post))
                     .hashtagList(getHashtagDtoList(post))
                     .modifiedAt(post.getModifiedAt())
                     .star(post.getStar())
                     .likecnt(getLikeCnt(post))
                     .commentCnt(getCommentCnt(post))
-                    .commentList(getCommentDtoList(post)));
+                    .commentList(getCommentDtoList(post))
+                            .build());
         }
-        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("내가 쓴 리뷰 목록을 조회했습니다.").data(userPostListDtos).build());
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("내가 쓴 리뷰 목록을 조회했습니다.").data(PostListDtos).build());
 
+    }
+
+    //카페 상세페이지 리뷰 목록 조회
+    public ResponseEntity<?> getPostListInCafePage(Long cafeId) {
+        Cafe cafe = cafeRepository.findById(cafeId).orElseThrow(
+                ()-> new NullPointerException("카페가 존재하지 않습니다.")
+        );
+
+        List<Post> postList = postListRepository.findAllByCafeOrderByModifiedAtDesc(cafe);
+        List<PostListDto> postListDtos = new ArrayList<>();
+
+        for(Post post : postList){
+            postListDtos.add(
+                    PostListDto.builder()
+                            .nickname(post.getUser().getNickname())
+                            .image(getImageDtoList(post))
+                            .hashtagList(getHashtagDtoList(post))
+                            .modifiedAt(post.getModifiedAt())
+                            .star(post.getStar())
+                            .likecnt(getLikeCnt(post))
+                            .commentCnt(getCommentCnt(post))
+                            .commentList(getCommentDtoList(post))
+                            .build());
+        }
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("카페 상세페이지 리뷰 목록을 조회했습니다.").data(postListDtos).build());
     }
 
     //게시글 좋아요 개수 얻기 로직

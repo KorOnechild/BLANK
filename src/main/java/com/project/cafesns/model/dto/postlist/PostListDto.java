@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Builder
-public class UserPostListDto {
+public class PostListDto {
     private Long postid;
     private String nickname;
     private List<ImageDto> image;

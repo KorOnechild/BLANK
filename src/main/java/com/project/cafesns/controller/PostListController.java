@@ -24,5 +24,9 @@ public class PostListController {
         return postListService.getUserPostList(request);
     }
 
+    @GetMapping("/api/{cafeId}/posts")
+    public ResponseEntity<?> getPostListInCafePage(@PathVariable Long cafeId){
+        return postListService.getPostListInCafePage(cafeId);
+    }
 
 }
