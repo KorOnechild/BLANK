@@ -1,15 +1,16 @@
 package com.project.cafesns.model.dto.register;
 
+import lombok.Builder;
 import lombok.Getter;
 
-@Getter
-public class RegisterRequestDto {
 
+@Builder
+@Getter
+public class RegistListDto {
+    private Long registerId;
     private String cafename;
     private String address;
     private String addressdetail;
     private String zonenum;
-    private String latitude;
-    private String longitude;
-
+    private Boolean permit;
 }

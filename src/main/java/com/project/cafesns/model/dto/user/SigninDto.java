@@ -8,6 +8,7 @@ import lombok.Getter;
 public class SigninDto {
     private String nickname;
     private String role;
+    private String businessname;
     private String accessToken;
     private String refreshToken;
 }

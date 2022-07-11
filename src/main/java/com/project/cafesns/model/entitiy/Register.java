@@ -1,5 +1,6 @@
 package com.project.cafesns.model.entitiy;
 
+import com.project.cafesns.model.dto.register.RegisterOwnerRequestDto;
 import com.project.cafesns.model.dto.register.RegisterRequestDto;
 import lombok.Builder;
 import lombok.Getter;

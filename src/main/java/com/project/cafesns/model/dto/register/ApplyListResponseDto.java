@@ -7,5 +7,5 @@ import java.util.List;
 
 @Builder
 public class ApplyListResponseDto {
-    private List<Register> registerList;
+    private List<RegistListDto> registerList;
 }

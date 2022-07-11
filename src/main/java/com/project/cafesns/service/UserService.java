@@ -91,6 +91,7 @@ public class UserService {
         SigninDto signinDto = SigninDto.builder()
                 .nickname(user.getNickname())
                 .role(user.getRole())
+                .businessname(user.getBusinessname())
                 .accessToken(accessToken)
                 .refreshToken(refreshToken.getRefreshtoken())
                 .build();

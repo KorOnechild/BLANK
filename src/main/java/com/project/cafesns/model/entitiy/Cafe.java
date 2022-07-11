@@ -2,6 +2,8 @@ package com.project.cafesns.model.entitiy;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.project.cafesns.model.dto.register.RegisterOwnerRequestDto;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -61,4 +63,19 @@ public class Cafe {
     @OneToMany(mappedBy = "cafe")
     @JsonManagedReference(value = "cafe-post-FK")
     List<Post> postList;
+
+    @Builder
+    public Cafe(RegisterOwnerRequestDto registerOwnerRequestDto, User user){
+        this.cafename = user.getBusinessname();
+        this.address = registerOwnerRequestDto.getAddress();
+        this.addressdetail = registerOwnerRequestDto.getAddressdetail();
+        this.zonenum = registerOwnerRequestDto.getZonenum();
+        this.latitude = registerOwnerRequestDto.getLatitude();
+        this.longitude = registerOwnerRequestDto.getLongitude();
+        this.user = user;
+    }
+
+    public void getOwnership(User user){
+        this.user = user;
+    }
 }

@@ -3,6 +3,7 @@ package com.project.cafesns.controller;
 
 import com.project.cafesns.error.ErrorCode;
 import com.project.cafesns.model.dto.ResponseDto;
+import com.project.cafesns.model.dto.register.RegisterOwnerRequestDto;
 import com.project.cafesns.model.dto.register.RegisterRequestDto;
 import com.project.cafesns.model.entitiy.Register;
 import com.project.cafesns.model.entitiy.User;
@@ -34,8 +35,8 @@ public class RegisterController {
 
     // 카페 등록 (사장님)
     @PostMapping("/api/owner/regist-cafe")
-    public ResponseEntity<?> registCafe(HttpServletRequest httpServletRequest,@RequestBody RegisterRequestDto registerRequestDto) {
-        return registerService.registCafe(httpServletRequest,registerRequestDto);
+    public ResponseEntity<?> registCafe(HttpServletRequest httpServletRequest,@RequestBody RegisterOwnerRequestDto registerOwnerRequestDto) {
+        return registerService.registCafe(httpServletRequest,registerOwnerRequestDto);
     }
 
     // 관리자 미처리 목록 조회

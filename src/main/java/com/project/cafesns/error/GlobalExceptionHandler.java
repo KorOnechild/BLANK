@@ -4,6 +4,7 @@ import com.project.cafesns.error.exceptions.token.BearerTokenException;
 import com.project.cafesns.error.exceptions.token.NotExistTokenException;
 import com.project.cafesns.error.exceptions.token.NullTokenException;
 import com.project.cafesns.error.exceptions.token.ReissueTokenException;
+import com.project.cafesns.error.exceptions.user.AlreadyExistCafeException;
 import com.project.cafesns.error.exceptions.user.EmailDupblicateException;
 import com.project.cafesns.error.exceptions.user.NicknameDubplicateException;
 import com.project.cafesns.error.exceptions.user.NotmatchUserException;
@@ -33,6 +34,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleNotmatchUserException(NotmatchUserException ex){
         return ResponseEntity.status(ex.getErrorCode().getStatus()).body(ResponseDto.builder().result(false).message("아이디 혹은 비밀번호가 틀렸습니다.").build());
     }
+
+    //카페
+    @ExceptionHandler(AlreadyExistCafeException.class)
+    public ResponseEntity<?> handleAlreadyExistCafeException(AlreadyExistCafeException ex){
+        return ResponseEntity.status(ex.getErrorCode().getStatus()).body(ResponseDto.builder().result(false).message("이미 존재하는 카페 페이지 입니다.").build());
+    }
+
 
     //토큰
     @ExceptionHandler(NotExistTokenException.class)
