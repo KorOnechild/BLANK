@@ -20,4 +20,9 @@ public class Like {
     @ManyToOne
     @JoinColumn(name = "postid")
     private Post post;
+
+    public Like(User user, Post post) {
+        this.user = user;
+        this.post = post;
+    }
 }
