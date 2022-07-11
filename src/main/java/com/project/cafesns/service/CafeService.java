@@ -159,4 +159,20 @@ public class CafeService {
                 .build());
 
     }
+
+    // 사장님 카페 메뉴 등록
+    public ResponseEntity<?> registMenu(HttpServletRequest httpServletRequest, RegistMenuRequestDto registMenuRequestDto) {
+        Long userId = userInfoInJwt.getUserId_InJWT(httpServletRequest.getHeader("Authorization"));
+        User user = userRepository.findByUserId(userId);
+        Long cafeId = cafeRepository.findByUser(user).getId();
+        Cafe cafe = cafeRepository.findByCafeId(cafeId);
+
+        Menu menu = Menu.builder().registMenuRequestDto(registMenuRequestDto).cafe(cafe).build();
+
+        menuRepository.save(menu);
+        return ResponseEntity.ok().body(ResponseDto.builder().
+                result(true).
+                message("메뉴가 정상적으로 등록되었습니다.").
+                build());
+    }
 }

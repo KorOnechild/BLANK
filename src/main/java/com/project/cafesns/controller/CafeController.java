@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,6 +52,12 @@ public class CafeController {
     @PatchMapping("/api/owner/info")
     public ResponseEntity<?> modifyCafe(ModifyCafeRequestDto modifyCafeRequestDto){
         return cafeService.modifyCafe(modifyCafeRequestDto);
+    }
+
+    // 카페 메뉴 등록
+    @PostMapping("/api/owner/menus")
+    public ResponseEntity<?> registMenu(HttpServletRequest httpServletRequest,RegistMenuRequestDto registMenuRequestDto){
+        return cafeService.registMenu(httpServletRequest,registMenuRequestDto);
     }
 }
 
