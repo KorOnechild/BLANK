@@ -36,6 +36,10 @@ public class Post {
     private Cafe cafe;
 
     @OneToMany(mappedBy = "post")
+    @JsonManagedReference(value = "image-post-FK")
+    private List<Image> imageList;
+
+    @OneToMany(mappedBy = "post")
     @JsonManagedReference(value = "hashtag-post-FK")
     private List<Hashtag> hashtagList;
 
