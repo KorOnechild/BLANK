@@ -1,4 +1,4 @@
-package com.project.cafesns.error.exceptions;
+package com.project.cafesns.error.exceptions.user;
 
 import com.project.cafesns.error.ErrorCode;
 import lombok.Getter;

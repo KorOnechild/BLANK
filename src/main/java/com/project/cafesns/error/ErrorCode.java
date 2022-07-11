@@ -8,11 +8,10 @@ import lombok.Getter;
 @Getter
 public enum ErrorCode {
 
+    //사용자
     EMAIL_DUBP_EXCEPTION(400),
-
     NICKNAME_DUBP_EXCEPTION(400),
-
-    NOTMATCH_KEY_EXCEPTION(400);
+    NOTMATCH_USER_EXCEPTION(400);
 
     private final int status;
 }
