@@ -2,6 +2,8 @@ package com.project.cafesns.model.entitiy;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.project.cafesns.model.dto.cafe.ModifyCafeRequestDto;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -61,4 +63,17 @@ public class Cafe {
     @OneToMany(mappedBy = "cafe")
     @JsonManagedReference(value = "cafe-post-FK")
     List<Post> postList;
+
+    @Builder
+    public Cafe(ModifyCafeRequestDto modifyCafeRequestDto) {
+        this.address = modifyCafeRequestDto.getAddress();
+        this.addressdetail = modifyCafeRequestDto.getAddressdetail();
+        this.zonenum = modifyCafeRequestDto.getZonenum();
+        this.intro = modifyCafeRequestDto.getIntro();
+        this.notice = modifyCafeRequestDto.getNotice();
+        this.opentime = modifyCafeRequestDto.getOpentime();
+        this.closetime = modifyCafeRequestDto.getClosetime();
+        this.latitude = modifyCafeRequestDto.getLatitude();
+        this.longitude = modifyCafeRequestDto.getLongitude();
+    }
 }

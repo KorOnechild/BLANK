@@ -1,10 +1,7 @@
 package com.project.cafesns.service;
 
 import com.project.cafesns.model.dto.ResponseDto;
-import com.project.cafesns.model.dto.cafe.CafeBannerDto;
-import com.project.cafesns.model.dto.cafe.CafeDetailDto;
-import com.project.cafesns.model.dto.cafe.CafeHomeDto;
-import com.project.cafesns.model.dto.cafe.CafeMenusDto;
+import com.project.cafesns.model.dto.cafe.*;
 import com.project.cafesns.model.entitiy.*;
 import com.project.cafesns.repository.*;
 import lombok.RequiredArgsConstructor;

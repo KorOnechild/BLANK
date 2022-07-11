@@ -1,6 +1,7 @@
 package com.project.cafesns.controller;
 
 
+import com.project.cafesns.model.dto.cafe.ModifyCafeRequestDto;
 import com.project.cafesns.service.CafeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
