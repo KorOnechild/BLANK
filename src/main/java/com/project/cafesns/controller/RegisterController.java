@@ -30,4 +30,9 @@ public class RegisterController {
         return registerService.applyCafe(httpServletRequest,registerRequestDto);
     }
 
+    // 카페 등록 (사장님)
+    @PostMapping("/api/owner/regist-cafe")
+    public ResponseEntity<?> registCafe(HttpServletRequest httpServletRequest,@RequestBody RegisterRequestDto registerRequestDto) {
+        return registerService.registCafe(httpServletRequest,registerRequestDto);
+    }
 }

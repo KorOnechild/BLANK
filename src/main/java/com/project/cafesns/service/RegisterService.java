@@ -46,4 +46,23 @@ public class RegisterService {
                     .build());
         }
     }
+
+    // 사장님일 때 신청
+    public ResponseEntity<?> registCafe(HttpServletRequest httpServletRequest, RegisterRequestDto registerRequestDto) {
+        Long userId = userInfoInJwt.getUserId_InJWT(httpServletRequest.getHeader("Authorization"));
+        User user = userRepository.findByUserId(userId).orElseThrow(
+                () -> new NoExistUserException(ErrorCode.NO_EXIST_USER_EXCEPTION)
+        );
+        Cafe cafe = Register.builder().registerRequestDto(registerRequestDto).user(user).build();
+        if(cafeRepository.existsByCafeByAddressAndCafename(registerRequestDto.getAddress(), registerRequestDto.getCafename())){
+            throw new AlreadyExistCafenameAndAddressException(ErrorCode.ALREADY_EXIST_CAFE_EXCEPTION);
+        }else{
+            cafeRepository.save(cafe); //register Entity에 userId 넣는가! 아니면 저장을 어떻게 같이 하는지
+            return ResponseEntity.ok().body(ResponseDto.builder()
+                    .result(true)
+                    .message("카페 등록 신청이 완료되었습니다.")
+                    .build());
+        }
+    }
+
 }
