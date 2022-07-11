@@ -39,7 +39,7 @@ public class CafeService {
             allstar += postList.get(i).getStar();
         }
         int avgstar = allstar / postList.size();
-        Long postCnt = Long.valueOf(postRepository.findByCafeId(cafeId).size());
+        Long postCnt = Long.valueOf(postRepository.findAllByCafeId(cafeId).size());
         String opentime = cafeRepository.findByCafeId(cafeId).getOpentime();
         String closetime = cafeRepository.findByCafeId(cafeId).getClosetime();
 
