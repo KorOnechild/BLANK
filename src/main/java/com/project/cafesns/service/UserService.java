@@ -46,7 +46,8 @@ public class UserService {
     private final UserRepository userRepository;
 
     //회원가입
-    //TODO : 회원가입시 프로필, 로고 이미지 받는거 처리 따로
+    //TODO : 회원가입시 프로필, 로고 이미지 받는거 처리 따로(해결)
+    //TODO : 별로 효율적인 코드같지 않아서 수정할것
     public ResponseEntity<?> signup(MultipartFile file, SignupRequestDto signupRequestDto) throws NoSuchAlgorithmException {
 
         if(userValidator.checkDubpEmail(signupRequestDto.getEmail())){
@@ -55,17 +56,30 @@ public class UserService {
             throw new NicknameDubplicateException(ErrorCode.NICKNAME_DUBP_EXCEPTION);
         }else{
             String encodedPw = SHA256.encrypt(signupRequestDto.getPassword());
-            if(signupRequestDto.getRole().equals("user")){
-                String profileimg = fileUploadService.uploadImage(file, "profile");
-                User user = User.builder().signupRequestDto(signupRequestDto).encodedPw(encodedPw).profileimg(profileimg).logoimg("").build();
-                userRepository.save(user);
-                return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("회원가입에 성공했습니다.").build());
+            if(file.isEmpty()){
+                if(signupRequestDto.getRole().equals("user")){
+                    User user = User.builder().signupRequestDto(signupRequestDto).encodedPw(encodedPw).build();
+                    userRepository.save(user);
+                    return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("회원가입에 성공했습니다.").build());
+                }else{
+                    User user = User.builder().signupRequestDto(signupRequestDto).encodedPw(encodedPw).build();
+                    userRepository.save(user);
+                    return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("회원가입에 성공했습니다.").build());
+                }
             }else{
-                String logoimg = fileUploadService.uploadImage(file, "logo");
-                User user = User.builder().signupRequestDto(signupRequestDto).encodedPw(encodedPw).profileimg("").logoimg(logoimg).build();
-                userRepository.save(user);
-                return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("회원가입에 성공했습니다.").build());
+                if(signupRequestDto.getRole().equals("user")){
+                    String profileimg = fileUploadService.uploadImage(file, "profile");
+                    User user = User.builder().signupRequestDto(signupRequestDto).encodedPw(encodedPw).profileimg(profileimg).logoimg("").build();
+                    userRepository.save(user);
+                    return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("회원가입에 성공했습니다.").build());
+                }else{
+                    String logoimg = fileUploadService.uploadImage(file, "logo");
+                    User user = User.builder().signupRequestDto(signupRequestDto).encodedPw(encodedPw).profileimg("").logoimg(logoimg).build();
+                    userRepository.save(user);
+                    return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("회원가입에 성공했습니다.").build());
+                }
             }
+
         }
     }
 
