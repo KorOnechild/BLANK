@@ -27,7 +27,7 @@ public class PostController {
         postService.addPost(cafeId,postRequestDto,userId);
         return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("게시글이 작성되었습니다.").build());
     }
-    // 게시글 수정
+
     @PatchMapping("/posts/{postId}")
     public ResponseEntity<?> updatePost(@PathVariable Long postId, @RequestBody PostPatchDto postPatchDto, HttpServletRequest httpRequest){
         userInfoInJwt.getUserId_InJWT(httpRequest.getHeaders("Authorization"));
@@ -35,5 +35,12 @@ public class PostController {
         postService.updatePost(postId,postPatchDto,userId);
         return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("게시글이 수정에 성공했습니다.").build());
     }
-    
+
+    @DeleteMapping("/posts/{postId}")
+    public ResponseEntity<?>  deletePost(@PathVariable Long postId,HttpServletRequest httpRequest){
+        userInfoInJwt.getUserId_InJWT(httpRequest.getHeaders("Authorization"));
+        Long userId = userInfoInJwt.getId;
+        postService.deletePost(postId,userId);
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("게시글이 삭제되었습니다.").build());
+    }
 }
