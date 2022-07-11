@@ -2,10 +2,16 @@ package com.project.cafesns.service;
 
 import com.project.cafesns.encoder.SHA256;
 import com.project.cafesns.error.ErrorCode;
-import com.project.cafesns.error.exceptions.EmailDupblicateException;
-import com.project.cafesns.error.exceptions.NicknameDubplicateException;
+import com.project.cafesns.error.exceptions.user.EmailDupblicateException;
+import com.project.cafesns.error.exceptions.user.NicknameDubplicateException;
+import com.project.cafesns.error.exceptions.user.NotmatchUserException;
+import com.project.cafesns.jwt.JwtTokenProvider;
+import com.project.cafesns.jwt.UserInfoInJwt;
 import com.project.cafesns.model.dto.ResponseDto;
+import com.project.cafesns.model.dto.user.SigninDto;
+import com.project.cafesns.model.dto.user.SigninReqeustDto;
 import com.project.cafesns.model.dto.user.SignupRequestDto;
+import com.project.cafesns.model.entitiy.RefreshToken;
 import com.project.cafesns.model.entitiy.User;
 import com.project.cafesns.repository.RefreshTokenRepository;
 import com.project.cafesns.repository.UserRepository;
@@ -27,6 +33,9 @@ public class UserService {
     //validator
     private final UserValidator userValidator;
 
+    //JWT
+    private final UserInfoInJwt userInfoInJwt;
+    private final JwtTokenProvider jwtTokenProvider;
 
     //Repository
     private final RefreshTokenRepository refreshTokenRepository;
@@ -54,5 +63,34 @@ public class UserService {
                 return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("회원가입에 성공했습니다.").build());
             }
         }
+    }
+
+    //로그인
+    //TODO : 이후에 아이디, 비밀번호 틀림 예외처리 따로 해줘야 할지도
+    public ResponseEntity<?> signin(SigninReqeustDto signinReqeustDto) throws NoSuchAlgorithmException, RuntimeException {
+        String email = signinReqeustDto.getEmail();
+        String encodedPW = SHA256.encrypt(signinReqeustDto.getPassword());
+
+        if(!userRepository.existsByPassword(encodedPW) || !userRepository.existsByEmail(email)){
+            throw new NotmatchUserException(ErrorCode.NOTMATCH_USER_EXCEPTION);
+        }
+
+        User user = userRepository.findByEmail(email).orElseThrow(
+                ()-> new NullPointerException("사용자 정보가 없습니다.")
+        );
+
+        String accessToken = jwtTokenProvider.createAccessToken(user);
+        RefreshToken refreshToken = jwtTokenProvider.createRefreshToken(user);
+
+        refreshTokenRepository.save(refreshToken);
+
+        SigninDto signinDto = SigninDto.builder()
+                .nickname(user.getNickname())
+                .role(user.getRole())
+                .accessToken(accessToken)
+                .refreshToken(refreshToken.getRefreshtoken())
+                .build();
+
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("로그인 되었습니다.").data(signinDto).build());
     }
 }
