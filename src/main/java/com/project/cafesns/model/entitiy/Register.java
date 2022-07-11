@@ -1,5 +1,7 @@
 package com.project.cafesns.model.entitiy;
 
+import com.project.cafesns.model.dto.register.RegisterRequestDto;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Register {
+public class Register extends Cafe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,8 +28,29 @@ public class Register {
     private String zonenum;
 
     @Column(nullable = false)
+    private String latitude;
+
+    @Column(nullable = false)
+    private String longitude;
+
+    @Column(nullable = false)
     private Boolean permit;
 
     @Column
     private Long cafeid;
+
+    @ManyToOne
+    @JoinColumn(name = "userid")
+    private User user;
+
+    @Builder
+    public Register(RegisterRequestDto registerRequestDto, User user) {
+        this.cafename = registerRequestDto.getCafename();
+        this.address = registerRequestDto.getAddress();
+        this.addressdetail = registerRequestDto.getAddressdetail();
+        this.zonenum = registerRequestDto.getZonenum();
+        this.latitude = registerRequestDto.getLatitude();
+        this.longitude = registerRequestDto.getLongitude();
+        this.user = user;
+    }
 }
