@@ -3,11 +3,13 @@ package com.project.cafesns.service;
 import com.project.cafesns.model.dto.cafe.CafeResponseDto;
 import com.project.cafesns.model.dto.register.RegisterResponseDto;
 import com.project.cafesns.model.entitiy.Cafe;
+import com.project.cafesns.model.entitiy.Image;
+import com.project.cafesns.model.entitiy.Post;
 import com.project.cafesns.model.entitiy.Register;
-import com.project.cafesns.repository.CafeRepository;
-import com.project.cafesns.repository.RegisterRepository;
+import com.project.cafesns.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,12 @@ public class RegisterService {
     private final RegisterRepository registerRepository;
 
     private final CafeRepository cafeRepository;
+
+    private final HashtagRepository hashtagRepository;
+
+    private final ImageRepository imageRepository;
+
+    private final PostRepository postRepository;
 
     //승인목록조회
     public List<RegisterResponseDto> readok(String userRole) {
@@ -69,9 +77,19 @@ public class RegisterService {
         cafeRepository.save(cafe);}
     }
 
+    @Transactional
     // 관리자승인 카페 삭제
     public void deletecafe(Long cafeId, String userRole) {
         adminCheck(userRole);
+        Cafe cafe = cafeRepository.findById(cafeId).orElseThrow( () -> new NullPointerException("존재하지않는 카페입니다"));
+        List<Post> posts = postRepository.findAllByCafe(cafe);
+        for(Post post: posts) {
+            hashtagRepository.deleteAllByPost(post);
+            List<Image> imageList = imageRepository.findAllByPost(post);
+            deleteImage(imageList);
+            imageRepository.deleteAllByPost(post);
+            postRepository.delete(post);
+        }
         cafeRepository.deleteById(cafeId);
     }
 
@@ -93,4 +111,14 @@ public class RegisterService {
             throw //관리자 권한 엑셉션
         }
     }
+    // s3이미지 삭제 로직
+    public void deleteImage(List<Image> imageList){
+        for(Image image : imageList){
+            int length = image.getImg().length();
+            String filePath = image.getImg().substring(47,length); //
+            fileUploadService.deleteFile(filePath);
+        }
+        System.out.printf("이미지 삭제가 완료되었습니다.");
+    }
+}
 }
