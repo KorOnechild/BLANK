@@ -193,4 +193,14 @@ public class CafeService {
                         .build())
                 .build());
     }
+
+    // 사장님 카페 메뉴 삭제
+    public ResponseEntity<?> deleteMenu(Long menuId) {
+        Menu menu = menuRepository.findByMenuId(menuId);
+        menuRepository.delete(menu);
+        return ResponseEntity.ok().body(ResponseDto.builder()
+                .result(true)
+                .message("메뉴가 정상적으로 삭제되었습니다.")
+                .build());
+    }
 }

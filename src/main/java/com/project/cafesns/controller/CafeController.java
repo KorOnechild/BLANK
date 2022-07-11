@@ -6,10 +6,7 @@ import com.project.cafesns.model.dto.cafe.RegistMenuRequestDto;
 import com.project.cafesns.service.CafeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -65,6 +62,12 @@ public class CafeController {
     @PatchMapping("/api/owner/menus/{menuId}")
     public ResponseEntity<?> modifyCafeMenu(Long menuId){
         return cafeService.modifyMenu(menuId);
+    }
+
+    // 카페 메뉴 삭제
+    @DeleteMapping("/api/owner/menus/{menuId}")
+    public ResponseEntity<?> deleteCafeMenu(Long menuId){
+        return cafeService.deleteMenu(menuId);
     }
 
 }
