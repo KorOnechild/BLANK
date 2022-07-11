@@ -65,4 +65,17 @@ public class RegisterService {
         }
     }
 
+    // 관리자 미처리 목록 조회
+    public ResponseEntity<?> getApplyList() {
+        List<Register> registerList = registerRepository.findAll();
+        return ResponseEntity.ok().body(ResponseDto.builder()
+                .result(true)
+                .message("미처리 목록 조회에 성공했습니다.")
+                .data(ApplyListResponseDto.builder()
+                        .registerList(registerList)
+                        .build())
+                .build());
+
+    }
+
 }

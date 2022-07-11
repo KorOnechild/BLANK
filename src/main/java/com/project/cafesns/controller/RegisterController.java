@@ -2,6 +2,7 @@ package com.project.cafesns.controller;
 
 
 import com.project.cafesns.error.ErrorCode;
+import com.project.cafesns.model.dto.ResponseDto;
 import com.project.cafesns.model.dto.register.RegisterRequestDto;
 import com.project.cafesns.model.entitiy.Register;
 import com.project.cafesns.model.entitiy.User;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -35,4 +37,11 @@ public class RegisterController {
     public ResponseEntity<?> registCafe(HttpServletRequest httpServletRequest,@RequestBody RegisterRequestDto registerRequestDto) {
         return registerService.registCafe(httpServletRequest,registerRequestDto);
     }
+
+    // 관리자 미처리 목록 조회
+    @GetMapping("/api/registers")
+    public ResponseEntity<?> getApplyList(){
+        return registerService.getApplyList();
+    }
+
 }
