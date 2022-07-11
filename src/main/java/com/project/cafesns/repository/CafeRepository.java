@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface CafeRepository extends JpaRepository<Cafe, Long> {
     List<Cafe> findAllByAddressContaining(String region);
+
+    List<Cafe> findAllByCafename(String cafename);
 }
