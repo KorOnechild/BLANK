@@ -3,7 +3,6 @@ package com.project.cafesns.controller;
 import com.project.cafesns.model.dto.ResponseDto;
 import com.project.cafesns.model.dto.post.PostPatchDto;
 import com.project.cafesns.model.dto.post.PostRequestDto;
-import com.project.cafesns.model.entitiy.Post;
 import com.project.cafesns.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,14 +20,14 @@ public class PostController {
     //게시글 작성
     @PostMapping("/{cafeId}/posts")
     public ResponseEntity<?> addPost(@PathVariable Long cafeId,
-                        @RequestBody PostRequestDto postRequestDto,
-                        HttpServletRequest httpRequest) throws NoSuchAlgorithmException {
+                                     @RequestBody PostRequestDto postRequestDto,
+                                     HttpServletRequest httpRequest) throws NoSuchAlgorithmException {
         userInfoInJwt.getUserId_InJWT(httpRequest.getHeaders("Authorization"));
         Long userId = userInfoInJwt.getId;
         postService.addPost(cafeId,postRequestDto,userId);
         return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("게시글이 작성되었습니다.").build());
     }
-
+    // 게시글 수정
     @PatchMapping("/posts/{postId}")
     public ResponseEntity<?> updatePost(@PathVariable Long postId, @RequestBody PostPatchDto postPatchDto, HttpServletRequest httpRequest){
         userInfoInJwt.getUserId_InJWT(httpRequest.getHeaders("Authorization"));
@@ -36,12 +35,5 @@ public class PostController {
         postService.updatePost(postId,postPatchDto,userId);
         return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("게시글이 수정에 성공했습니다.").build());
     }
-
-    @DeleteMapping("/posts/{postId}")
-    public ResponseEntity<?>  deletePost(@PathVariable Long postId,HttpServletRequest httpRequest){
-        userInfoInJwt.getUserId_InJWT(httpRequest.getHeaders("Authorization"));
-        Long userId = userInfoInJwt.getId;
-        postService.deletePost(postId,userId);
-        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("게시글이 삭제되었습니다.").build());
-    }
+    
 }
