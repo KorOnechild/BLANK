@@ -2,6 +2,7 @@ package com.project.cafesns.controller;
 
 
 import com.project.cafesns.model.dto.cafe.ModifyCafeRequestDto;
+import com.project.cafesns.model.dto.cafe.RegistMenuRequestDto;
 import com.project.cafesns.service.CafeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -56,7 +57,7 @@ public class CafeController {
 
     // 카페 메뉴 등록
     @PostMapping("/api/owner/menus")
-    public ResponseEntity<?> registMenu(HttpServletRequest httpServletRequest,RegistMenuRequestDto registMenuRequestDto){
+    public ResponseEntity<?> registMenu(HttpServletRequest httpServletRequest, RegistMenuRequestDto registMenuRequestDto){
         return cafeService.registMenu(httpServletRequest,registMenuRequestDto);
     }
 }
