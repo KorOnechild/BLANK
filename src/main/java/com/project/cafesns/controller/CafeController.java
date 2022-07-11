@@ -60,5 +60,12 @@ public class CafeController {
     public ResponseEntity<?> registMenu(HttpServletRequest httpServletRequest, RegistMenuRequestDto registMenuRequestDto){
         return cafeService.registMenu(httpServletRequest,registMenuRequestDto);
     }
+
+    // 카페 메뉴 수정
+    @PatchMapping("/api/owner/menus/{menuId}")
+    public ResponseEntity<?> modifyCafeMenu(Long menuId){
+        return cafeService.modifyMenu(menuId);
+    }
+
 }
 

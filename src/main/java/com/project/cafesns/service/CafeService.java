@@ -175,4 +175,22 @@ public class CafeService {
                 message("메뉴가 정상적으로 등록되었습니다.").
                 build());
     }
+
+    // 사장님 카페 메뉴 수정
+    public ResponseEntity<?> modifyMenu(Long menuId) {
+        String category = menuRepository.findByMenuId(menuId).getCategory();
+        String menuname = menuRepository.findByMenuId(menuId).getMenuname();
+        String menuimg = menuRepository.findByMenuId(menuId).getMenuimg();
+        int menuprice = menuRepository.findByMenuId(menuId).getMenuprice();
+
+        return ResponseEntity.ok().body(ResponseDto.builder()
+                .result(true)
+                .message("홈 수정에 성공했습니다").data(ModifyMenuDto.builder()
+                        .category(category)
+                        .menuname(menuname)
+                        .menuimg(menuimg)
+                        .menuprice(menuprice)
+                        .build())
+                .build());
+    }
 }
