@@ -38,3 +38,6 @@ out/
 
 ### aws ###
 src/main/resources/application-credentials.yml
+
+### application.properties ###
+src/main/resources/application.properties
