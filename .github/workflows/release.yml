@@ -1,1 +1,60 @@
+on:
+  push:
+    branches:
+      - release
 
+name: Deploy String boot to Amazon EC2
+
+jobs:
+  deploy:
+    name: DEPLOY
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      
+      - name: make application.properties
+        run: |
+          cd ./src/main/resources
+          touch ./application.properties
+          echo "${{ secrets.PROPERTIES }}" > ./application.properties
+        shell: bash
+        
+      - name: make application-credentials.properties
+        run: |
+          cd ./src/main/resources
+          touch ./application-credentials.yml
+          echo "${{ secrets.PROPERTIES_CREDENTIALS }}" > ./application-credentials.yml
+        shell: bash
+      
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+        shell: bash
+
+      - name: Build with Gradle
+        run: ./gradlew build
+        shell: bash
+
+      - name: Make zip file
+        run: zip -qq -r ./$GITHUB_SHA.zip .
+        shell: bash
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+      - name: Upload to S3
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://s3cafe/$GITHUB_SHA.zip
+
+      - name: Code Deploy
+        run: aws deploy create-deployment --application-name testapp 
+          --deployment-config-name CodeDeployDefault.AllAtOnce 
+          --deployment-group-name final --s3-location bucket=s3cafe,bundleType=zip,key=$GITHUB_SHA.zip
