@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - main
+      - release
 
 name: Deploy String boot to Amazon EC2
 
@@ -18,7 +18,21 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-
+      
+      - name: make application.properties
+        run: |
+          cd ./src/main/resources
+          touch ./application.properties
+          echo "${{ secrets.PROPERTIES }}" > ./application.properties
+        shell: bash
+        
+      - name: make application-credentials.properties
+        run: |
+          cd ./src/main/resources
+          touch ./application-credentials.yml
+          echo "${{ secrets.PROPERTIES_CREDENTIALS }}" > ./application-credentials.yml
+        shell: bash
+      
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
         shell: bash
