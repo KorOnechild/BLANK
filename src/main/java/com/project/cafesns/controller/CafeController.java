@@ -24,5 +24,11 @@ public class CafeController {
     public ResponseEntity<?> getHome(Long cafeId){
         return cafeService.getHome(cafeId);
     }
+
+    // 카페 상세 페이지 메뉴 조회
+    @GetMapping("/api/cafes/{cafeId}/menus")
+    public ResponseEntity<?> getMenus(Long cafeId){
+        return cafeService.getMenus(cafeId);
+    }
 }
 

@@ -4,6 +4,7 @@ import com.project.cafesns.model.dto.ResponseDto;
 import com.project.cafesns.model.dto.cafe.CafeBannerDto;
 import com.project.cafesns.model.dto.cafe.CafeHomeDto;
 import com.project.cafesns.model.entitiy.Image;
+import com.project.cafesns.model.entitiy.Menu;
 import com.project.cafesns.model.entitiy.Post;
 import com.project.cafesns.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -88,4 +89,16 @@ public class CafeService {
                 .build());
     }
 
+    // 카페 상세 페이지 메뉴 조회
+    public ResponseEntity<?> getMenus(Long cafeId) {
+        List<Menu> menuList = cafeRepository.findAllByCafeId(cafeId);
+        return ResponseEntity.ok().body(ResponseDto.builder()
+                .result(true)
+                .message("메뉴 조회에 성공했습니다.")
+                .data(CafeMenusDto.builder()
+                        .menuList(menuList)
+                        .build())
+                .build());
+
+    }
 }
