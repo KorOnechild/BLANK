@@ -2,6 +2,7 @@ package com.project.cafesns.service;
 
 import com.project.cafesns.model.dto.ResponseDto;
 import com.project.cafesns.model.dto.cafe.CafeDto;
+import com.project.cafesns.model.dto.search.SearchRequestDto;
 import com.project.cafesns.model.entitiy.Cafe;
 import com.project.cafesns.repository.CafeRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +33,14 @@ public class CafeService {
                             .build()
             );
         }
-
         return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("카페 조회에 성공했습니다.").data(cafeDtos).build());
     }
 
+
+    //검색
+    public ResponseEntity<?> search(SearchRequestDto searchRequestDto){
+        if(searchRequestDto.getKeyword().startsWith("#")){
+            cafeRepository.fin
+        }
+    }
 }
