@@ -3,6 +3,8 @@ package com.project.cafesns.model.entitiy;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.cafesns.model.dto.register.RegisterOwnerRequestDto;
+import com.project.cafesns.model.dto.cafe.ModifyCafeRequestDto;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,7 +39,7 @@ public class Cafe {
     private String notice;
 
     @Column
-    private String delivery;
+    private Boolean delivery;
 
     @Column
     private String opentime;
@@ -64,7 +66,6 @@ public class Cafe {
     @JsonManagedReference(value = "cafe-post-FK")
     List<Post> postList;
 
-
     @Builder
     public Cafe(RegisterOwnerRequestDto registerOwnerRequestDto, User user){
         this.cafename = user.getBusinessname();
@@ -83,6 +84,19 @@ public class Cafe {
         this.zonenum = register.getZonenum();
         this.latitude =register.getLatitude();
         this.longitude = register.getLongitude();
+    }
+
+    public void changeCafe(ModifyCafeRequestDto modifyCafeRequestDto){
+        this.intro = modifyCafeRequestDto.getIntro();
+        this.notice = modifyCafeRequestDto.getNotice();
+        this.address = modifyCafeRequestDto.getAddress();
+        this.addressdetail = modifyCafeRequestDto.getAddressdetail();
+        this.zonenum = modifyCafeRequestDto.getZonenum();
+        this.latitude = modifyCafeRequestDto.getLatitude();
+        this.longitude = modifyCafeRequestDto.getLongitude();
+        this.opentime = modifyCafeRequestDto.getOpentime();
+        this.closetime = modifyCafeRequestDto.getClosetime();
+        this.delivery = modifyCafeRequestDto.getDelivery();
     }
 
     public void getOwnership(User user) {

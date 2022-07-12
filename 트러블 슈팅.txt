@@ -3,3 +3,15 @@
 서버 배포 시 application.properties파일에 db정보가 있어서 gitignore파일에 포함시켰는데 이 때문에 cicd배포시 파일을 못읽어서 에러 발생
 
 -게시글 작성시 사진 2개이상 안넣으면 처리 안되서 이부분 수정 필요
+
+ Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.http.converter.HttpMessageConversionException: Type definition error: [simple type, class com.project.cafesns.model.dto.register.ApplyListResponseDto]; nested exception is com.fasterxml.jackson.databind.exc.InvalidDefinitionException: No serializer found for class com.project.cafesns.model.dto.register.ApplyListResponseDto and no properties discovered to create BeanSerializer (to avoid exception, disable SerializationFeature.FAIL_ON_EMPTY_BEANS) (through reference chain: com.project.cafesns.model.dto.ResponseDto["data"])] with root cause
+com.fasterxml.jackson.databind.exc.InvalidDefinitionException
+-> DTO에 @Getter 넣어줄것
+
+
+2022-07-12 13:05:22.161 ERROR 27001 --- [nio-8080-exec-2] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.dao.InvalidDataAccessApiUsageException: Entity must not be null!; nested exception is java.lang.IllegalArgumentException: Entity must not be null!] with root cause
+
+Boolean은 게터 사용가능/ boolean은 사용 불가능
+
+com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Cannot construct instance of `com.project.cafesns.model.dto.cafe.ModifyMenuDto` (no Creators, like default constructor, exist): cannot deserialize from Object value (no delegate- or property-based Creator)
+-> RequestDto에 @Builder를 사용해서 발생한 오류
