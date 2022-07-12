@@ -35,7 +35,15 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("api/comments/{commentId}") //댓글 수정 삭제
                 .addPathPatterns("/api/{postId}/like") //좋아요 여부 확인, 좋아요 동작 수행
                 //사장유저
-                .addPathPatterns("/api/owner/regist-cafe") //카페 등록
+                .addPathPatterns(
+                        "/api/owner/regist-cafe", //카페 등록
+                        "/api/owner/info", // 사장님 카페조회
+                        "/api/owner/menus", // 사장님 카페 메뉴 조회
+                        "/api/owner/info", // 카페 홈 정보 수정
+                        "/api/owner/menus", // 카페 메뉴 등록
+                        "/api/owner/menus/{menuId}", // 카페 메뉴 수정
+                        "/api/owner/menus/{menuId}" //카페 메뉴 삭제
+                )
                 //관리자
                 .addPathPatterns("/api/registers/permission") //승인 목록 조회
                 .addPathPatterns("/api/registeredcafe") //등록된 모든 카페 조회
