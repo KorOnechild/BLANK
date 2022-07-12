@@ -48,8 +48,8 @@ public class CafeController {
 
     // 카페 홈 정보 수정
     @PatchMapping("/api/owner/info")
-    public ResponseEntity<?> modifyCafe(ModifyCafeRequestDto modifyCafeRequestDto){
-        return cafeService.modifyCafe(modifyCafeRequestDto);
+    public ResponseEntity<?> modifyCafe(HttpServletRequest httpServletRequest, ModifyCafeRequestDto modifyCafeRequestDto){
+        return cafeService.modifyCafe(httpServletRequest, modifyCafeRequestDto);
     }
 
     // 카페 메뉴 등록
@@ -60,14 +60,14 @@ public class CafeController {
 
     // 카페 메뉴 수정
     @PatchMapping("/api/owner/menus/{menuId}")
-    public ResponseEntity<?> modifyCafeMenu(Long menuId){
-        return cafeService.modifyMenu(menuId);
+    public ResponseEntity<?> modifyCafeMenu(HttpServletRequest httpServletRequest, Long menuId){
+        return cafeService.modifyMenu(httpServletRequest, menuId);
     }
 
     // 카페 메뉴 삭제
     @DeleteMapping("/api/owner/menus/{menuId}")
-    public ResponseEntity<?> deleteCafeMenu(Long menuId){
-        return cafeService.deleteMenu(menuId);
+    public ResponseEntity<?> deleteCafeMenu(HttpServletRequest httpServletRequest, Long menuId){
+        return cafeService.deleteMenu(httpServletRequest, menuId);
     }
 
 }
