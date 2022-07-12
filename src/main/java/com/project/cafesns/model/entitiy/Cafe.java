@@ -64,6 +64,7 @@ public class Cafe {
     @JsonManagedReference(value = "cafe-post-FK")
     List<Post> postList;
 
+
     @Builder
     public Cafe(RegisterOwnerRequestDto registerOwnerRequestDto, User user){
         this.cafename = user.getBusinessname();
@@ -75,7 +76,16 @@ public class Cafe {
         this.user = user;
     }
 
-    public void getOwnership(User user){
+    public Cafe(Register register){
+        this.cafename = register.getCafename();
+        this.address = register.getAddress();
+        this.addressdetail = register.getAddressdetail();
+        this.zonenum = register.getZonenum();
+        this.latitude =register.getLatitude();
+        this.longitude = register.getLongitude();
+    }
+
+    public void getOwnership(User user) {
         this.user = user;
     }
 }

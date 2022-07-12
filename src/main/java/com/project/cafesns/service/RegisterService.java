@@ -5,11 +5,8 @@ import com.project.cafesns.error.exceptions.allow.NotAllowedException;
 import com.project.cafesns.error.exceptions.cafe.AlreadyExistCafeException;
 import com.project.cafesns.error.exceptions.register.AlreadyExistRegistedException;
 import com.project.cafesns.error.exceptions.user.NotExistUserException;
-import com.project.cafesns.error.exceptions.user.NotmatchUserException;
 import com.project.cafesns.jwt.UserInfoInJwt;
 import com.project.cafesns.model.dto.ResponseDto;
-import com.project.cafesns.model.dto.register.ApplyListResponseDto;
-import com.project.cafesns.model.dto.register.RegistListDto;
 import com.project.cafesns.model.dto.register.RegisterOwnerRequestDto;
 import com.project.cafesns.model.dto.register.RegisterRequestDto;
 import com.project.cafesns.model.entitiy.Cafe;
@@ -23,8 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -86,43 +81,4 @@ public class RegisterService {
 
 
     }
-
-    // 관리자 미처리 목록 조회
-    public ResponseEntity<?> getApplyList(HttpServletRequest httpServletRequest) {
-        userInfoInJwt.getUserInfo_InJwt(httpServletRequest.getHeader("Authorization"));
-
-        if(userInfoInJwt.getRole().equals("admin")){
-            List<Register> registerList = registerRepository.findAllByPermit(null);
-            return ResponseEntity.ok().body(ResponseDto.builder()
-                    .result(true)
-                    .message("미처리 목록 조회에 성공했습니다.")
-                    .data(ApplyListResponseDto.builder()
-                            .registerList(getRegistListDto(registerList))
-                            .build())
-                    .build());
-        }else{
-            throw new NotAllowedException(ErrorCode.NOT_ALLOWED_EXCEPTION);
-        }
-    }
-
-
-    //registListDto 생성 함수
-    public List<RegistListDto> getRegistListDto(List<Register> registerList){
-        List<RegistListDto> registListDtos = new ArrayList<>();
-
-        for(Register register : registerList){
-            registListDtos.add(
-                    RegistListDto.builder()
-                            .registerId(register.getId())
-                            .cafename(register.getCafename())
-                            .address(register.getAddress())
-                            .addressdetail(register.getAddressdetail())
-                            .zonenum(register.getZonenum())
-                            .permit(register.getPermit())
-                            .build());
-        }
-
-        return registListDtos;
-    }
-
 }

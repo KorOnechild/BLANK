@@ -2,7 +2,6 @@ package com.project.cafesns.service;
 
 import com.project.cafesns.error.ErrorCode;
 import com.project.cafesns.error.exceptions.allow.NotAllowedException;
-import com.project.cafesns.error.exceptions.user.NotmatchUserException;
 import com.project.cafesns.model.dto.post.PostPatchDto;
 import com.project.cafesns.model.dto.post.PostRequestDto;
 import com.project.cafesns.model.entitiy.*;
@@ -70,11 +69,7 @@ public class PostService {
     public void deletePost(Long postId, Long userId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NullPointerException("해당 게시글이 존재하지 않습니다."));
         if(post.getUser().getId().equals(userId)){
-            hashtagRepository.deleteAllByPost(post);
-            List<Image> imageList = imageRepository.findAllByPost(post);
-            deleteImage(imageList);
-            imageRepository.deleteAllByPost(post);
-            postRepository.deleteById(postId);
+            deleteOther(postId, post);
         }
         else {
             throw new NotAllowedException(ErrorCode.NOT_ALLOWED_EXCEPTION);
@@ -87,5 +82,15 @@ public class PostService {
             fileUploadService.deleteFile(filePath);
         }
         System.out.printf("이미지 삭제가 완료되었습니다.");
+    }
+
+    //연관 관계 맺어져 있는 데이터들 삭제하는 함수
+    @Transactional
+    public void deleteOther(Long postId, Post post){
+        hashtagRepository.deleteAllByPost(post);
+        List<Image> imageList = imageRepository.findAllByPost(post);
+        deleteImage(imageList);
+        imageRepository.deleteAllByPost(post);
+        postRepository.deleteById(postId);
     }
 }
