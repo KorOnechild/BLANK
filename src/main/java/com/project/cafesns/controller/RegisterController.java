@@ -3,7 +3,6 @@ package com.project.cafesns.controller;
 
 import com.project.cafesns.model.dto.register.RegisterOwnerRequestDto;
 import com.project.cafesns.model.dto.register.RegisterRequestDto;
-import com.project.cafesns.repository.UserRepository;
 import com.project.cafesns.service.RegisterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

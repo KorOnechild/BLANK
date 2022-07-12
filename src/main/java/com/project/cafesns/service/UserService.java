@@ -85,6 +85,7 @@ public class UserService {
 
     //로그인
     //TODO : 이후에 아이디, 비밀번호 틀림 예외처리 따로 해줘야 할지도
+    @Transactional
     public ResponseEntity<?> signin(SigninReqeustDto signinReqeustDto) throws NoSuchAlgorithmException, RuntimeException {
         String email = signinReqeustDto.getEmail();
         String encodedPW = SHA256.encrypt(signinReqeustDto.getPassword());
@@ -96,6 +97,11 @@ public class UserService {
         User user = userRepository.findByEmail(email).orElseThrow(
                 ()-> new NullPointerException("사용자 정보가 없습니다.")
         );
+        //로그인 시 refresh 토큰 존재하면 삭제
+        if(refreshTokenRepository.existsByUser(user)){
+            RefreshToken refreshTokenCheck = refreshTokenRepository.findByUser(user);
+            refreshTokenRepository.delete(refreshTokenCheck);
+        }
 
         String accessToken = jwtTokenProvider.createAccessToken(user);
         RefreshToken refreshToken = jwtTokenProvider.createRefreshToken(user);
