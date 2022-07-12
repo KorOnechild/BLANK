@@ -5,6 +5,7 @@ import com.project.cafesns.error.exceptions.token.BearerTokenException;
 import com.project.cafesns.error.exceptions.token.NullTokenException;
 import com.project.cafesns.validator.JwtTokenValidator;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.codec.binary.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -24,6 +25,10 @@ public class JwtTokenInterceptor implements HandlerInterceptor {
         String uri = request.getRequestURI();
         String authorization = request.getHeader("Authorization");
 
+        if (StringUtils.equals(request.getMethod(), "OPTIONS")) {
+            System.out.printf("if request options method is options, return true");
+            return true;
+        }
 
         if(authorization == null){
             throw new NullTokenException(ErrorCode.NULL_TOKEN_EXCEPTION);
