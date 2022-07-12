@@ -11,14 +11,14 @@ import org.springframework.web.servlet.config.annotation.*;
 public class WebConfig implements WebMvcConfigurer {
 
     private final JwtTokenInterceptor jwtTokenInterceptor;
-//    @Override
-//    public void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("/**")
-//                .allowedOrigins("*")
-//                .allowedMethods("GET", "POST", "PATCH", "DELETE", "OPTIONS")
-//                .allowedHeaders("Content-Type", "Authorization")
-//                .allowCredentials(true);
-//    }
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("*")
+                .allowedMethods("GET", "POST", "PATCH", "DELETE", "OPTIONS")
+                .allowedHeaders("Content-Type", "Authorization")
+                .allowCredentials(true);
+    }
 
     //토큰을 받아야 하는 서비스 설정
     public void addInterceptors(InterceptorRegistry registry) {
