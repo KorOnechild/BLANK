@@ -25,17 +25,20 @@ public class WebConfig implements WebMvcConfigurer {
         registry
                 .addInterceptor(jwtTokenInterceptor) //로그인이 필요한 서비스 요청시 Interceptor가 그 요청을 가로챔
                 //공통
-                .addPathPatterns("/api/user/signout")
-                .addPathPatterns("/api/auth/refresh")
-                .addPathPatterns("/api/upload")
+                .addPathPatterns("/api/user/signout") //로그아웃
+                .addPathPatterns("/api/auth/refresh") //액세스토큰 재발금
                 //일반유저
-                .addPathPatterns("/{cafeId}/posts")
-                .addPathPatterns("/posts/{postId}")
-                .addPathPatterns("/api/user/regist-cafe")
+                .addPathPatterns("api/posts/{postId}") //게시글 수정, 삭제
+                .addPathPatterns("api/{cafeId}/posts") //게시글 작성
+                .addPathPatterns("/api/user/regist-cafe") //카페 신청
+                .addPathPatterns("api/posts/{postId}/comments") //댓글 작성
+                .addPathPatterns("api/comments/{commentId}") //댓글 수정 삭제
                 //사장유저
-                .addPathPatterns("/api/owner/regist-cafe")
+                .addPathPatterns("/api/owner/regist-cafe") //카페 등록
                 //관리자
-                .addPathPatterns("/api/registers")
-                .addPathPatterns("/admin/**");
+                .addPathPatterns("/api/registers/permission") //승인 목록 조회
+                .addPathPatterns("/api/registeredcafe") //등록된 모든 카페 조회
+                .addPathPatterns("/api/registers") //관리자 미처리 목록 조회
+                .addPathPatterns("/api/registers/**"); //관리자 승인목록조회, 거절목록 조회, 미처리내역 승인,거절, 관리자 카페생성 승인, 관리자 승인카페 삭제
     }
 }
