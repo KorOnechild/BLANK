@@ -15,3 +15,5 @@ Boolean은 게터 사용가능/ boolean은 사용 불가능
 
 com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Cannot construct instance of `com.project.cafesns.model.dto.cafe.ModifyMenuDto` (no Creators, like default constructor, exist): cannot deserialize from Object value (no delegate- or property-based Creator)
 -> RequestDto에 @Builder를 사용해서 발생한 오류
+
+get으로 유저 못불러오는 상황에서 해결하는 로직 작성

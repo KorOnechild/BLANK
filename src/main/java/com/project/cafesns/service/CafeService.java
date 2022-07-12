@@ -300,4 +300,41 @@ public class CafeService {
             throw new NotAllowedException(ErrorCode.NOT_ALLOWED_EXCEPTION);
         }
     }
+
+    //카페 유무 조회 로직
+    public ResponseEntity<?> getCafeExist(String cafename){
+        List<Cafe> cafeList = cafeRepository.findAllByCafenameContaining(cafename);
+        List<CafeDto> cafeDtos = new ArrayList<>();
+        String logoimg;
+        for(Cafe cafe : cafeList){
+            if(cafeRepository.existsByUser(null)){
+                logoimg = "";
+            }else{
+                logoimg = cafe.getUser().getLogoimg();
+            }
+            cafeDtos.add(
+                    CafeDto.builder()
+                            .cafename(cafe.getCafename())
+                            .address(cafe.getAddress())
+                            .addressdetail(cafe.getAddressdetail())
+                            .zonenum(cafe.getZonenum())
+                            .logoimg(logoimg)
+                            .build()
+            );
+
+
+        }
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("카페 조회에 성공했습니다.").data(cafeDtos).build());
+    }
+
+    //    //검색
+//    public ResponseEntity<?> search(SearchRequestDto searchRequestDto){
+//        if(searchRequestDto.getKeyword().startsWith("#")){
+//            cafeRepository.fin
+//        }
+//    }
 }
+
+
+
+

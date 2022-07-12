@@ -74,9 +74,20 @@ public class CafeController {
     // 카페 메뉴 삭제
     @DeleteMapping("/api/owner/menus/{menuId}")
     public ResponseEntity<?> deleteCafeMenu(HttpServletRequest httpServletRequest,
-                                            @PathVariable Long menuId){
+                                            @PathVariable Long menuId) {
         return cafeService.deleteMenu(httpServletRequest, menuId);
     }
 
+    //카페 유무 조회
+    @GetMapping("/api/cafe/{cafename}")
+    public ResponseEntity<?> getCafeExist(@PathVariable String cafename){
+        return cafeService.getCafeExist(cafename);
+    }
+
+//    //검색
+//    @GetMapping("/api/search")
+//    public ResponseEntity<?> search(@RequestBody SearchRequestDto searchRequestDto){
+//        return cafeService.search(searchRequestDto);
+//    }
 }
 

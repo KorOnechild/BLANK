@@ -34,6 +34,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("api/posts/{postId}/comments") //댓글 작성
                 .addPathPatterns("api/comments/{commentId}") //댓글 수정 삭제
                 .addPathPatterns("/api/{postId}/like") //좋아요 여부 확인, 좋아요 동작 수행
+                .addPathPatterns("/api/user/posts") //마이페이지 게시글 목록 조회
                 //사장유저
                 .addPathPatterns(
                         "/api/owner/regist-cafe", //카페 등록

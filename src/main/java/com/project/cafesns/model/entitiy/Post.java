@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -54,5 +55,10 @@ public class Post extends Timestamped {
     public void changeContents(String contents, int star){
         this.contents = contents;
         this.star  = star;
+    }
+
+
+    public static LocalDateTime getLocalDateTime(Post o) {
+        return o.getModifiedAt();
     }
 }
