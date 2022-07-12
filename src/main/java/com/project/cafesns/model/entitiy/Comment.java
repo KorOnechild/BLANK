@@ -1,6 +1,6 @@
 package com.project.cafesns.model.entitiy;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.project.cafesns.model.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Comment {
+public class Comment extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

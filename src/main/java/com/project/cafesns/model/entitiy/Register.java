@@ -1,5 +1,6 @@
 package com.project.cafesns.model.entitiy;
 
+import com.project.cafesns.model.Timestamped;
 import com.project.cafesns.model.dto.register.RegisterRequestDto;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Register{
+public class Register extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
