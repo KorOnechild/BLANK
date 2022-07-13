@@ -112,6 +112,8 @@ public class UserService {
                 .nickname(user.getNickname())
                 .role(user.getRole())
                 .businessname(user.getBusinessname())
+                .profileimg(user.getProfileimg())
+                .logoimg(user.getLogoimg())
                 .accessToken(accessToken)
                 .refreshToken(refreshToken.getRefreshtoken())
                 .build();
