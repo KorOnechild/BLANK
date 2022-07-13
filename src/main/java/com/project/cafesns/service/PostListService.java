@@ -5,15 +5,14 @@ import com.project.cafesns.model.dto.ResponseDto;
 import com.project.cafesns.model.dto.postlist.*;
 import com.project.cafesns.model.entitiy.*;
 import com.project.cafesns.repository.*;
-import jdk.internal.dynalink.beans.StaticClass;
 import lombok.RequiredArgsConstructor;
-import org.joda.time.LocalDate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -39,15 +38,16 @@ public class PostListService {
         for(Cafe cafe : cafeList){
             List<Post> postList = postListRepository.findAllByCafeOrderByModifiedAtDesc(cafe);
             posts.addAll(postList);
+
         }
 
         List<Post> sortedList = posts.stream()
                 .sorted(Comparator.comparing(Post :: getLocalDateTime).reversed())
                 .collect(Collectors.toList());
 
-
-        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("지역목록 조회에 성공했습니다.").data(sortedList).build());
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("지역목록 조회에 성공했습니다.").data(getMainPostListDtos(sortedList)).build());
     }
+
 
     //마이페이지 게시글 목록 조회
     public ResponseEntity<?> getUserPostList(HttpServletRequest httpServletRequest) {
@@ -61,12 +61,13 @@ public class PostListService {
         List<PostListDto> PostListDtos = new ArrayList<>();
 
         for(Post post : postList){
+            String[] date = String.valueOf(post.getModifiedAt()).split("T");
             PostListDtos.add(
                     PostListDto.builder().postid(post.getId())
                     .nickname(post.getUser().getNickname())
                     .image(getImageDtoList(post))
                     .hashtagList(getHashtagDtoList(post))
-                    .modifiedAt(post.getModifiedAt())
+                    .modifiedAt((date[0] + " " + date[1]))
                     .star(post.getStar())
                     .likecnt(getLikeCnt(post))
                     .commentCnt(getCommentCnt(post))
@@ -87,12 +88,14 @@ public class PostListService {
         List<PostListDto> postListDtos = new ArrayList<>();
 
         for(Post post : postList){
+            String[] date = String.valueOf(post.getModifiedAt()).split("T");
             postListDtos.add(
                     PostListDto.builder()
+                            .postid(post.getId())
                             .nickname(post.getUser().getNickname())
                             .image(getImageDtoList(post))
                             .hashtagList(getHashtagDtoList(post))
-                            .modifiedAt(post.getModifiedAt())
+                            .modifiedAt((date[0] + " " + date[1]))
                             .star(post.getStar())
                             .likecnt(getLikeCnt(post))
                             .commentCnt(getCommentCnt(post))
@@ -101,6 +104,8 @@ public class PostListService {
         }
         return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("카페 상세페이지 리뷰 목록을 조회했습니다.").data(postListDtos).build());
     }
+
+    /*---------------------------<비즈니스 로직에 필요한 함수들>--------------------------------*/
 
     //게시글 좋아요 개수 얻기 로직
     public int getLikeCnt(Post post){
@@ -134,6 +139,7 @@ public class PostListService {
         return hashtagDtos;
     }
 
+
     //commentDto 리스트 만들기 로직
     public List<CommentDto> getCommentDtoList(Post post){
         List<Comment> commentList = commentRepository.findAllByPostOrderByModifiedAtDesc(post);
@@ -147,6 +153,22 @@ public class PostListService {
                     .build());
         }
         return commentDtos;
+    }
+
+    //메인페이지 게시글 목록 형태 생성 함수
+    public List<MainPostListDto> getMainPostListDtos(List<Post> postlist){
+        List<MainPostListDto> mainPostListDtos = new ArrayList<>();
+        for(Post post : postlist){
+            mainPostListDtos.add(
+                    MainPostListDto.builder()
+                            .cafename(post.getCafe().getCafename())
+                            .postid(post.getId())
+                            .cafeid(post.getCafe().getId())
+                            .img(post.getImageList().get(0).getImg())
+                            .build()
+            );
+        }
+        return mainPostListDtos;
     }
 }
 
