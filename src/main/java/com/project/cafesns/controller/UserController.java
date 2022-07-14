@@ -1,6 +1,7 @@
 package com.project.cafesns.controller;
 
 
+import com.project.cafesns.model.dto.user.ReissueTokenRequestDto;
 import com.project.cafesns.model.dto.user.SigninReqeustDto;
 import com.project.cafesns.model.dto.user.SignupRequestDto;
 import com.project.cafesns.service.UserService;
@@ -41,8 +42,8 @@ public class UserController {
 
     //액세스 토큰 재발급
     @PostMapping("/api/auth/refresh")
-    public ResponseEntity<?> reissueAccessToken(HttpServletRequest httpServletRequest) throws RuntimeException{
-        return userService.reissueAccessToken(httpServletRequest);
+    public ResponseEntity<?> reissueAccessToken(@RequestBody ReissueTokenRequestDto reissueTokenRequestDto) throws RuntimeException{
+        return userService.reissueAccessToken(reissueTokenRequestDto);
     }
 }
 

@@ -9,10 +9,7 @@ import com.project.cafesns.error.exceptions.user.NotmatchUserException;
 import com.project.cafesns.jwt.JwtTokenProvider;
 import com.project.cafesns.jwt.UserInfoInJwt;
 import com.project.cafesns.model.dto.ResponseDto;
-import com.project.cafesns.model.dto.user.ReissueTokenDto;
-import com.project.cafesns.model.dto.user.SigninDto;
-import com.project.cafesns.model.dto.user.SigninReqeustDto;
-import com.project.cafesns.model.dto.user.SignupRequestDto;
+import com.project.cafesns.model.dto.user.*;
 import com.project.cafesns.model.entitiy.RefreshToken;
 import com.project.cafesns.model.entitiy.User;
 import com.project.cafesns.repository.RefreshTokenRepository;
@@ -94,9 +91,7 @@ public class UserService {
             throw new NotmatchUserException(ErrorCode.NOTMATCH_USER_EXCEPTION);
         }
 
-        User user = userRepository.findByEmail(email).orElseThrow(
-                ()-> new NullPointerException("사용자 정보가 없습니다.")
-        );
+        User user = userRepository.findByEmail(email);
         //로그인 시 refresh 토큰 존재하면 삭제
         if(refreshTokenRepository.existsByUser(user)){
             RefreshToken refreshTokenCheck = refreshTokenRepository.findByUser(user);
@@ -139,14 +134,11 @@ public class UserService {
     }
 
     //액세스 토큰 재발급
+    public ResponseEntity<?> reissueAccessToken(ReissueTokenRequestDto reissueTokenRequestDto) throws RuntimeException {
+        String refreshToken = reissueTokenRequestDto.getRefreshToken();
+        String nickname = reissueTokenRequestDto.getNickname();
 
-    public ResponseEntity<?> reissueAccessToken(HttpServletRequest httpServletRequest) throws RuntimeException {
-        userInfoInJwt.getUserInfo_InJwt(httpServletRequest.getHeader("Authorization"));
-        String refreshToken = httpServletRequest.getHeader("RefreshToken");
-
-        User user = userRepository.findById(userInfoInJwt.getUserid()).orElseThrow(
-                ()-> new NullPointerException("사용자 정보가 없습니다.")
-        );
+        User user = userRepository.findByNickname(nickname);
 
         if(!userValidator.checkexistRefreshToken(refreshToken, user)){
             throw new NotExistTokenException(ErrorCode.NOTEXIST_TOKEN_EXCEPTION);
