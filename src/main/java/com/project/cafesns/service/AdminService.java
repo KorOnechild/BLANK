@@ -61,17 +61,18 @@ public class AdminService {
         return dtos;
     }
 
+    @Transactional
     //신청 permit 변경부분분
     public void permitset(Long registerId, Boolean permit, String userRole) {
         adminCheck(userRole);
         Register register = registerRepository.findById(registerId).orElseThrow( () -> new NullPointerException("존재하지않는 신청입니다"));
 
         if(permit){
-            register.setPermit(true);
+            register.changePermit(true);
             registerRepository.save(register);
         }
         else {
-            register.setPermit(false);
+            register.changePermit(false);
             registerRepository.save(register);
         }
     }

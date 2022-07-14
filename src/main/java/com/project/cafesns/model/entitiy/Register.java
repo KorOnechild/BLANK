@@ -5,13 +5,10 @@ import com.project.cafesns.model.dto.register.RegisterRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import javax.persistence.*;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 public class Register extends Timestamped {
     @Id
@@ -56,5 +53,9 @@ public class Register extends Timestamped {
         this.longitude = registerRequestDto.getLongitude();
         this.permit = null;
         this.user = user;
+    }
+
+    public void changePermit(Boolean permit){
+        this.permit = permit;
     }
 }
