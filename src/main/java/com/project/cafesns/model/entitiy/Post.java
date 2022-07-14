@@ -4,10 +4,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.cafesns.model.Timestamped;
 import com.project.cafesns.model.dto.post.PostRequestDto;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -37,13 +35,22 @@ public class Post extends Timestamped {
     @JsonBackReference(value = "cafe-post-FK")
     private Cafe cafe;
 
-    @OneToMany(mappedBy = "post")
+
+    @OneToMany(mappedBy = "post", orphanRemoval = true)
     @JsonManagedReference(value = "image-post-FK")
     private List<Image> imageList;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", orphanRemoval = true)
     @JsonManagedReference(value = "hashtag-post-FK")
     private List<Hashtag> hashtagList;
+
+    @OneToMany(mappedBy = "post", orphanRemoval = true)
+    @JsonManagedReference(value = "comment-post-FK")
+    private List<Comment> commentList;
+
+    @OneToMany(mappedBy = "post", orphanRemoval = true)
+    @JsonManagedReference(value = "like-post-FK")
+    private List<Like> likeList;
 
     public Post(PostRequestDto postRequestDto, User user, Cafe cafe){
         this.contents = postRequestDto.getContent();

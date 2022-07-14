@@ -32,11 +32,11 @@ public class WebConfig implements WebMvcConfigurer {
 
                 //일반유저
                 .addPathPatterns(
-                        "api/posts/{postId}",              //게시글 수정, 삭제
-                        "api/{cafeId}/posts",              //게시글 작성
+                        "/api/posts/{postId}",              //게시글 수정, 삭제
+                        "/api/{cafeId}/posts",              //게시글 작성
                         "/api/user/regist-cafe",           //카페 신청
-                        "api/posts/{postId}/comments",     //댓글 작성
-                        "api/comments/{commentId}",        //댓글 수정 삭제
+                        "/api/posts/{postId}/comments",     //댓글 작성
+                        "/api/comments/{commentId}",        //댓글 수정 삭제
                         "/api/{postId}/like",              //좋아요 여부 확인, 좋아요 동작 수행
                         "/api/user/posts"                  //마이페이지 게시글 목록 조회
                 )

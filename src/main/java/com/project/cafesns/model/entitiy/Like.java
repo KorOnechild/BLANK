@@ -1,5 +1,6 @@
 package com.project.cafesns.model.entitiy;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,7 @@ public class Like {
 
     @ManyToOne
     @JoinColumn(name = "postid")
+    @JsonBackReference(value = "like-post-FK")
     private Post post;
 
     public Like(User user, Post post) {

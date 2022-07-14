@@ -69,28 +69,22 @@ public class PostService {
     public void deletePost(Long postId, Long userId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NullPointerException("해당 게시글이 존재하지 않습니다."));
         if(post.getUser().getId().equals(userId)){
-            deleteOther(postId, post);
+            deleteImage(post);
+            postRepository.deleteById(post.getId());
         }
         else {
             throw new NotAllowedException(ErrorCode.NOT_ALLOWED_EXCEPTION);
         }
     }
-    public void deleteImage(List<Image> imageList){
+
+    //연관 관계 맺어져 있는 데이터들 삭제하는 함수
+    public void deleteImage(Post post){
+        List<Image> imageList = imageRepository.findAllByPost(post);
         for(Image image : imageList){
             int length = image.getImg().length();
-            String filePath = image.getImg().substring(47,length); //
+            String filePath = image.getImg().substring(47,length);
             fileUploadService.deleteFile(filePath);
         }
         System.out.printf("이미지 삭제가 완료되었습니다.");
-    }
-
-    //연관 관계 맺어져 있는 데이터들 삭제하는 함수
-    @Transactional
-    public void deleteOther(Long postId, Post post){
-        hashtagRepository.deleteAllByPost(post);
-        List<Image> imageList = imageRepository.findAllByPost(post);
-        deleteImage(imageList);
-        imageRepository.deleteAllByPost(post);
-        postRepository.deleteById(postId);
     }
 }

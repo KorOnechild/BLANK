@@ -58,11 +58,11 @@ public class Cafe {
     @JsonBackReference(value = "user-cafe-FK")
     private User user;
 
-    @OneToMany(mappedBy = "cafe")
+    @OneToMany(mappedBy = "cafe", orphanRemoval = true)
     @JsonManagedReference(value = "menu-cafe-FK")
     List<Menu> menuList;
 
-    @OneToMany(mappedBy = "cafe")
+    @OneToMany(mappedBy = "cafe", orphanRemoval = true)
     @JsonManagedReference(value = "cafe-post-FK")
     List<Post> postList;
 

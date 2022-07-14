@@ -1,5 +1,6 @@
 package com.project.cafesns.model.entitiy;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.project.cafesns.model.Timestamped;
 
 import com.project.cafesns.model.dto.comment.CommentRequestDto;
@@ -21,6 +22,7 @@ public class Comment extends Timestamped {
 
     @ManyToOne
     @JoinColumn(name = "postid")
+    @JsonBackReference(value = "")
     private Post post;
 
     @ManyToOne

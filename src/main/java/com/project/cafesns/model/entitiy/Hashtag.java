@@ -21,7 +21,7 @@ public class Hashtag {
 
     @ManyToOne
     @JoinColumn(name = "postid")
-    @JsonBackReference(value = "hashtag-post-FK")
+    @JsonBackReference(value = "comment-post-FK")
     private Post post;
 
     public Hashtag(String hashkey, Post post ){

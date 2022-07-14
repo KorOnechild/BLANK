@@ -95,8 +95,7 @@ public class AdminService {
         Cafe cafe = cafeRepository.findById(cafeId).orElseThrow( () -> new NullPointerException("존재하지않는 카페입니다"));
         List<Post> posts = postRepository.findAllByCafe(cafe);
         for(Post post: posts) {
-            Long postid = post.getId();
-            postService.deleteOther(postid, post); //연관된 테이블 삭제
+            postService.deleteImage(post); //연관된 게시글 이미지 삭제
         }
         cafeRepository.deleteById(cafeId);
     }

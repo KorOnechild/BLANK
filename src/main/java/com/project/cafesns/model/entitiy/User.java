@@ -45,6 +45,8 @@ public class User {
     @JsonManagedReference(value = "user-cafe-FK")
     private List<Cafe> cafeList;
 
+
+
     @Builder
     public User(SignupRequestDto signupRequestDto, String encodedPw, String profileimg, String logoimg){
         this.email = signupRequestDto.getEmail();
