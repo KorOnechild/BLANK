@@ -84,21 +84,27 @@ public class Cafe {
         this.address = register.getAddress();
         this.addressdetail = register.getAddressdetail();
         this.zonenum = register.getZonenum();
+        this.intro = null;
+        this.notice = null;
+        this.delivery = null;
+        this.opentime = null;
+        this.closetime = null;
         this.latitude =register.getLatitude();
         this.longitude = register.getLongitude();
+        this.user = null;
     }
 
     public void changeCafe(ModifyCafeRequestDto modifyCafeRequestDto){
-        this.intro = modifyCafeRequestDto.getIntro();
-        this.notice = modifyCafeRequestDto.getNotice();
         this.address = modifyCafeRequestDto.getAddress();
         this.addressdetail = modifyCafeRequestDto.getAddressdetail();
         this.zonenum = modifyCafeRequestDto.getZonenum();
-        this.latitude = modifyCafeRequestDto.getLatitude();
-        this.longitude = modifyCafeRequestDto.getLongitude();
+        this.intro = modifyCafeRequestDto.getIntro();
+        this.notice = modifyCafeRequestDto.getNotice();
+        this.delivery = modifyCafeRequestDto.getDelivery();
         this.opentime = modifyCafeRequestDto.getOpentime();
         this.closetime = modifyCafeRequestDto.getClosetime();
-        this.delivery = modifyCafeRequestDto.getDelivery();
+        this.latitude = modifyCafeRequestDto.getLatitude();
+        this.longitude = modifyCafeRequestDto.getLongitude();
     }
 
     public void getOwnership(User user) {
