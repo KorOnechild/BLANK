@@ -24,6 +24,9 @@ public enum ErrorCode {
     //권한
     NOT_ALLOWED_EXCEPTION(400),
 
+    //게시글
+    POST_CREATE_EXCEPTION(400),
+
     //토큰
     NOTEXIST_TOKEN_EXCEPTION(400),
 

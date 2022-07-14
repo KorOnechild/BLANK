@@ -1,6 +1,7 @@
 package com.project.cafesns.error;
 
 import com.project.cafesns.error.exceptions.allow.NotAllowedException;
+import com.project.cafesns.error.exceptions.post.PostCreateException;
 import com.project.cafesns.error.exceptions.register.AlreadyExistRegistedException;
 import com.project.cafesns.error.exceptions.token.BearerTokenException;
 import com.project.cafesns.error.exceptions.token.NotExistTokenException;
@@ -60,6 +61,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotAllowedException.class)
     public ResponseEntity<?> handleNotAdminException(NotAllowedException ex){
         return ResponseEntity.status(ex.getErrorCode().getStatus()).body(ResponseDto.builder().result(false).message("접근 권한이 없습니다.").build());
+    }
+
+    //게시글 작성
+    @ExceptionHandler(PostCreateException.class)
+    public ResponseEntity<?> handlePostCreateException(PostCreateException ex){
+        return ResponseEntity.status(ex.getErrorCode().getStatus()).body(ResponseDto.builder().result(false).message("이미지를 첨부해주세요.").build());
     }
 
     //토큰
