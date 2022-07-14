@@ -39,7 +39,7 @@ public class RegisterService {
         );
 
         if(user.getRole().equals("user")){
-            if(cafeRepository.existsCafeByAddressAndCafename(registerRequestDto.getAddress(), registerRequestDto.getCafename())){
+            if(cafeRepository.existsByAddressAndCafename(registerRequestDto.getAddress(), registerRequestDto.getCafename())){
                 throw new AlreadyExistCafeException(ErrorCode.ALREADY_EXIST_CAFE_EXCEPTION);
             }else if (registerRepository.existsByAddressAndCafename(registerRequestDto.getAddress(), registerRequestDto.getCafename())){
                 throw new AlreadyExistRegistedException(ErrorCode.ALREADY_EXIST_REGISTED_EXCEPTION);
@@ -66,7 +66,7 @@ public class RegisterService {
         );
 
         if(user.getRole().equals("owner")){
-            if(cafeRepository.existsCafeByAddressAndCafename(registerOwnerRequestDto.getAddress(), user.getBusinessname())){
+            if(cafeRepository.existsByAddressAndCafename(registerOwnerRequestDto.getAddress(), user.getBusinessname())){
                 Cafe cafe = cafeRepository.findByCafename(user.getBusinessname());
                 cafe.getOwnership(user);
                 cafeRepository.save(cafe);

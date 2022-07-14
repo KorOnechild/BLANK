@@ -7,12 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface CafeRepository extends JpaRepository<Cafe, Long> {
-    boolean existsCafeByAddressAndCafename(String address, String cafename);
     Cafe findByCafename(String businessname);
-    boolean existsByAddressAndCafename(String Address,String Cafename);
 
-    boolean existsByUser(User user);
     Cafe findByUser(User user);
+
+    boolean existsByAddressAndCafename(String Address,String Cafename);
 
     List<Cafe> findAllByAddressContaining(String region);
 

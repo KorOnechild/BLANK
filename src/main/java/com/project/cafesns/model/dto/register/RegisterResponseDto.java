@@ -20,6 +20,5 @@ public class RegisterResponseDto {
         this.addressdetail = register.getAddressdetail();
         this.zonenum = register.getZonenum();
         this.permit = register.getPermit();
-        this.cafeId = register.getCafeid();
     }
 }

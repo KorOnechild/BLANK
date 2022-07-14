@@ -22,13 +22,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class CafeService {
-
-
     //aws S3
     private final FileUploadService fileUploadService;
     private final UserInfoInJwt userInfoInJwt;
     private final PostRepository postRepository;
-    private final ImageRepository imageRepository;
     private final CafeRepository cafeRepository;
     private final MenuRepository menuRepository;
     private final UserRepository userRepository;
@@ -38,41 +35,29 @@ public class CafeService {
         Cafe cafe = cafeRepository.findById(cafeId).orElseThrow(
                 ()-> new NullPointerException("카페 페이지가 존재하지 않습니다.")
         );
+
         List<Post> postList = postRepository.findAllByCafe(cafe);
         List<Image> imageList = new ArrayList<>();
-
-        if(postList.size() < 3){
-            for(int i=0; i < postList.size(); i++){
-                imageList.add(postList.get(i).getImageList().get(0));
-            }
-        }else{
-            for(int i=0; i < 3; i++){
-                imageList.add(postList.get(i).getImageList().get(0));
-            }
-        }
-        String logoimg = cafe.getUser().getLogoimg();
-        String cafename = cafe.getCafename();
-
         float allstar = 0;
-        for (int i = 0; i < postList.size(); i++) {
-            allstar += postList.get(i).getStar();
-        }
-        float avgstar = allstar / postList.size();
-        int postCnt = postRepository.findAllByCafe(cafe).size();
-        String opentime = cafe.getOpentime();
-        String closetime = cafe.getClosetime();
 
+        for(int i=0; i < postList.size(); i++){
+            imageList.add(postList.get(i).getImageList().get(0));
+            if(i == 2){break;}
+        }
+        for (Post post : postList) {
+            allstar += post.getStar();
+        }
         return ResponseEntity.ok().body(ResponseDto.builder()
                 .result(true)
                 .message("배너 조회에 성공했습니다.")
                 .data(CafeBannerDto.builder()
                         .imageList(imageList)
-                        .logoimg(logoimg)
-                        .cafename(cafename)
-                        .avgstar(avgstar)
-                        .postCnt(postCnt)
-                        .opentime(opentime)
-                        .closetime(closetime)
+                        .logoimg(cafe.getUser() == null ? "" : cafe.getUser().getLogoimg())
+                        .cafename(cafe.getCafename())
+                        .avgstar(allstar / postList.size())
+                        .postCnt(postRepository.findAllByCafe(cafe).size())
+                        .opentime(cafe.getOpentime())
+                        .closetime(cafe.getClosetime())
                         .build())
                 .build());
     }
@@ -82,27 +67,19 @@ public class CafeService {
         Cafe cafe = cafeRepository.findById(cafeId).orElseThrow(
                 ()-> new NullPointerException("카페 페이지가 존재하지 않습니다.")
         );
-        Boolean delivery = cafe.getDelivery();
-        String intro = cafe.getIntro();
-        String notice = cafe.getNotice();
-        String address = cafe.getAddress();
-        String addressdetail = cafe.getAddressdetail();
-        String zonenum = cafe.getZonenum();
-        String latitude = cafe.getLatitude();
-        String longitude = cafe.getLongitude();
 
         return ResponseEntity.ok().body(ResponseDto.builder()
                 .result(true)
                 .message("홈 조회에 성공했습니다.")
                 .data(CafeHomeDto.builder()
-                        .delivery(delivery)
-                        .intro(intro)
-                        .notice(notice)
-                        .address(address)
-                        .addressdetail(addressdetail)
-                        .zonenum(zonenum)
-                        .latitude(latitude)
-                        .longitude(longitude)
+                        .delivery(cafe.getDelivery())
+                        .intro(cafe.getIntro())
+                        .notice(cafe.getNotice())
+                        .address(cafe.getAddress())
+                        .addressdetail(cafe.getAddressdetail())
+                        .zonenum(cafe.getZonenum())
+                        .latitude(cafe.getLatitude())
+                        .longitude(cafe.getLongitude())
                         .build())
                 .build());
     }
@@ -120,7 +97,6 @@ public class CafeService {
                         .menuList(getMenuListDto(menuList))
                         .build())
                 .build());
-
     }
 
     // 사장님 카페 조회
@@ -135,29 +111,19 @@ public class CafeService {
         Cafe cafe = cafeRepository.findByUser(user);
 
         if(user.getRole().equals("owner")){
-            Long cafeId = cafe.getId();
-            Boolean delivery = cafe.getDelivery();
-            String intro = cafe.getIntro();
-            String notice = cafe.getNotice();
-            String address = cafe.getAddress();
-            String addressdetail = cafe.getAddressdetail();
-            String zonenum = cafe.getZonenum();
-            String latitude = cafe.getLatitude();
-            String longitude = cafe.getLongitude();
-
             return ResponseEntity.ok().body(ResponseDto.builder()
                     .result(true)
                     .message("카페 홈 조회에 성공했습니다.")
                     .data(CafeDetailDto.builder()
-                            .cafeId(cafeId)
-                            .delivery(delivery)
-                            .intro(intro)
-                            .notice(notice)
-                            .address(address)
-                            .addressdetail(addressdetail)
-                            .zonenum(zonenum)
-                            .latitude(latitude)
-                            .longitude(longitude)
+                            .cafeId(cafe.getId())
+                            .delivery(cafe.getDelivery())
+                            .intro(cafe.getIntro())
+                            .notice(cafe.getNotice())
+                            .address(cafe.getAddress())
+                            .addressdetail(cafe.getAddressdetail())
+                            .zonenum(cafe.getZonenum())
+                            .latitude(cafe.getLatitude())
+                            .longitude(cafe.getLongitude())
                             .build())
                     .build());
         }else{
@@ -307,7 +273,7 @@ public class CafeService {
         List<CafeDto> cafeDtos = new ArrayList<>();
         String logoimg;
         for(Cafe cafe : cafeList){
-            if(cafeRepository.existsByUser(null)){
+            if(cafe.getUser() == null){
                 logoimg = "";
             }else{
                 logoimg = cafe.getUser().getLogoimg();
@@ -321,8 +287,6 @@ public class CafeService {
                             .logoimg(logoimg)
                             .build()
             );
-
-
         }
         return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("카페 조회에 성공했습니다.").data(cafeDtos).build());
     }
