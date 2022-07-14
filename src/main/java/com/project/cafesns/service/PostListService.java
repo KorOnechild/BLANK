@@ -75,7 +75,6 @@ public class PostListService {
                             .build());
         }
         return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("내가 쓴 리뷰 목록을 조회했습니다.").data(PostListDtos).build());
-
     }
 
     //카페 상세페이지 리뷰 목록 조회

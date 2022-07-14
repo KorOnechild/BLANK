@@ -26,8 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addInterceptor(jwtTokenInterceptor) //로그인이 필요한 서비스 요청시 Interceptor가 그 요청을 가로챔
                 //공통
                 .addPathPatterns(
-                        "/api/user/signout",               //로그아웃
-                        "/api/auth/refresh"                //액세스토큰 재발금
+                        "/api/user/signout"               //로그아웃
                 )
 
                 //일반유저
