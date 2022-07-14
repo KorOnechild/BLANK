@@ -85,7 +85,8 @@ public class AdminService {
             //이미존재하는 카페 엑셉션
         } else {
             Cafe cafe = new Cafe(register);
-            cafeRepository.save(cafe);}
+            cafeRepository.save(cafe);
+        }
     }
 
     @Transactional

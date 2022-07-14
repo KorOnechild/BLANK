@@ -36,9 +36,6 @@ public class Register extends Timestamped {
     @Column
     private Boolean permit;
 
-    @Column
-    private Long cafeid;
-
     @ManyToOne
     @JoinColumn(name = "userid")
     private User user;

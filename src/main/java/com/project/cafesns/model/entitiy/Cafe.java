@@ -66,6 +66,8 @@ public class Cafe {
     @JsonManagedReference(value = "cafe-post-FK")
     List<Post> postList;
 
+
+    //사장이 바로 등록하는(카페 페이지 생성) 생성자
     @Builder
     public Cafe(RegisterOwnerRequestDto registerOwnerRequestDto, User user){
         this.cafename = user.getBusinessname();
@@ -76,7 +78,7 @@ public class Cafe {
         this.longitude = registerOwnerRequestDto.getLongitude();
         this.user = user;
     }
-
+    //신청내역을 통한 카페 페이지 생성 생성자
     public Cafe(Register register){
         this.cafename = register.getCafename();
         this.address = register.getAddress();
