@@ -53,30 +53,17 @@ public class UserService {
             throw new NicknameDubplicateException(ErrorCode.NICKNAME_DUBP_EXCEPTION);
         }else{
             String encodedPw = SHA256.encrypt(signupRequestDto.getPassword());
-            if(file.isEmpty()){
-                if(signupRequestDto.getRole().equals("user")){
-                    User user = User.builder().signupRequestDto(signupRequestDto).encodedPw(encodedPw).build();
-                    userRepository.save(user);
-                    return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("회원가입에 성공했습니다.").build());
-                }else{
-                    User user = User.builder().signupRequestDto(signupRequestDto).encodedPw(encodedPw).build();
-                    userRepository.save(user);
-                    return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("회원가입에 성공했습니다.").build());
-                }
+            if(signupRequestDto.getRole().equals("user")){
+                String profileimg = fileUploadService.uploadImage(file, "profile");
+                User user = User.builder().signupRequestDto(signupRequestDto).encodedPw(encodedPw).profileimg(profileimg).logoimg("").build();
+                userRepository.save(user);
+                return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("회원가입에 성공했습니다.").build());
             }else{
-                if(signupRequestDto.getRole().equals("user")){
-                    String profileimg = fileUploadService.uploadImage(file, "profile");
-                    User user = User.builder().signupRequestDto(signupRequestDto).encodedPw(encodedPw).profileimg(profileimg).logoimg("").build();
-                    userRepository.save(user);
-                    return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("회원가입에 성공했습니다.").build());
-                }else{
-                    String logoimg = fileUploadService.uploadImage(file, "logo");
-                    User user = User.builder().signupRequestDto(signupRequestDto).encodedPw(encodedPw).profileimg("").logoimg(logoimg).build();
-                    userRepository.save(user);
-                    return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("회원가입에 성공했습니다.").build());
-                }
+                String logoimg = fileUploadService.uploadImage(file, "logo");
+                User user = User.builder().signupRequestDto(signupRequestDto).encodedPw(encodedPw).profileimg("").logoimg(logoimg).build();
+                userRepository.save(user);
+                return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("회원가입에 성공했습니다.").build());
             }
-
         }
     }
 

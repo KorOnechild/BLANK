@@ -1,6 +1,8 @@
 package com.project.cafesns.s3;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.project.cafesns.error.ErrorCode;
+import com.project.cafesns.error.exceptions.post.PostCreateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +21,9 @@ public class FileUploadService {
 
     //한개 파일 올리기
     public String uploadImage(MultipartFile file, String dirName){
+        if(file.isEmpty()){
+            return "";
+        }
         String fileName = dirName + "/" + createFileName(file.getOriginalFilename());
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentLength(file.getSize());
@@ -35,8 +40,10 @@ public class FileUploadService {
     //여러개 파일 올리기
     public List<String> uploadImageList(List<MultipartFile> fileList, String dirName){
         List<String> imgUrlList = new ArrayList<>();
-
         for(MultipartFile file : fileList){
+            if(file.isEmpty()){
+                throw new PostCreateException(ErrorCode.POST_CREATE_EXCEPTION);
+            }
             String fileName = dirName + "/" + createFileName(file.getOriginalFilename());
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentLength(file.getSize());

@@ -271,20 +271,14 @@ public class CafeService {
     public ResponseEntity<?> getCafeExist(String cafename){
         List<Cafe> cafeList = cafeRepository.findAllByCafenameContaining(cafename);
         List<CafeDto> cafeDtos = new ArrayList<>();
-        String logoimg;
         for(Cafe cafe : cafeList){
-            if(cafe.getUser() == null){
-                logoimg = "";
-            }else{
-                logoimg = cafe.getUser().getLogoimg();
-            }
             cafeDtos.add(
                     CafeDto.builder()
                             .cafename(cafe.getCafename())
                             .address(cafe.getAddress())
                             .addressdetail(cafe.getAddressdetail())
                             .zonenum(cafe.getZonenum())
-                            .logoimg(logoimg)
+                            .logoimg(cafe.getUser() == null ? "" : cafe.getUser().getLogoimg())
                             .build()
             );
         }
