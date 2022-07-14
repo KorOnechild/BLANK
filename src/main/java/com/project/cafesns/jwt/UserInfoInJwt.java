@@ -17,12 +17,6 @@ public class UserInfoInJwt {
     private String nickname;
     private String role;
 
-//    public String getUserInfo_InJWT(String authorization) {
-//        String accessToken = authorization.substring(7);
-//        Claims accessClaims = jwtTokenProvider.getClaimsFormToken(accessToken);
-//        return (String) accessClaims.get("email");
-//    }
-
     public void getUserInfo_InJwt(String authorization) {
         String accessToken = authorization.substring(7);
         Claims accessClaims = jwtTokenProvider.getClaimsFormToken(accessToken);

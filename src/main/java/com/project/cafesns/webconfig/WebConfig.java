@@ -25,30 +25,37 @@ public class WebConfig implements WebMvcConfigurer {
         registry
                 .addInterceptor(jwtTokenInterceptor) //로그인이 필요한 서비스 요청시 Interceptor가 그 요청을 가로챔
                 //공통
-                .addPathPatterns("/api/user/signout") //로그아웃
-                .addPathPatterns("/api/auth/refresh") //액세스토큰 재발금
+                .addPathPatterns(
+                        "/api/user/signout",               //로그아웃
+                        "/api/auth/refresh"                //액세스토큰 재발금
+                )
+
                 //일반유저
-                .addPathPatterns("api/posts/{postId}") //게시글 수정, 삭제
-                .addPathPatterns("api/{cafeId}/posts") //게시글 작성
-                .addPathPatterns("/api/user/regist-cafe") //카페 신청
-                .addPathPatterns("api/posts/{postId}/comments") //댓글 작성
-                .addPathPatterns("api/comments/{commentId}") //댓글 수정 삭제
-                .addPathPatterns("/api/{postId}/like") //좋아요 여부 확인, 좋아요 동작 수행
-                .addPathPatterns("/api/user/posts") //마이페이지 게시글 목록 조회
+                .addPathPatterns(
+                        "api/posts/{postId}",              //게시글 수정, 삭제
+                        "api/{cafeId}/posts",              //게시글 작성
+                        "/api/user/regist-cafe",           //카페 신청
+                        "api/posts/{postId}/comments",     //댓글 작성
+                        "api/comments/{commentId}",        //댓글 수정 삭제
+                        "/api/{postId}/like",              //좋아요 여부 확인, 좋아요 동작 수행
+                        "/api/user/posts"                  //마이페이지 게시글 목록 조회
+                )
                 //사장유저
                 .addPathPatterns(
-                        "/api/owner/regist-cafe", //카페 등록
-                        "/api/owner/info", // 사장님 카페조회
-                        "/api/owner/menus", // 사장님 카페 메뉴 조회
-                        "/api/owner/info", // 카페 홈 정보 수정
-                        "/api/owner/menus", // 카페 메뉴 등록
-                        "/api/owner/menus/{menuId}", // 카페 메뉴 수정
-                        "/api/owner/menus/{menuId}" //카페 메뉴 삭제
+                        "/api/owner/regist-cafe",           //카페 등록
+                        "/api/owner/info",                  // 사장님 카페조회
+                        "/api/owner/menus",                 // 사장님 카페 메뉴 조회
+                        "/api/owner/info",                  // 카페 홈 정보 수정
+                        "/api/owner/menus",                 // 카페 메뉴 등록
+                        "/api/owner/menus/{menuId}",        // 카페 메뉴 수정
+                        "/api/owner/menus/{menuId}"         //카페 메뉴 삭제
                 )
                 //관리자
-                .addPathPatterns("/api/registers/permission") //승인 목록 조회
-                .addPathPatterns("/api/registeredcafe") //등록된 모든 카페 조회
-                .addPathPatterns("/api/registers") //관리자 미처리 목록 조회
-                .addPathPatterns("/api/registers/**"); //관리자 승인목록조회, 거절목록 조회, 미처리내역 승인,거절, 관리자 카페생성 승인, 관리자 승인카페 삭제
+                .addPathPatterns(
+                        "/api/registers/permission",        //승인 목록 조회
+                        "/api/registeredcafe",              //등록된 모든 카페 조회
+                        "/api/registers",                   //관리자 미처리 목록 조회
+                        "/api/registers/**"                 //관리자 승인목록조회, 거절목록 조회, 미처리내역 승인,거절, 관리자 카페생성 승인, 관리자 승인카페 삭제
+                );
     }
 }
