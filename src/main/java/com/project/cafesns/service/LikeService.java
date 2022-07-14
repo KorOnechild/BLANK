@@ -56,7 +56,7 @@ public class LikeService {
         }else{
             Like like = likeRepository.getLikeByUserAndPost(user,post);
             likeRepository.delete(like);
-            return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("좋아요가 취소되었습니다.").build());
+            return ResponseEntity.ok().body(ResponseDto.builder().result(false).message("좋아요가 취소되었습니다.").build());
         }
     }
 
