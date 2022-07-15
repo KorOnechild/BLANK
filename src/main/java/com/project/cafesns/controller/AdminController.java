@@ -48,7 +48,7 @@ public class AdminController {
         userInfoInJwt.getUserInfo_InJwt(httpRequest.getHeader("Authorization"));
         String userRole = userInfoInJwt.getRole();
         adminService.addcafe(registerId,userRole);
-        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("카페 생성에 성공헀습니다").build());
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("카페 생성에 성공했습니다").build());
     }
 
     //관리자 승인카페삭제

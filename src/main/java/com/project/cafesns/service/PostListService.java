@@ -74,6 +74,9 @@ public class PostListService {
                     .commentList(getCommentDtoList(post))
                             .build());
         }
+        if(postList.isEmpty()){
+            return ResponseEntity.ok().body(ResponseDto.builder().result(false).message("작성한 리뷰가 없습니다.").build());
+        }
         return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("내가 쓴 리뷰 목록을 조회했습니다.").data(PostListDtos).build());
     }
 
