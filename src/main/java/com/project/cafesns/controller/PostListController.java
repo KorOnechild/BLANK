@@ -16,7 +16,7 @@ public class PostListController {
     private final PostListService postListService;
 
     //메인페이지 게시글 목록 조회
-    @GetMapping("/api/posts/{region}")
+    @GetMapping("/api/posts/list/{region}")
     public ResponseEntity<?> getPostListOrderByDesc(@PathVariable String region){
         return postListService.getPostListOrderByDesc(region);
     }
