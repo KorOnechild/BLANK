@@ -79,9 +79,9 @@ public class CafeController {
     }
 
     //카페 유무 조회
-    @GetMapping("/api/cafe/{cafename}")
-    public ResponseEntity<?> getCafeExist(@PathVariable String cafename){
-        return cafeService.getCafeExist(cafename);
+    @GetMapping("/api/cafes")
+    public ResponseEntity<?> getCafeExist(){
+        return cafeService.getCafeExist();
     }
 
 //    //검색

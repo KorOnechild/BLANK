@@ -6,9 +6,9 @@ import lombok.Getter;
 @Builder
 @Getter
 public class CafeDto {
+    private Long cafeid;
     private String cafename;
     private String address;
     private String addressdetail;
     private String zonenum;
-    private String logoimg;
 }

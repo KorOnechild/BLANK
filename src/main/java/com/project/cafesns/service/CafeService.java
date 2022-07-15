@@ -268,17 +268,17 @@ public class CafeService {
     }
 
     //카페 유무 조회 로직
-    public ResponseEntity<?> getCafeExist(String cafename){
-        List<Cafe> cafeList = cafeRepository.findAllByCafenameContaining(cafename);
+    public ResponseEntity<?> getCafeExist(){
+        List<Cafe> cafeList = cafeRepository.findAll();
         List<CafeDto> cafeDtos = new ArrayList<>();
         for(Cafe cafe : cafeList){
             cafeDtos.add(
                     CafeDto.builder()
+                            .cafeid(cafe.getId())
                             .cafename(cafe.getCafename())
                             .address(cafe.getAddress())
                             .addressdetail(cafe.getAddressdetail())
                             .zonenum(cafe.getZonenum())
-                            .logoimg(cafe.getUser() == null ? "" : cafe.getUser().getLogoimg())
                             .build()
             );
         }
