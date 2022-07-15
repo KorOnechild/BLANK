@@ -1,6 +1,5 @@
 package com.project.cafesns.model.dto.post;
 
-import com.project.cafesns.model.entitiy.Hashtag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -23,7 +23,7 @@ public class PostController {
     //게시글 작성
     @PostMapping("api/{cafeId}/posts")
     public ResponseEntity<?> addPost(@PathVariable Long cafeId,
-                                     @RequestPart(value = "file") List<MultipartFile> fileList,
+                                     @RequestPart(value = "file") MultipartFile[] fileList,
                                      @RequestPart(value = "data") PostRequestDto postRequestDto,
                                      HttpServletRequest httpRequest) throws NoSuchAlgorithmException {
         userInfoInJwt.getUserInfo_InJwt(httpRequest.getHeader("Authorization"));
