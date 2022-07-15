@@ -20,7 +20,7 @@ public class FileUploadController {
     }
 
     @PostMapping("api/list")
-    public List<String> uploadImageList(@RequestPart(value = "file") MultipartFile [] fileList){
+    public List<String> uploadImageList(@RequestPart(value = "file") List<MultipartFile> fileList){
         return fileUploadService.uploadImageList(fileList, "post");
     }
 }
