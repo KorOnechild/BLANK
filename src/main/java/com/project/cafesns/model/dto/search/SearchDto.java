@@ -1,5 +1,10 @@
 package com.project.cafesns.model.dto.search;
 
+import lombok.Builder;
+import lombok.Getter;
+
+@Builder
+@Getter
 public class SearchDto {
     private Long cafeid;
     private String cafename;
