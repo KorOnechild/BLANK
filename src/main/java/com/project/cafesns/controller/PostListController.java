@@ -30,7 +30,7 @@ public class PostListController {
     }
 
     //카페 상세페이지 리뷰 조회
-    @GetMapping("/api/{cafeId}/posts")
+    @GetMapping("/api/cafes/{cafeId}/posts")
     public ResponseEntity<?> getPostListInCafePage(@PathVariable Long cafeId){
         return postListService.getPostListInCafePage(cafeId);
     }
