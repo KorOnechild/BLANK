@@ -16,7 +16,7 @@ public class Hashtag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(length = 500)
     private String hashtag;
 
     @ManyToOne
