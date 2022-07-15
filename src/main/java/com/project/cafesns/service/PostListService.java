@@ -32,7 +32,7 @@ public class PostListService {
 
     //메인페이지 게시글 목록 최신순 조회
     public ResponseEntity<?> getPostListOrderByDesc(String region) {
-        List<Cafe> cafeList = cafeRepository.findAllByAddressContaining(region);
+        List<Cafe> cafeList = cafeRepository.findAllByAddressContains(region);
         List<Post> posts = new ArrayList<>();
 
         for(Cafe cafe : cafeList){
