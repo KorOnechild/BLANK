@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class CafeDetailDto {
-    private Long cafeId;
+    private Long cafeid;
     private Boolean delivery;
     private String intro;
     private String notice;

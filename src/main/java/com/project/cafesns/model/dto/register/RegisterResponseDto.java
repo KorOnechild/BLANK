@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class RegisterResponseDto {
-    Long registerId;
+    Long registerid;
     String cafename;
     String address;
     String addressdetail;
@@ -14,7 +14,7 @@ public class RegisterResponseDto {
     Long cafeId;
 
     public RegisterResponseDto(Register register){
-        this.registerId=  register.getId();
+        this.registerid=  register.getId();
         this.cafename = register.getCafename();
         this.address = register.getAddress();
         this.addressdetail = register.getAddressdetail();

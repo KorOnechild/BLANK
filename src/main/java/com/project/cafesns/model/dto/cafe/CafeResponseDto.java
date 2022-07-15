@@ -9,14 +9,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class CafeResponseDto {
-    Long cafeId;
+    Long cafeid;
     String cafename;
     String address;
     String addressdetail;
     String zonenum;
 
     public CafeResponseDto(Cafe cafe){
-        this.cafeId = cafe.getId();
+        this.cafeid = cafe.getId();
         this.cafename = cafe.getAddress();
         this.address = cafe.getAddress();
         this.addressdetail = cafe.getAddressdetail();

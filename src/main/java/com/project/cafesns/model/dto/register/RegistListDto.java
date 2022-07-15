@@ -7,7 +7,7 @@ import lombok.Getter;
 @Builder
 @Getter
 public class RegistListDto {
-    private Long registerId;
+    private Long registerid;
     private String cafename;
     private String address;
     private String addressdetail;
