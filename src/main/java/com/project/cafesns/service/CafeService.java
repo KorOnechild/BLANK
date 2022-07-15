@@ -115,7 +115,7 @@ public class CafeService {
                     .result(true)
                     .message("카페 홈 조회에 성공했습니다.")
                     .data(CafeDetailDto.builder()
-                            .cafeId(cafe.getId())
+                            .cafeid(cafe.getId())
                             .delivery(cafe.getDelivery())
                             .intro(cafe.getIntro())
                             .notice(cafe.getNotice())
@@ -161,7 +161,7 @@ public class CafeService {
         for(Menu menu : menuList){
             menuListDtos.add(
                     MenuListDto.builder()
-                            .menuId(menu.getId())
+                            .menuid(menu.getId())
                             .category(menu.getCategory())
                             .menuname(menu.getMenuname())
                             .menuimg(menu.getMenuimg())

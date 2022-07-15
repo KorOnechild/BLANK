@@ -146,7 +146,7 @@ public class AdminService {
         for(Register register : registerList){
             registListDtos.add(
                     RegistListDto.builder()
-                            .registerId(register.getId())
+                            .registerid(register.getId())
                             .cafename(register.getCafename())
                             .address(register.getAddress())
                             .addressdetail(register.getAddressdetail())
