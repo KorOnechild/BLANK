@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface HashtagRepository extends JpaRepository<Hashtag, Long> {
-    void deleteAllByPost(Post post);
+    List<Hashtag> findAllByHashtagContains(String keyword);
 
     List<Hashtag> findAllByPost(Post post);
 
