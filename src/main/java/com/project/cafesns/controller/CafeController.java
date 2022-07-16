@@ -86,9 +86,9 @@ public class CafeController {
     }
 
     //검색
-    @GetMapping("/api/search")
-    public ResponseEntity<?> search(@RequestBody SearchRequestDto searchRequestDto){
-        return cafeService.search(searchRequestDto);
+    @GetMapping("/api/search/{keyword}")
+    public ResponseEntity<?> search(@PathVariable String keyword){
+        return cafeService.search(keyword);
     }
 }
 

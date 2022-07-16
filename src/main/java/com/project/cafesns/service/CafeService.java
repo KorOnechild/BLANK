@@ -288,25 +288,25 @@ public class CafeService {
 
     //검색
     //TODO : 아직 Stream 사용법을 몰라서 키워드마다 Repository조회를 안해도 될거같고, 굉장히 비효율적인것 같다 Stream공부해서 전체 리스트 한번만 조회받고 거기서 찾아내는 방식을 시도해보자
-    public ResponseEntity<?> search(SearchRequestDto searchRequestDto){
+    public ResponseEntity<?> search(String keyword){
         List<Cafe> cafeList = new ArrayList<>();
         //키워드가 카페 이름일 경우
-        if(!cafeRepository.findAllByCafenameContains(searchRequestDto.getKeyword()).isEmpty()){
-            cafeList = cafeRepository.findAllByCafenameContains(searchRequestDto.getKeyword());
+        if(!cafeRepository.findAllByCafenameContains(keyword).isEmpty()){
+            cafeList = cafeRepository.findAllByCafenameContains(keyword);
             return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("카페 이름을 통한 카페 검색").data(getSearchResult(cafeList)).build());
         }
         //키워드가 지역일 경우
-        if(!cafeRepository.findAllByAddressContains(searchRequestDto.getKeyword()).isEmpty()){
-            cafeList = cafeRepository.findAllByAddressContains(searchRequestDto.getKeyword());
+        if(!cafeRepository.findAllByAddressContains(keyword).isEmpty()){
+            cafeList = cafeRepository.findAllByAddressContains(keyword);
             return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("지역을 통한 카페 검색").data(getSearchResult(cafeList)).build());
-        } else if (!cafeRepository.findAllByAddressdetailContains(searchRequestDto.getKeyword()).isEmpty()) {
-            cafeList = cafeRepository.findAllByAddressdetailContains(searchRequestDto.getKeyword());
+        } else if (!cafeRepository.findAllByAddressdetailContains(keyword).isEmpty()) {
+            cafeList = cafeRepository.findAllByAddressdetailContains(keyword);
             return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("상세정보를 통한 카페 검색").data(getSearchResult(cafeList)).build());
         }
 
         //키워드가 해시태그일 경우
-        if(searchRequestDto.getKeyword().startsWith("#")){
-            List<Hashtag> hashtagList = hashtagRepository.findAllByHashtagContains(searchRequestDto.getKeyword());
+        if(keyword.startsWith("#")){
+            List<Hashtag> hashtagList = hashtagRepository.findAllByHashtagContains(keyword);
             List<Post> postList = new ArrayList<>();
 
             for(Hashtag hashtag : hashtagList){
