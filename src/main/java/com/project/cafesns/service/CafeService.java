@@ -7,7 +7,6 @@ import com.project.cafesns.jwt.UserInfoInJwt;
 import com.project.cafesns.model.dto.ResponseDto;
 import com.project.cafesns.model.dto.cafe.*;
 import com.project.cafesns.model.dto.search.SearchDto;
-import com.project.cafesns.model.dto.search.SearchRequestDto;
 import com.project.cafesns.model.entitiy.*;
 import com.project.cafesns.repository.*;
 import com.project.cafesns.s3.FileUploadService;
