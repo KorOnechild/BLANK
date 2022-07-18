@@ -53,7 +53,7 @@ public class Post extends Timestamped {
     private List<Like> likeList;
 
     public Post(PostRequestDto postRequestDto, User user, Cafe cafe){
-        this.contents = postRequestDto.getContent();
+        this.contents = postRequestDto.getContents();
         this.star = postRequestDto.getStar();
         this.user = user;
         this.cafe = cafe;

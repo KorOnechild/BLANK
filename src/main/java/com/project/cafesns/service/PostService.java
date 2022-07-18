@@ -56,7 +56,7 @@ public class PostService {
     public void updatePost(Long postId, PostPatchDto postPatchDto, Long userId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NullPointerException("해당 게시글이 존재하지 않습니다."));
         if(post.getUser().getId().equals(userId)){
-            post.changeContents(postPatchDto.getContent(),postPatchDto.getStar());
+            post.changeContents(postPatchDto.getContents(),postPatchDto.getStar());
             postRepository.save(post);
         }
         else {
