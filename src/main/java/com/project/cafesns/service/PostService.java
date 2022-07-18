@@ -31,12 +31,12 @@ public class PostService {
     private final HashtagRepository hashtagRepository;
 
     //게시글 작성
-    public void addPost(Long cafeId, List<MultipartFile> fileList, PostRequestDto postRequestDto, Long userId) {
+    public void addPost(Long cafeId, List<MultipartFile> files, PostRequestDto postRequestDto, Long userId) {
         Cafe cafe = cafeRepository.findById(cafeId).orElseThrow( () -> new NullPointerException("해당 카페가 존재하지 않습니다."));
         User user = userRepository.findById(userId).orElseThrow( () -> new NullPointerException("해당 유저가 존재하지 않습니다."));
         List<String>hashkeys = postRequestDto.getHashtag();
 
-        List<String> imageUrlList = fileUploadService.uploadImageList(fileList, "post");
+        List<String> imageUrlList = fileUploadService.uploadImageList(files, "post");
 
         Post post = new Post(postRequestDto,user,cafe);
         postRepository.save(post);

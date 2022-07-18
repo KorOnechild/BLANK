@@ -23,12 +23,12 @@ public class PostController {
     //게시글 작성
     @PostMapping("api/{cafeId}/posts")
     public ResponseEntity<?> addPost(@PathVariable Long cafeId,
-                                     @RequestPart(value = "file") List<MultipartFile> fileList,
+                                     @RequestPart(value = "files") List<MultipartFile> files,
                                      @RequestPart(value = "data") PostRequestDto postRequestDto,
                                      HttpServletRequest httpRequest) throws NoSuchAlgorithmException {
         userInfoInJwt.getUserInfo_InJwt(httpRequest.getHeader("Authorization"));
         Long userId = userInfoInJwt.getUserid();
-        postService.addPost(cafeId, fileList, postRequestDto,userId);
+        postService.addPost(cafeId, files, postRequestDto,userId);
         return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("게시글이 작성되었습니다.").build());
     }
 

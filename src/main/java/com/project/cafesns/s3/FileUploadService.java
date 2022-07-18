@@ -38,9 +38,9 @@ public class FileUploadService {
     }
 
     //여러개 파일 올리기
-    public List<String> uploadImageList(List<MultipartFile> fileList, String dirName){
+    public List<String> uploadImageList(List<MultipartFile> files, String dirName){
         List<String> imgUrlList = new ArrayList<>();
-        for(MultipartFile file : fileList){
+        for(MultipartFile file : files){
             if(file.isEmpty()){
                 throw new PostCreateException(ErrorCode.POST_CREATE_EXCEPTION);
             }
