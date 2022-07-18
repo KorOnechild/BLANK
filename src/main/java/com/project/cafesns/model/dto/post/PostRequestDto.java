@@ -12,5 +12,5 @@ import java.util.List;
 public class PostRequestDto {
     int star;
     List<String> hashtag;
-    String content;
+    String contents;
 }

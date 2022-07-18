@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class PostPatchDto {
-    String content;
+    String contents;
     int star;
 }
 
