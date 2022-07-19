@@ -149,6 +149,7 @@ public class PostListService {
         for(Comment comment : commentList){
             commentDtos.add(
                     CommentDto.builder()
+                    .commentid(comment.getId())
                     .profileimg(comment.getUser().getProfileimg())
                     .nickname(comment.getUser().getNickname())
                     .contents(comment.getContents())
