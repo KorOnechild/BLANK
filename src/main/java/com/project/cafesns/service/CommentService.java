@@ -2,7 +2,6 @@ package com.project.cafesns.service;
 
 import com.project.cafesns.error.ErrorCode;
 import com.project.cafesns.error.exceptions.allow.NotAllowedException;
-import com.project.cafesns.model.dto.comment.CommentDto;
 import com.project.cafesns.model.dto.comment.CommentRequestDto;
 import com.project.cafesns.model.entitiy.Comment;
 import com.project.cafesns.model.entitiy.Post;
@@ -23,13 +22,12 @@ public class CommentService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
 
-    public CommentDto addComment(Long postId, CommentRequestDto commentRequestDto, Long userId, String role) {
+    public Long addComment(Long postId, CommentRequestDto commentRequestDto, Long userId, String role) {
         userCheck(role);
         Post post = postRepository.findById(postId).orElseThrow(() -> new NullPointerException("해당 카페가 존재하지 않습니다."));
         User user = userRepository.findById(userId).orElseThrow(() -> new NullPointerException("해당 유저가 존재하지 않습니다."));
         Comment comment = new Comment(commentRequestDto, user, post);
-        Long commentid = commentRepository.save(comment).getId();
-        return CommentDto.builder().commentid(commentid).build();
+        return commentRepository.save(comment).getId();
     }
 
     @Transactional
