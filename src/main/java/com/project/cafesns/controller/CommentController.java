@@ -24,8 +24,8 @@ public class CommentController {
         userInfoInJwt.getUserInfo_InJwt(httpServletRequest.getHeader("Authorization"));
         Long userId = userInfoInJwt.getUserid();
         String role = userInfoInJwt.getRole();
-        Long commentid = commentService.addComment(postId,commentRequestDto,userId, role);
-        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("댓글이 작성되었습니다!").data(commentid).build());
+        commentService.addComment(postId,commentRequestDto,userId, role);
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("댓글이 작성되었습니다!").build());
     }
 
     //댓글 수정

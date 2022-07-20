@@ -22,13 +22,12 @@ public class CommentService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
 
-    public Long addComment(Long postId, CommentRequestDto commentRequestDto, Long userId, String role) {
+    public void addComment(Long postId, CommentRequestDto commentRequestDto, Long userId, String role) {
         userCheck(role);
         Post post = postRepository.findById(postId).orElseThrow(() -> new NullPointerException("해당 카페가 존재하지 않습니다."));
         User user = userRepository.findById(userId).orElseThrow(() -> new NullPointerException("해당 유저가 존재하지 않습니다."));
         Comment comment = new Comment(commentRequestDto, user, post);
         commentRepository.save(comment);
-        return comment.getId();
     }
 
     @Transactional
