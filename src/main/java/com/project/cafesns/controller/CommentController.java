@@ -3,6 +3,7 @@ package com.project.cafesns.controller;
 
 import com.project.cafesns.jwt.UserInfoInJwt;
 import com.project.cafesns.model.dto.ResponseDto;
+import com.project.cafesns.model.dto.comment.CommentDto;
 import com.project.cafesns.model.dto.comment.CommentRequestDto;
 import com.project.cafesns.service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class CommentController {
         Long userId = userInfoInJwt.getUserid();
         String role = userInfoInJwt.getRole();
         Long commentid = commentService.addComment(postId,commentRequestDto,userId, role);
-        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("댓글이 작성되었습니다!").data(commentid).build());
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("댓글이 작성되었습니다!").data(CommentDto.builder().commentid(commentid).build()).build());
     }
 
     //댓글 수정

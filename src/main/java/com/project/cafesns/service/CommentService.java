@@ -2,6 +2,7 @@ package com.project.cafesns.service;
 
 import com.project.cafesns.error.ErrorCode;
 import com.project.cafesns.error.exceptions.allow.NotAllowedException;
+import com.project.cafesns.model.dto.comment.CommentDto;
 import com.project.cafesns.model.dto.comment.CommentRequestDto;
 import com.project.cafesns.model.entitiy.Comment;
 import com.project.cafesns.model.entitiy.Post;
