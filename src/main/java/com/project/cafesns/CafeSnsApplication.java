@@ -10,14 +10,12 @@ import java.util.TimeZone;
 @EnableJpaAuditing
 @SpringBootApplication
 public class CafeSnsApplication {
-	@PostConstruct
-	void started() {
-		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
-	}
-
-
 	public static void main(String[] args) {
 		SpringApplication.run(CafeSnsApplication.class, args);
 	}
 
+	@PostConstruct
+	public void started() {
+		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
+	}
 }
