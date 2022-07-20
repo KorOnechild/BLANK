@@ -17,4 +17,5 @@ public class PostListDto {
     private int likecnt;
     private int commentCnt;
     private List<CommentDto> commentList;
+    private String contents;
 }

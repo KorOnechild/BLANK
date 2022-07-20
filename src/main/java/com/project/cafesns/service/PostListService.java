@@ -10,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -61,20 +64,21 @@ public class PostListService {
         List<PostListDto> PostListDtos = new ArrayList<>();
 
         for(Post post : postList){
-            String[] date = String.valueOf(post.getModifiedAt()).split("T");
+            String msg = timegap(post);
             PostListDtos.add(
                     PostListDto.builder().postid(post.getId())
-                    .nickname(post.getUser().getNickname())
-                    .image(getImageDtoList(post))
-                    .hashtagList(getHashtagDtoList(post))
-                    .modifiedAt((date[0] + " " + date[1]))
-                    .star(post.getStar())
-                    .likecnt(getLikeCnt(post))
-                    .commentCnt(getCommentCnt(post))
-                    .commentList(getCommentDtoList(post))
+                            .nickname(post.getUser().getNickname())
+                            .image(getImageDtoList(post))
+                            .hashtagList(getHashtagDtoList(post))
+                            .modifiedAt(msg)
+                            .star(post.getStar())
+                            .contents(post.getContents())
+                            .likecnt(getLikeCnt(post))
+                            .commentCnt(getCommentCnt(post))
+                            .commentList(getCommentDtoList(post))
                             .build());
         }
-        if(postList.isEmpty()){
+        if (postList.isEmpty()) {
             return ResponseEntity.ok().body(ResponseDto.builder().result(false).message("작성한 리뷰가 없습니다.").build());
         }
         return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("내가 쓴 리뷰 목록을 조회했습니다.").data(PostListDtos).build());
@@ -90,14 +94,15 @@ public class PostListService {
         List<PostListDto> postListDtos = new ArrayList<>();
 
         for(Post post : postList){
-            String[] date = String.valueOf(post.getModifiedAt()).split("T");
+            String msg=timegap(post);
             postListDtos.add(
                     PostListDto.builder()
                             .postid(post.getId())
                             .nickname(post.getUser().getNickname())
                             .image(getImageDtoList(post))
                             .hashtagList(getHashtagDtoList(post))
-                            .modifiedAt((date[0] + " " + date[1]))
+                            .modifiedAt(msg)
+                            .contents(post.getContents())
                             .star(post.getStar())
                             .likecnt(getLikeCnt(post))
                             .commentCnt(getCommentCnt(post))
@@ -172,6 +177,28 @@ public class PostListService {
             );
         }
         return mainPostListDtos;
+    }
+
+    public String timegap(Post post){
+        LocalDateTime date =post.getModifiedAt();
+        LocalDateTime localDateTime = LocalDateTime.now();
+        Duration duration = Duration.between(date,localDateTime);
+        Long testdate= duration.getSeconds();
+        String msg =null;
+        if(testdate<60){
+            msg=testdate+"초전";
+        } else if ((testdate/60)<60) {
+            msg=(testdate/60)+"분전";
+        } else if ((testdate/(60*60))<24) {
+            msg=(testdate/(60*60))+"시간전";
+        }else if ((testdate/(24*60*60))<30) {
+            msg=(testdate/(24*60*60))+"일전";
+        } else if ((testdate/(30*24*60*60))<365) {
+            msg=(testdate/(30*24*60*60))+"달전";
+        }else {
+            msg=(testdate/(30*24*60*60*365))+"년전";
+        }
+        return msg;
     }
 }
 
