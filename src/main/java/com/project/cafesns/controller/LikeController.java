@@ -37,7 +37,7 @@ public class LikeController {
     }
 
     //카페 상세페이지 게시글 좋아요 여부 목록
-    @PostMapping("/api/{cafeId}/like-list")
+    @GetMapping("/api/{cafeId}/like-list")
     public ResponseEntity<?> getCafeReviewsLikebyMe(HttpServletRequest httpServletRequest, @PathVariable Long cafeId){
         userInfoInJwt.getUserInfo_InJwt(httpServletRequest.getHeader("Authorization"));
         Long userId = userInfoInJwt.getUserid();
