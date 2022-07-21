@@ -44,6 +44,6 @@ public class Menu {
     public void changeMenu(ModifyMenuDto modifyMenuDto){
         this.category = modifyMenuDto.getCategory();
         this.menuname = modifyMenuDto.getMenuname();
-        this.menuprice = getMenuprice();
+        this.menuprice = modifyMenuDto.getMenuprice();
     }
 }
