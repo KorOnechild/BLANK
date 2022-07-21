@@ -43,6 +43,13 @@ public class LikeController {
         Long userId = userInfoInJwt.getUserid();
         return likeService.getCafeReviewsLikebyMe(cafeId, userId);
     }
+
     //마이페이지 게시글 좋아요 여부 목록
+    @GetMapping("/api/user/like-list")
+    public ResponseEntity<?> getMyReviewsLikebyMe(HttpServletRequest httpServletRequest){
+        userInfoInJwt.getUserInfo_InJwt(httpServletRequest.getHeader("Authorization"));
+        Long userId = userInfoInJwt.getUserid();
+        return likeService.getMyReviewsLikebyMe(userId);
+    }
 }
 

@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,12 +22,11 @@ import java.util.List;
 public class LikeService {
 
     private final UserRepository userRepository;
-
     private final LikeRepository likeRepository;
-
     private final PostRepository postRepository;
-
     private final CafeRepository cafeRepository;
+
+
 
     // 좋아요 체크 로직
     public ResponseEntity<?> checkLike(Long postId, Long userId) {//NosuchAlgorithmException 쓰는이유 : SHA256 함수 사용시 encrypt함수가있는데 이거 쓸때 예외처리 해주는 거에요
@@ -75,11 +73,23 @@ public class LikeService {
                 ()-> new NullPointerException("해당하는 카페가 없습니다.")
         );
 
-        List<Post> postList = postRepository.findAllByCafe(cafe);
+        List<Post> postList = postRepository.findAllByCafeOrderByModifiedAtDesc(cafe);
         List<LikeByMeDto> likeByMeDtos = new ArrayList<>();
         for(Post post : postList){
-             likeByMeDtos.add(LikeByMeDto.builder().like(likeRepository.existsByUserAndPost(user, post)).postid(post.getId()).build());
+             likeByMeDtos.add(LikeByMeDto.builder().postid(post.getId()).like(likeRepository.existsByUserAndPost(user, post)).build());
         }
         return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("카페 상세페이지 게시글 좋아요 여부 목록을 조회했습니다.").data(likeByMeDtos).build());
+    }
+
+    public ResponseEntity<?> getMyReviewsLikebyMe(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(
+                ()-> new NullPointerException("해당하는 유저가 없습니다.")
+        );
+        List<Post> postList = postRepository.findAllByUserOrderByModifiedAtDesc(user);
+        List<LikeByMeDto> likeByMeDtos = new ArrayList<>();
+        for(Post post : postList){
+            likeByMeDtos.add(LikeByMeDto.builder().postid(post.getId()).like(likeRepository.existsByUserAndPost(user, post)).build());
+        }
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("마이 페이지 게시글 좋아요 여부 목록을 조회했습니다.").data(likeByMeDtos).build());
     }
 }
