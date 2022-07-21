@@ -254,7 +254,12 @@ public class CafeService {
                     .build());
     }
 
-
+    //사장님 카페 폐업 기능
+    public void deletownecafe(Long userId) {
+        User owner = userRepository.findById(userId).orElseThrow( () -> new NullPointerException("해당 유저가 존재하지 않습니다."));
+        Cafe cafe = cafeRepository.findByUser(owner);
+        cafeRepository.deleteById(cafe.getId());
+    }
 
     //카페 유무 조회 로직
     public ResponseEntity<?> getCafeExist(){
