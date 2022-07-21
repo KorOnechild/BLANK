@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class LikeByMeListDto {
+public class LikeByMeDto {
     private Long postid;
     private boolean like;
 }
