@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -26,7 +25,7 @@ public class PostListService {
 
     private final CommentRepository commentRepository;
     private final LikeRepository likeRepository;
-    private final PostListRepository postListRepository;
+    private final PostRepository postListRepository;
     private final CafeRepository cafeRepository;
     private final ImageRepository imageRepository;
     private final UserRepository userRepository;
