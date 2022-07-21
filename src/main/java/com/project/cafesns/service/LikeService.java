@@ -1,11 +1,12 @@
 package com.project.cafesns.service;
 
-import com.project.cafesns.error.ErrorCode;
-import com.project.cafesns.error.exceptions.user.NotExistUserException;
 import com.project.cafesns.model.dto.ResponseDto;
+import com.project.cafesns.model.dto.like.LikeByMeDto;
+import com.project.cafesns.model.entitiy.Cafe;
 import com.project.cafesns.model.entitiy.Like;
 import com.project.cafesns.model.entitiy.Post;
 import com.project.cafesns.model.entitiy.User;
+import com.project.cafesns.repository.CafeRepository;
 import com.project.cafesns.repository.LikeRepository;
 import com.project.cafesns.repository.PostRepository;
 import com.project.cafesns.repository.UserRepository;
@@ -13,7 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.security.NoSuchAlgorithmException;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +27,8 @@ public class LikeService {
     private final LikeRepository likeRepository;
 
     private final PostRepository postRepository;
+
+    private final CafeRepository cafeRepository;
 
     // 좋아요 체크 로직
     public ResponseEntity<?> checkLike(Long postId, Long userId) {//NosuchAlgorithmException 쓰는이유 : SHA256 함수 사용시 encrypt함수가있는데 이거 쓸때 예외처리 해주는 거에요
@@ -60,4 +65,21 @@ public class LikeService {
         }
     }
 
+    //카페 상세페이지 게시글 좋아요 여부 목록
+    public ResponseEntity<?> getCafeReviewsLikebyMe(Long cafeId, Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(
+                ()-> new NullPointerException("해당하는 유저가 없습니다.")
+        );
+
+        Cafe cafe = cafeRepository.findById(cafeId).orElseThrow(
+                ()-> new NullPointerException("해당하는 카페가 없습니다.")
+        );
+
+        List<Post> postList = postRepository.findAllByCafe(cafe);
+        List<LikeByMeDto> likeByMeDtos = new ArrayList<>();
+        for(Post post : postList){
+             likeByMeDtos.add(LikeByMeDto.builder().like(likeRepository.existsByUserAndPost(user, post)).postid(post.getId()).build());
+        }
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("카페 상세페이지 게시글 좋아요 여부 목록을 조회했습니다.").data(likeByMeDtos).build());
+    }
 }
