@@ -3,12 +3,11 @@ package com.project.cafesns.model.dto.cafe;
 import lombok.Builder;
 import lombok.Getter;
 
-@Getter
+import java.util.List;
+
 @Builder
+@Getter
 public class MenuListDto {
-    private Long menuid;
-    private String category;
-    private String menuname;
-    private String menuimg;
-    private int menuprice;
+    private List<MenuDto> drink;
+    private List<MenuDto> dessert;
 }

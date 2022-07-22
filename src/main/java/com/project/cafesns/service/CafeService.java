@@ -93,9 +93,7 @@ public class CafeService {
         return ResponseEntity.ok().body(ResponseDto.builder()
                 .result(true)
                 .message("메뉴 조회에 성공했습니다.")
-                .data(CafeMenusDto.builder()
-                        .menuList(getMenuListDto(menuList))
-                        .build())
+                .data(getMenuListDto(menuList))
                 .build());
     }
 
@@ -146,27 +144,35 @@ public class CafeService {
             return ResponseEntity.ok().body(ResponseDto.builder()
                     .result(true)
                     .message("메뉴 조회에 성공했습니다.")
-                    .data(CafeMenusDto.builder()
-                            .menuList(getMenuListDto(menuList))
-                            .build())
+                    .data(getMenuListDto(menuList))
                     .build());
         }
 
     //menuListDto 생성 함수
-    public List<MenuListDto> getMenuListDto(List<Menu> menuList){
-        List<MenuListDto> menuListDtos = new ArrayList<>();
+    public MenuListDto getMenuListDto(List<Menu> menuList){
+
+        List<MenuDto> drinkList = new ArrayList<>();
+        List<MenuDto> dessertList = new ArrayList<>();
 
         for(Menu menu : menuList){
-            menuListDtos.add(
-                    MenuListDto.builder()
-                            .menuid(menu.getId())
-                            .category(menu.getCategory())
-                            .menuname(menu.getMenuname())
-                            .menuimg(menu.getMenuimg())
-                            .menuprice(menu.getMenuprice())
-                            .build());
+            if(menu.getCategory().equals("drink")){
+                drinkList.add(MenuDto.builder()
+                        .menuid(menu.getId())
+                        .menuname(menu.getMenuname())
+                        .menuimg(menu.getMenuimg())
+                        .menuprice(menu.getMenuprice())
+                        .build());
+            }else{
+                dessertList.add(
+                        MenuDto.builder()
+                                .menuid(menu.getId())
+                                .menuname(menu.getMenuname())
+                                .menuimg(menu.getMenuimg())
+                                .menuprice(menu.getMenuprice())
+                                .build());
+            }
         }
-        return menuListDtos;
+        return MenuListDto.builder().drink(drinkList).dessert(dessertList).build();
     }
 
     // 사장님 카페 홈 정보 수정
