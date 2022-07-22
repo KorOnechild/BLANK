@@ -19,7 +19,7 @@ import java.util.UUID;
 public class JwtTokenProvider {
 
     private String SECRET_KEY = "sec";
-    private final long ACCESS_TOKEN_VALID_TIME = 5 * 1000L;   //  5초
+    private final long ACCESS_TOKEN_VALID_TIME = 60 * 60 * 1000L;   //  1시간
     private final long REFRESH_TOKEN_VALID_TIME = 7 * 24 * 60 * 60 * 1000L;   // 7일
 
     @PostConstruct
