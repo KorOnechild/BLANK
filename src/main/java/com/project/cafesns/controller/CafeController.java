@@ -1,6 +1,8 @@
 package com.project.cafesns.controller;
 
 
+import com.project.cafesns.jwt.UserInfoInJwt;
+import com.project.cafesns.model.dto.ResponseDto;
 import com.project.cafesns.model.dto.cafe.ModifyCafeRequestDto;
 import com.project.cafesns.model.dto.cafe.ModifyMenuDto;
 import com.project.cafesns.model.dto.cafe.RegistMenuRequestDto;
@@ -17,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 public class CafeController {
 
     private final CafeService cafeService;
+
+    private final UserInfoInJwt userInfoInJwt;
 
     // 카페 상세 페이지 배너 조회
     @GetMapping("/api/cafes/{cafeId}")
@@ -77,7 +81,14 @@ public class CafeController {
                                             @PathVariable Long menuId) {
         return cafeService.deleteMenu(httpServletRequest, menuId);
     }
-
+    //사장님 카페 폐업 기능
+    @DeleteMapping("/api/owner")
+    public ResponseEntity<?> deleteowncafe(HttpServletRequest httpRequest) {
+        userInfoInJwt.getUserInfo_InJwt(httpRequest.getHeader("Authorization"));
+        Long userId = userInfoInJwt.getUserid();
+        cafeService.deletownecafe(userId);
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("카페 삭제에 성공헀습니다").build());
+    }
     //카페 유무 조회
     @GetMapping("/api/cafes")
     public ResponseEntity<?> getCafeExist(){
@@ -89,5 +100,6 @@ public class CafeController {
     public ResponseEntity<?> search(@PathVariable String keyword){
         return cafeService.search(keyword);
     }
+
 }
 

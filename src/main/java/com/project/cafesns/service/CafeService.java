@@ -139,7 +139,8 @@ public class CafeService {
                 () -> new NotExistUserException(ErrorCode.NOT_EXIST_USER_EXCEPTION)
         );
         Cafe cafe = cafeRepository.findByUser(user);
-        if(user.getId().equals(cafe.getUser().getId())){
+
+        ownerCheck(user,cafe);
             List<Menu> menuList = menuRepository.findAllByCafe(cafe);
 
             return ResponseEntity.ok().body(ResponseDto.builder()
@@ -149,10 +150,7 @@ public class CafeService {
                             .menuList(getMenuListDto(menuList))
                             .build())
                     .build());
-        }else{
-            throw new NotAllowedException(ErrorCode.NOT_ALLOWED_EXCEPTION);
         }
-    }
 
     //menuListDto 생성 함수
     public List<MenuListDto> getMenuListDto(List<Menu> menuList){
@@ -182,7 +180,7 @@ public class CafeService {
         );
         Cafe cafe = cafeRepository.findByUser(user);
 
-        if(user.getId().equals(cafe.getUser().getId())){
+        ownerCheck(user,cafe);
             cafe.changeCafe(modifyCafeRequestDto);
             cafeRepository.save(cafe);
 
@@ -190,9 +188,6 @@ public class CafeService {
                     .result(true)
                     .message("카페 홈 수정에 성공했습니다.")
                     .build());
-        }else{
-            throw new NotAllowedException(ErrorCode.NOT_ALLOWED_EXCEPTION);
-        }
     }
 
     // 사장님 카페 메뉴 등록
@@ -204,16 +199,13 @@ public class CafeService {
         );
         Cafe cafe = cafeRepository.findByUser(user);
 
-        if(user.getId().equals(cafe.getUser().getId())){
+        ownerCheck(user,cafe);
             String munuImg = fileUploadService.uploadImage(file, "menu");
             menuRepository.save(Menu.builder().registMenuRequestDto(registMenuRequestDto).menuimg(munuImg).cafe(cafe).build());
             return ResponseEntity.ok().body(ResponseDto.builder().
                     result(true).
                     message("메뉴가 정상적으로 등록되었습니다.").
                     build());
-        }else{
-            throw new NotAllowedException(ErrorCode.NOT_ALLOWED_EXCEPTION);
-        }
     }
 
     // 사장님 카페 메뉴 수정
@@ -228,16 +220,13 @@ public class CafeService {
         Menu menu = menuRepository.findById(menuId).orElseThrow(
                 () -> new NullPointerException("존재하지 않는 메뉴입니다.")
         );
-        if(user.getId().equals(cafe.getUser().getId())){
+            ownerCheck(user,cafe);
             menu.changeMenu(modifyMenuDto);
             menuRepository.save(menu);
             return ResponseEntity.ok().body(ResponseDto.builder()
                     .result(true)
                     .message("메뉴 수정에 성공했습니다")
                     .build());
-        }else{
-            throw new NotAllowedException(ErrorCode.NOT_ALLOWED_EXCEPTION);
-        }
     }
 
     // 사장님 카페 메뉴 삭제
@@ -250,7 +239,8 @@ public class CafeService {
         );
         Cafe cafe = cafeRepository.findByUser(user);
 
-        if(user.getId().equals(cafe.getUser().getId())){ // 본인 카페인지 확인하는 로직도 필요할 것 / 사장님인데 본인의 카페가 아닌경우
+       // 본인 카페인지 확인하는 로직도 필요할 것 / 사장님인데 본인의 카페가 아닌경우
+            ownerCheck(user,cafe);
             Menu menu = menuRepository.findById(menuId).orElseThrow(
                     () -> new NullPointerException("존재하지 않는 메뉴입니다.")
             );
@@ -262,9 +252,13 @@ public class CafeService {
                     .result(true)
                     .message("메뉴가 정상적으로 삭제되었습니다.")
                     .build());
-        }else{
-            throw new NotAllowedException(ErrorCode.NOT_ALLOWED_EXCEPTION);
-        }
+    }
+
+    //사장님 카페 폐업 기능
+    public void deletownecafe(Long userId) {
+        User owner = userRepository.findById(userId).orElseThrow( () -> new NullPointerException("해당 유저가 존재하지 않습니다."));
+        Cafe cafe = cafeRepository.findByUser(owner);
+        cafeRepository.deleteById(cafe.getId());
     }
 
     //카페 유무 조회 로직
@@ -347,6 +341,12 @@ public class CafeService {
         return postList.isEmpty() ? 0F : sumStar / postList.size();
     }
 
+    //카페 사장 명의 확인 로직
+    public void ownerCheck(User user, Cafe cafe){
+        if(!user.getId().equals(cafe.getUser().getId())){
+            throw new NotAllowedException(ErrorCode.NOT_ALLOWED_EXCEPTION);
+        }
+    }
 }
 
 
