@@ -22,4 +22,9 @@ public class KakaoOauth {
         response.sendRedirect(redirect_uri);
     }
 
+    @GetMapping("/api/naver/auth")
+    public void test(@RequestParam ("code") String code,@RequestParam ("state") String state){
+        System.out.println(code);
+        System.out.println(state);
+    }
 }
