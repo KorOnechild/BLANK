@@ -25,7 +25,7 @@ public class PostController {
     public ResponseEntity<?> addPost(@PathVariable Long cafeId,
                                      @RequestPart(value = "files") List<MultipartFile> files,
                                      @RequestPart(value = "data") PostRequestDto postRequestDto,
-                                     HttpServletRequest httpRequest) throws NoSuchAlgorithmException {
+                                     HttpServletRequest httpRequest) {
         userInfoInJwt.getUserInfo_InJwt(httpRequest.getHeader("Authorization"));
         Long userId = userInfoInJwt.getUserid();
         postService.addPost(cafeId, files, postRequestDto,userId);
