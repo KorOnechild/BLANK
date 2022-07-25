@@ -6,6 +6,11 @@ import com.project.cafesns.error.exceptions.user.NotExistUserException;
 import com.project.cafesns.jwt.UserInfoInJwt;
 import com.project.cafesns.model.dto.ResponseDto;
 import com.project.cafesns.model.dto.cafe.*;
+import com.project.cafesns.model.dto.menu.MenuDto;
+import com.project.cafesns.model.dto.menu.MenuListDto;
+import com.project.cafesns.model.dto.cafe.ModifyCafeRequestDto;
+import com.project.cafesns.model.dto.menu.ModifyMenuDto;
+import com.project.cafesns.model.dto.menu.RegistMenuRequestDto;
 import com.project.cafesns.model.dto.search.SearchDto;
 import com.project.cafesns.model.entitiy.*;
 import com.project.cafesns.repository.*;
@@ -178,7 +183,7 @@ public class CafeService {
     // 사장님 카페 홈 정보 수정
     //TODO : 변경 안된값은 그대로 보내줌
     @Transactional
-    public ResponseEntity<?> modifyCafe(HttpServletRequest httpServletRequest,ModifyCafeRequestDto modifyCafeRequestDto) {
+    public ResponseEntity<?> modifyCafe(HttpServletRequest httpServletRequest, ModifyCafeRequestDto modifyCafeRequestDto) {
         userInfoInJwt.getUserInfo_InJwt(httpServletRequest.getHeader("Authorization"));
 
         User user = userRepository.findById(userInfoInJwt.getUserid()).orElseThrow(
@@ -206,11 +211,12 @@ public class CafeService {
         Cafe cafe = cafeRepository.findByUser(user);
 
         ownerCheck(user,cafe);
-            String munuImg = fileUploadService.uploadImage(file, "menu");
-            menuRepository.save(Menu.builder().registMenuRequestDto(registMenuRequestDto).menuimg(munuImg).cafe(cafe).build());
+            String menuImg = fileUploadService.uploadImage(file, "menu");
+            Long menuid = menuRepository.save(Menu.builder().registMenuRequestDto(registMenuRequestDto).menuimg(menuImg).cafe(cafe).build()).getId();
             return ResponseEntity.ok().body(ResponseDto.builder().
                     result(true).
                     message("메뉴가 정상적으로 등록되었습니다.").
+                    data(MenuDto.builder().menuid(menuid).menuimg(menuImg).build()).
                     build());
     }
 
