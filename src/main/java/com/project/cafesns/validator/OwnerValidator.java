@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class OwnerValidator {
     //사장 유저인지 체크 로직
     public void ownerCheck(String role){
-        if(!role.equals("ower")){
+        if(!role.equals("owner")){
             throw new NotAllowedException(ErrorCode.NOT_ALLOWED_EXCEPTION);
         }
     }
