@@ -12,6 +12,7 @@ public class UserValidator {
 
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+
     public boolean checkDubpEmail(String email) {
         return userRepository.existsByEmail(email);
     }

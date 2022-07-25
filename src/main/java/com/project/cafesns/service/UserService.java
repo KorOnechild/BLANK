@@ -109,7 +109,6 @@ public class UserService {
     public ResponseEntity<?> signout(HttpServletRequest httpServletRequest) {
         userInfoInJwt.getUserInfo_InJwt(httpServletRequest.getHeader("Authorization"));
 
-
         User user = userRepository.findById(userInfoInJwt.getUserid()).orElseThrow(
                 ()-> new NullPointerException("사용자 정보가 없습니다.")
         );
