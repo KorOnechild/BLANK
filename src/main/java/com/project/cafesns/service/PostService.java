@@ -1,12 +1,11 @@
 package com.project.cafesns.service;
 
-import com.project.cafesns.error.ErrorCode;
-import com.project.cafesns.error.exceptions.allow.NotAllowedException;
 import com.project.cafesns.model.dto.post.PostPatchDto;
 import com.project.cafesns.model.dto.post.PostRequestDto;
 import com.project.cafesns.model.entitiy.*;
 import com.project.cafesns.repository.*;
 import com.project.cafesns.s3.FileUploadService;
+import com.project.cafesns.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,10 +29,13 @@ public class PostService {
 
     private final HashtagRepository hashtagRepository;
 
+    private final UserValidator userValidator;
+
     //게시글 작성
-    public void addPost(Long cafeId, List<MultipartFile> files, PostRequestDto postRequestDto, Long userId) {
+    public void addPost(Long cafeId, List<MultipartFile> files, PostRequestDto postRequestDto, Long userId, String role) {
         Cafe cafe = cafeRepository.findById(cafeId).orElseThrow( () -> new NullPointerException("해당 카페가 존재하지 않습니다."));
         User user = userRepository.findById(userId).orElseThrow( () -> new NullPointerException("해당 유저가 존재하지 않습니다."));
+        userValidator.userCheck(role);
         List<String>hashkeys = postRequestDto.getHashtag();
 
         List<String> imageUrlList = fileUploadService.uploadImageList(files, "post");
@@ -53,28 +55,23 @@ public class PostService {
 
     @Transactional
     //게시글 수정
-    public void updatePost(Long postId, PostPatchDto postPatchDto, Long userId) {
+    public void updatePost(Long postId, PostPatchDto postPatchDto, Long userId, String role) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NullPointerException("해당 게시글이 존재하지 않습니다."));
-        if(post.getUser().getId().equals(userId)){
+        userValidator.userCheck(role);
+        userValidator.authorCheck(postId,userId);
             post.changeContents(postPatchDto.getContents(),postPatchDto.getStar());
             postRepository.save(post);
-        }
-        else {
-            throw new NotAllowedException(ErrorCode.NOT_ALLOWED_EXCEPTION);
-        }
+
     }
 
     @Transactional
     //게시글 삭제
-    public void deletePost(Long postId, Long userId) {
+    public void deletePost(Long postId, Long userId, String role) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NullPointerException("해당 게시글이 존재하지 않습니다."));
-        if(post.getUser().getId().equals(userId)){
+        userValidator.userCheck(role);
+        userValidator.authorCheck(postId,userId);
             deleteImage(post);
             postRepository.deleteById(post.getId());
-        }
-        else {
-            throw new NotAllowedException(ErrorCode.NOT_ALLOWED_EXCEPTION);
-        }
     }
 
     //연관 관계 맺어져 있는 데이터들 삭제하는 함수

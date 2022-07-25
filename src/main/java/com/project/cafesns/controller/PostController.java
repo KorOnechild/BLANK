@@ -28,7 +28,8 @@ public class PostController {
                                      HttpServletRequest httpRequest) {
         userInfoInJwt.getUserInfo_InJwt(httpRequest.getHeader("Authorization"));
         Long userId = userInfoInJwt.getUserid();
-        postService.addPost(cafeId, files, postRequestDto,userId);
+        String role = userInfoInJwt.getRole();
+        postService.addPost(cafeId, files, postRequestDto,userId,role);
         return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("게시글이 작성되었습니다.").build());
     }
 
@@ -37,7 +38,8 @@ public class PostController {
     public ResponseEntity<?> updatePost(@PathVariable Long postId, @RequestBody PostPatchDto postPatchDto, HttpServletRequest httpRequest){
         userInfoInJwt.getUserInfo_InJwt(httpRequest.getHeader("Authorization"));
         Long userId = userInfoInJwt.getUserid();
-        postService.updatePost(postId,postPatchDto,userId);
+        String role = userInfoInJwt.getRole();
+        postService.updatePost(postId,postPatchDto,userId,role);
         return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("게시글이 수정에 성공했습니다.").build());
     }
 
@@ -46,7 +48,8 @@ public class PostController {
     public ResponseEntity<?>  deletePost(@PathVariable Long postId, HttpServletRequest httpRequest){
         userInfoInJwt.getUserInfo_InJwt(httpRequest.getHeader("Authorization"));
         Long userId = userInfoInJwt.getUserid();
-        postService.deletePost(postId,userId);
+        String role = userInfoInJwt.getRole();
+        postService.deletePost(postId,userId,role);
         return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("게시글이 삭제되었습니다.").build());
     }
 }

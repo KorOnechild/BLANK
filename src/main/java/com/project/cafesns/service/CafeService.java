@@ -1,20 +1,19 @@
 package com.project.cafesns.service;
 
 import com.project.cafesns.error.ErrorCode;
-import com.project.cafesns.error.exceptions.allow.NotAllowedException;
 import com.project.cafesns.error.exceptions.user.NotExistUserException;
 import com.project.cafesns.jwt.UserInfoInJwt;
 import com.project.cafesns.model.dto.ResponseDto;
 import com.project.cafesns.model.dto.cafe.*;
 import com.project.cafesns.model.dto.menu.MenuDto;
 import com.project.cafesns.model.dto.menu.MenuListDto;
-import com.project.cafesns.model.dto.cafe.ModifyCafeRequestDto;
 import com.project.cafesns.model.dto.menu.ModifyMenuDto;
 import com.project.cafesns.model.dto.menu.RegistMenuRequestDto;
 import com.project.cafesns.model.dto.search.SearchDto;
 import com.project.cafesns.model.entitiy.*;
 import com.project.cafesns.repository.*;
 import com.project.cafesns.s3.FileUploadService;
+import com.project.cafesns.validator.OwnerValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -37,6 +36,8 @@ public class CafeService {
     private final MenuRepository menuRepository;
     private final UserRepository userRepository;
     private final HashtagRepository hashtagRepository;
+
+    private final OwnerValidator ownerValidator;
 
     // 카페 상세 페이지 배너조회
     public ResponseEntity<?> getBanner(Long cafeId) {
@@ -112,8 +113,8 @@ public class CafeService {
         );
 
         Cafe cafe = cafeRepository.findByUser(user);
-
-        if(user.getRole().equals("owner")){
+        String role = userInfoInJwt.getRole();
+        ownerValidator.ownerCheck(role);
             return ResponseEntity.ok().body(ResponseDto.builder()
                     .result(true)
                     .message("카페 홈 조회에 성공했습니다.")
@@ -129,9 +130,7 @@ public class CafeService {
                             .longitude(cafe.getLongitude())
                             .build())
                     .build());
-        }else{
-            throw new NotAllowedException(ErrorCode.NOT_ALLOWED_EXCEPTION);
-        }
+
     }
 
     // 사장님 카페 메뉴 조회
@@ -143,7 +142,7 @@ public class CafeService {
         );
         Cafe cafe = cafeRepository.findByUser(user);
 
-        ownerCheck(user,cafe);
+        ownerValidator.ownerShipCheck(user,cafe);
             List<Menu> menuList = menuRepository.findAllByCafe(cafe);
 
             return ResponseEntity.ok().body(ResponseDto.builder()
@@ -191,7 +190,7 @@ public class CafeService {
         );
         Cafe cafe = cafeRepository.findByUser(user);
 
-        ownerCheck(user,cafe);
+        ownerValidator.ownerShipCheck(user,cafe);
             cafe.changeCafe(modifyCafeRequestDto);
             cafeRepository.save(cafe);
 
@@ -210,7 +209,7 @@ public class CafeService {
         );
         Cafe cafe = cafeRepository.findByUser(user);
 
-        ownerCheck(user,cafe);
+        ownerValidator.ownerShipCheck(user,cafe);
 
         String menuImg = fileUploadService.uploadImage(file, "menu");
         Menu menu = Menu.builder().registMenuRequestDto(registMenuRequestDto).menuimg(menuImg).cafe(cafe).build();
@@ -235,7 +234,7 @@ public class CafeService {
         Menu menu = menuRepository.findById(menuId).orElseThrow(
                 () -> new NullPointerException("존재하지 않는 메뉴입니다.")
         );
-            ownerCheck(user,cafe);
+            ownerValidator.ownerShipCheck(user,cafe);
             menu.changeMenu(modifyMenuDto);
             menuRepository.save(menu);
             return ResponseEntity.ok().body(ResponseDto.builder()
@@ -255,7 +254,7 @@ public class CafeService {
         Cafe cafe = cafeRepository.findByUser(user);
 
        // 본인 카페인지 확인하는 로직도 필요할 것 / 사장님인데 본인의 카페가 아닌경우
-            ownerCheck(user,cafe);
+            ownerValidator.ownerShipCheck(user,cafe);
             Menu menu = menuRepository.findById(menuId).orElseThrow(
                     () -> new NullPointerException("존재하지 않는 메뉴입니다.")
             );
@@ -354,13 +353,6 @@ public class CafeService {
             sumStar += post.getStar();
         }
         return postList.isEmpty() ? 0F : sumStar / postList.size();
-    }
-
-    //카페 사장 명의 확인 로직
-    public void ownerCheck(User user, Cafe cafe){
-        if(!user.getId().equals(cafe.getUser().getId())){
-            throw new NotAllowedException(ErrorCode.NOT_ALLOWED_EXCEPTION);
-        }
     }
 }
 

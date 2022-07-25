@@ -1,7 +1,5 @@
 package com.project.cafesns.service;
 
-import com.project.cafesns.error.ErrorCode;
-import com.project.cafesns.error.exceptions.allow.NotAllowedException;
 import com.project.cafesns.jwt.UserInfoInJwt;
 import com.project.cafesns.model.dto.ResponseDto;
 import com.project.cafesns.model.dto.cafe.CafeResponseDto;
@@ -14,6 +12,7 @@ import com.project.cafesns.model.entitiy.Register;
 import com.project.cafesns.repository.CafeRepository;
 import com.project.cafesns.repository.PostRepository;
 import com.project.cafesns.repository.RegisterRepository;
+import com.project.cafesns.validator.AdminValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -38,9 +37,10 @@ public class AdminService {
 
     private final PostRepository postRepository;
 
+    private final AdminValidator adminValidator;
     //승인목록조회
     public List<RegisterResponseDto> readok(String userRole) {
-        adminCheck(userRole);
+        adminValidator.adminCheck(userRole);
         List<Register> registers = registerRepository.findAllByPermit(true);
         List<RegisterResponseDto> dtos = new ArrayList<>();
         for (Register register : registers) {
@@ -51,7 +51,7 @@ public class AdminService {
     }
     //거절목록조회
     public List<RegisterResponseDto> readno(String userRole) {
-        adminCheck(userRole);
+        adminValidator.adminCheck(userRole);
         List<Register> registers = registerRepository.findAllByPermit(false);
         List<RegisterResponseDto> dtos = new ArrayList<>();
         for (Register register : registers) {
@@ -64,7 +64,7 @@ public class AdminService {
     @Transactional
     //신청 permit 변경부분분
     public void permitset(Long registerId, Boolean permit, String userRole) {
-        adminCheck(userRole);
+        adminValidator.adminCheck(userRole);
         Register register = registerRepository.findById(registerId).orElseThrow( () -> new NullPointerException("존재하지않는 신청입니다"));
 
         if(permit){
@@ -79,7 +79,7 @@ public class AdminService {
 
     //관리자 카페생성승인
     public void addcafe(Long registerId, String userRole) {
-        adminCheck(userRole);
+        adminValidator.adminCheck(userRole);
         Register register = registerRepository.findById(registerId).orElseThrow( () -> new NullPointerException("존재하지않는 신청입니다"));
         if(cafeRepository.existsByAddressAndCafename(register.getAddress(),register.getCafename())){
             //이미존재하는 카페 엑셉션
@@ -92,7 +92,7 @@ public class AdminService {
     @Transactional
     // 관리자승인 카페 삭제
     public void deletecafe(Long cafeId, String userRole) {
-        adminCheck(userRole);
+        adminValidator.adminCheck(userRole);
         Cafe cafe = cafeRepository.findById(cafeId).orElseThrow( () -> new NullPointerException("존재하지않는 카페입니다"));
         List<Post> posts = postRepository.findAllByCafe(cafe);
         for(Post post: posts) {
@@ -103,7 +103,7 @@ public class AdminService {
 
     //등록된 카페 모두 조회
     public List<CafeResponseDto> showcafe(String userRole) {
-        adminCheck(userRole);
+        adminValidator.adminCheck(userRole);
         List<Cafe>cafeList = cafeRepository.findAll();
         List<CafeResponseDto>adminlist = new ArrayList<>();
         for(Cafe cafe:cafeList){
@@ -116,8 +116,7 @@ public class AdminService {
     // 관리자 미처리 목록 조회
     public ResponseEntity<?> getApplyList(HttpServletRequest httpServletRequest) {
         userInfoInJwt.getUserInfo_InJwt(httpServletRequest.getHeader("Authorization"));
-
-        if(userInfoInJwt.getRole().equals("admin")){
+        adminValidator.adminCheck(userInfoInJwt.getRole());
             List<Register> registerList = registerRepository.findAllByPermit(null);
             return ResponseEntity.ok().body(ResponseDto.builder()
                     .result(true)
@@ -126,17 +125,7 @@ public class AdminService {
                             .registerList(getRegistListDto(registerList))
                             .build())
                     .build());
-        }else{
-            throw new NotAllowedException(ErrorCode.NOT_ALLOWED_EXCEPTION);
-        }
-    }
 
-
-    // 관리자 체크 로직
-    public void adminCheck(String userRole){
-        if(!userRole.equals("admin")){
-            throw new NotAllowedException(ErrorCode.NOT_ALLOWED_EXCEPTION);//관리자 권한 엑셉션
-        }
     }
 
     //registListDto 생성 함수
