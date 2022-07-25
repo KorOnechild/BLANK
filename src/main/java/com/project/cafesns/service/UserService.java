@@ -3,8 +3,6 @@ package com.project.cafesns.service;
 import com.project.cafesns.encoder.SHA256;
 import com.project.cafesns.error.ErrorCode;
 import com.project.cafesns.error.exceptions.token.NotExistTokenException;
-import com.project.cafesns.error.exceptions.user.EmailDupblicateException;
-import com.project.cafesns.error.exceptions.user.NicknameDubplicateException;
 import com.project.cafesns.error.exceptions.user.NotmatchUserException;
 import com.project.cafesns.jwt.JwtTokenProvider;
 import com.project.cafesns.jwt.UserInfoInJwt;
@@ -14,6 +12,7 @@ import com.project.cafesns.model.entitiy.RefreshToken;
 import com.project.cafesns.model.entitiy.User;
 import com.project.cafesns.repository.RefreshTokenRepository;
 import com.project.cafesns.repository.UserRepository;
+import com.project.cafesns.s3.AwsS3UploadService;
 import com.project.cafesns.s3.FileUploadService;
 import com.project.cafesns.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +29,7 @@ import java.security.NoSuchAlgorithmException;
 public class UserService {
     //aws S3
     private final FileUploadService fileUploadService;
+    private final AwsS3UploadService s3Service;
 
     //validator
     private final UserValidator userValidator;
@@ -47,20 +47,32 @@ public class UserService {
     //TODO : 별로 효율적인 코드같지 않아서 수정할것
     public ResponseEntity<?> signup(MultipartFile file, SignupRequestDto signupRequestDto) throws NoSuchAlgorithmException {
 
-        if(userValidator.checkDubpEmail(signupRequestDto.getEmail())){
-            throw new EmailDupblicateException(ErrorCode.EMAIL_DUBP_EXCEPTION);
-        }else if(userValidator.checkDubpNickname(signupRequestDto.getNickname())){
-            throw new NicknameDubplicateException(ErrorCode.NICKNAME_DUBP_EXCEPTION);
-        }else{
-            String encodedPw = SHA256.encrypt(signupRequestDto.getPassword());
-            if(signupRequestDto.getRole().equals("user")){
-                String profileimg = fileUploadService.uploadImage(file, "profile");
-                User user = User.builder().signupRequestDto(signupRequestDto).encodedPw(encodedPw).profileimg(profileimg).logoimg("").build();
+        userValidator.checkDubpEmail(signupRequestDto.getEmail());
+        userValidator.checkDubpNickname(signupRequestDto.getNickname());
+
+        String encodedPW = SHA256.encrypt(signupRequestDto.getPassword());
+
+        if (file == null) {
+            if (signupRequestDto.getRole().equals("user")) {
+                String profileimg = s3Service.getFileUrl("profile/basicprofile.png");
+                User user = User.builder().signupRequestDto(signupRequestDto).encodedPw(encodedPW).profileimg(profileimg).logoimg("").build();
                 userRepository.save(user);
                 return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("회원가입에 성공했습니다.").build());
-            }else{
+            } else {
+                String logoimg = s3Service.getFileUrl("logo/basiclogo.png");
+                User user = User.builder().signupRequestDto(signupRequestDto).encodedPw(encodedPW).profileimg("").logoimg(logoimg).build();
+                userRepository.save(user);
+                return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("회원가입에 성공했습니다.").build());
+            }
+        }else{
+            if (signupRequestDto.getRole().equals("user")) {
+                String profileimg = fileUploadService.uploadImage(file, "profile");
+                User user = User.builder().signupRequestDto(signupRequestDto).encodedPw(encodedPW).profileimg(profileimg).logoimg("").build();
+                userRepository.save(user);
+                return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("회원가입에 성공했습니다.").build());
+            } else {
                 String logoimg = fileUploadService.uploadImage(file, "logo");
-                User user = User.builder().signupRequestDto(signupRequestDto).encodedPw(encodedPw).profileimg("").logoimg(logoimg).build();
+                User user = User.builder().signupRequestDto(signupRequestDto).encodedPw(encodedPW).profileimg("").logoimg(logoimg).build();
                 userRepository.save(user);
                 return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("회원가입에 성공했습니다.").build());
             }
@@ -108,6 +120,7 @@ public class UserService {
     @Transactional
     public ResponseEntity<?> signout(HttpServletRequest httpServletRequest) {
         userInfoInJwt.getUserInfo_InJwt(httpServletRequest.getHeader("Authorization"));
+
 
         User user = userRepository.findById(userInfoInJwt.getUserid()).orElseThrow(
                 ()-> new NullPointerException("사용자 정보가 없습니다.")

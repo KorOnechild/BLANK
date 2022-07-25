@@ -25,7 +25,12 @@ public class UserController {
     @PostMapping("/api/user/signup")
     public ResponseEntity<?> signup(@RequestPart(value = "file", required = false) MultipartFile file,
                                     @RequestPart(value = "data") SignupRequestDto signupRequestDto) throws NoSuchAlgorithmException, RuntimeException {
-        return userService.signup(file, signupRequestDto);
+        if(file.isEmpty()){
+            return userService.signup(null, signupRequestDto);
+        }else{
+            return userService.signup(file, signupRequestDto);
+        }
+
     }
 
     //로그인
