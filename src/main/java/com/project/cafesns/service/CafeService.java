@@ -218,7 +218,13 @@ public class CafeService {
         return ResponseEntity.ok().body(ResponseDto.builder().
                 result(true).
                 message("메뉴가 정상적으로 등록되었습니다.").
-                data(MenuDto.builder().category(menu.getCategory()).menuid(menuid).menuimg(menu.getMenuimg()).menuname(menu.getMenuname()).menuprice(menu.getMenuprice()).build()).
+                data(MenuDto.builder()
+                        .category(menu.getCategory())
+                        .menuid(menuid)
+                        .menuimg(menu.getMenuimg())
+                        .menuname(menu.getMenuname())
+                        .menuprice(menu.getMenuprice())
+                        .build()).
                 build());
     }
 
