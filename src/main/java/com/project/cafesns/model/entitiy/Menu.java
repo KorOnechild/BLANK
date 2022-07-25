@@ -1,7 +1,7 @@
 package com.project.cafesns.model.entitiy;
 
-import com.project.cafesns.model.dto.cafe.ModifyMenuDto;
-import com.project.cafesns.model.dto.cafe.RegistMenuRequestDto;
+import com.project.cafesns.model.dto.menu.ModifyMenuDto;
+import com.project.cafesns.model.dto.menu.RegistMenuRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

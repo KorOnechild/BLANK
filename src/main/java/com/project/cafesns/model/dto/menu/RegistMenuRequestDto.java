@@ -1,4 +1,4 @@
-package com.project.cafesns.model.dto.cafe;
+package com.project.cafesns.model.dto.menu;
 
 
 import lombok.Getter;
