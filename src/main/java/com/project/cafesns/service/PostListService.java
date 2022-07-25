@@ -60,27 +60,11 @@ public class PostListService {
         );
 
         List<Post> postList = postListRepository.findAllByUserOrderByModifiedAtDesc(user);
-        List<PostListDto> PostListDtos = new ArrayList<>();
 
-        for(Post post : postList){
-            String msg = timegap(post);
-            PostListDtos.add(
-                    PostListDto.builder().postid(post.getId())
-                            .nickname(post.getUser().getNickname())
-                            .image(getImageDtoList(post))
-                            .hashtagList(getHashtagDtoList(post))
-                            .modifiedAt(msg)
-                            .star(post.getStar())
-                            .contents(post.getContents())
-                            .likecnt(getLikeCnt(post))
-                            .commentCnt(getCommentCnt(post))
-                            .commentList(getCommentDtoList(post))
-                            .build());
-        }
         if (postList.isEmpty()) {
             return ResponseEntity.ok().body(ResponseDto.builder().result(false).message("작성한 리뷰가 없습니다.").build());
         }
-        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("내가 쓴 리뷰 목록을 조회했습니다.").data(PostListDtos).build());
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("내가 쓴 리뷰 목록을 조회했습니다.").data(getPostListDtos(postList)).build());
     }
 
     //카페 상세페이지 리뷰 목록 조회
@@ -90,25 +74,7 @@ public class PostListService {
         );
 
         List<Post> postList = postListRepository.findAllByCafeOrderByModifiedAtDesc(cafe);
-        List<PostListDto> postListDtos = new ArrayList<>();
-
-        for(Post post : postList){
-            String msg=timegap(post);
-            postListDtos.add(
-                    PostListDto.builder()
-                            .postid(post.getId())
-                            .nickname(post.getUser().getNickname())
-                            .image(getImageDtoList(post))
-                            .hashtagList(getHashtagDtoList(post))
-                            .modifiedAt(msg)
-                            .contents(post.getContents())
-                            .star(post.getStar())
-                            .likecnt(getLikeCnt(post))
-                            .commentCnt(getCommentCnt(post))
-                            .commentList(getCommentDtoList(post))
-                            .build());
-        }
-        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("카페 상세페이지 리뷰 목록을 조회했습니다.").data(postListDtos).build());
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("카페 상세페이지 리뷰 목록을 조회했습니다.").data(getPostListDtos(postList)).build());
     }
 
     /*---------------------------<비즈니스 로직에 필요한 함수들>--------------------------------*/
@@ -162,7 +128,7 @@ public class PostListService {
         return commentDtos;
     }
 
-    //메인페이지 게시글 목록 형태 생성 함수
+    //메인페이지 게시글 목록 dto 생성
     public List<MainPostListDto> getMainPostListDtos(List<Post> postlist){
         List<MainPostListDto> mainPostListDtos = new ArrayList<>();
         for(Post post : postlist){
@@ -178,6 +144,30 @@ public class PostListService {
         return mainPostListDtos;
     }
 
+    //카페 상세페이지, 마이페이지 게시글 목록 dto 생성
+    public List<PostListDto> getPostListDtos(List<Post> postList){
+        List<PostListDto> postListDtos = new ArrayList<>();
+
+        for(Post post : postList){
+            String msg=timegap(post);
+            postListDtos.add(
+                    PostListDto.builder()
+                            .postid(post.getId())
+                            .nickname(post.getUser().getNickname())
+                            .image(getImageDtoList(post))
+                            .hashtagList(getHashtagDtoList(post))
+                            .modifiedAt(msg)
+                            .contents(post.getContents())
+                            .star(post.getStar())
+                            .likecnt(getLikeCnt(post))
+                            .commentCnt(getCommentCnt(post))
+                            .commentList(getCommentDtoList(post))
+                            .build());
+        }
+        return postListDtos;
+    }
+
+    //게시글 작성 시간 경과 계산
     public String timegap(Post post){
         LocalDateTime date =post.getModifiedAt();
         LocalDateTime localDateTime = LocalDateTime.now();
