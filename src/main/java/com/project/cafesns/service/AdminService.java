@@ -38,6 +38,8 @@ public class AdminService {
     private final PostRepository postRepository;
 
     private final AdminValidator adminValidator;
+
+    private final MailService mailService;
     //승인목록조회
     public List<RegisterResponseDto> readok(String userRole) {
         adminValidator.adminCheck(userRole);
@@ -73,6 +75,7 @@ public class AdminService {
         }
         else {
             register.changePermit(false);
+            mailService.mailSend(register);
             registerRepository.save(register);
         }
     }
