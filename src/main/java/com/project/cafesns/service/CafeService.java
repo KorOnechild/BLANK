@@ -211,13 +211,16 @@ public class CafeService {
         Cafe cafe = cafeRepository.findByUser(user);
 
         ownerCheck(user,cafe);
-            String menuImg = fileUploadService.uploadImage(file, "menu");
-            Long menuid = menuRepository.save(Menu.builder().registMenuRequestDto(registMenuRequestDto).menuimg(menuImg).cafe(cafe).build()).getId();
-            return ResponseEntity.ok().body(ResponseDto.builder().
-                    result(true).
-                    message("메뉴가 정상적으로 등록되었습니다.").
-                    data(MenuDto.builder().menuid(menuid).menuimg(menuImg).build()).
-                    build());
+
+        String menuImg = fileUploadService.uploadImage(file, "menu");
+        Menu menu = Menu.builder().registMenuRequestDto(registMenuRequestDto).menuimg(menuImg).cafe(cafe).build();
+        Long menuid = menuRepository.save(menu).getId();
+
+        return ResponseEntity.ok().body(ResponseDto.builder().
+                result(true).
+                message("메뉴가 정상적으로 등록되었습니다.").
+                data(MenuDto.builder().menuid(menuid).menuimg(menu.getMenuimg()).menuname(menu.getMenuname()).menuprice(menu.getMenuprice()).build()).
+                build());
     }
 
     // 사장님 카페 메뉴 수정
