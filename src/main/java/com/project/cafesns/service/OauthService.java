@@ -51,7 +51,7 @@ public class OauthService {
         System.out.println(nickname + profileimg + email);
 
 
-        return accToken;
+        return nickname;
 
     }
 
