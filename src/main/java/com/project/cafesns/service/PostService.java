@@ -58,7 +58,7 @@ public class PostService {
     public void updatePost(Long postId, PostPatchDto postPatchDto, Long userId, String role) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NullPointerException("해당 게시글이 존재하지 않습니다."));
         userValidator.userCheck(role);
-        userValidator.authorCheck(postId,userId);
+        userValidator.authorCheck(post.getUser().getId(),userId);
             post.changeContents(postPatchDto.getContents(),postPatchDto.getStar());
             postRepository.save(post);
 
@@ -69,7 +69,7 @@ public class PostService {
     public void deletePost(Long postId, Long userId, String role) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NullPointerException("해당 게시글이 존재하지 않습니다."));
         userValidator.userCheck(role);
-        userValidator.authorCheck(postId,userId);
+        userValidator.authorCheck(post.getUser().getId(),userId);
             deleteImage(post);
             postRepository.deleteById(post.getId());
     }

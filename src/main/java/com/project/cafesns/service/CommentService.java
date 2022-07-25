@@ -36,7 +36,7 @@ public class CommentService {
     public void updateComment(Long commentId, CommentRequestDto commentRequestDto, Long userId, String role) {
         userValidator.userCheck(role);
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new NullPointerException("해당 댓글이 존재하지 않습니다."));
-         userValidator.authorCheck(comment.getId(),userId);
+         userValidator.authorCheck(comment.getUser().getId(), userId);
             comment.ChangeComment(commentRequestDto.getContents());
             commentRepository.save(comment);
 
@@ -46,7 +46,7 @@ public class CommentService {
     public void deleteComment(Long commentId, Long userId, String role) {
         userValidator.userCheck(role);
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new NullPointerException("해당 댓글이 존재하지 않습니다."));
-        userValidator.authorCheck(comment.getId(),userId);
+        userValidator.authorCheck(comment.getUser().getId(),userId);
             commentRepository.deleteById(commentId);
     }
 }
