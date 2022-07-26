@@ -35,6 +35,7 @@ public class PostListService {
     //메인페이지 게시글 목록 최신순 조회
     public ResponseEntity<?> getPostListOrderByDesc(String region) {
 
+
         List<Post> sortedList = getPostListOfRegion(region).stream()
                 .sorted(Comparator.comparing(Post :: getLocalDateTime).reversed())
                 .collect(Collectors.toList());
@@ -126,13 +127,19 @@ public class PostListService {
 
     //지역별 카패 리뷰 게시글 리스트 만들기
     public List<Post> getPostListOfRegion(String region){
-        List<Cafe> cafeList = cafeRepository.findAllByAddressContains(region);
+        List<Cafe> cafeList = new ArrayList<>();
+
+        if(region.equals("전지역")){
+            cafeList.addAll(cafeRepository.findAll());
+        }else{
+            cafeList.addAll(cafeRepository.findAllByAddressContains(region));
+        }
+
         List<Post> posts = new ArrayList<>();
 
         for(Cafe cafe : cafeList){
             List<Post> postList = postListRepository.findAllByCafeOrderByModifiedAtDesc(cafe);
             posts.addAll(postList);
-
         }
         return posts;
     }
