@@ -61,19 +61,6 @@ public class PostListService {
         return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("지역목록 조회에 성공했습니다.").data(getMainPostListDtos(sortedList)).build());
     }
 
-    public List<Post> getPostListOfRegion(String region){
-        List<Cafe> cafeList = cafeRepository.findAllByAddressContains(region);
-        List<Post> posts = new ArrayList<>();
-
-        for(Cafe cafe : cafeList){
-            List<Post> postList = postListRepository.findAllByCafeOrderByModifiedAtDesc(cafe);
-            posts.addAll(postList);
-
-        }
-        return posts;
-    }
-
-
     //마이페이지 게시글 목록 조회
     public ResponseEntity<?> getUserPostList(HttpServletRequest httpServletRequest) {
         userInfoInJwt.getUserInfo_InJwt(httpServletRequest.getHeader("Authorization"));
@@ -100,6 +87,29 @@ public class PostListService {
         return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("카페 상세페이지 리뷰 목록을 조회했습니다.").data(getPostListDtos(postList)).build());
     }
 
+    //카페 상세페이지 리뷰 목록 좋아요순 조회
+    public ResponseEntity<?> getPostListIncafePage_OrderByLike(Long cafeId) {
+        Cafe cafe = cafeRepository.findById(cafeId).orElseThrow(
+                ()-> new NullPointerException("카페가 존재하지 않습니다.")
+        );
+
+        List<Post> sortedList = postListRepository.findAllByCafeOrderByModifiedAtDesc(cafe).stream()
+                .sorted(Comparator.comparing(Post :: getLike).reversed().thenComparing(Comparator.comparing(Post :: getLocalDateTime).reversed()))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("카페 상세페이지 리뷰 목록을 좋아요 순으로 조회했습니다.").data(getPostListDtos(sortedList)).build());
+    }
+
+    //카페 상세페이지 리뷰 목록 별점순 조회
+    public ResponseEntity<?> getPostListInCafePage_OrderByStar(Long cafeId) {
+        Cafe cafe = cafeRepository.findById(cafeId).orElseThrow(
+                ()-> new NullPointerException("카페가 존재하지 않습니다.")
+        );
+
+        List<Post> sortedList = postListRepository.findAllByCafeOrderByModifiedAtDesc(cafe).stream()
+                .sorted(Comparator.comparing(Post :: getStar).reversed().thenComparing(Comparator.comparing(Post :: getLocalDateTime).reversed()))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("카페 상세페이지 리뷰 목록을 별점 순으로 조회했습니다.").data(getPostListDtos(sortedList)).build());
+    }
 
 
     /*---------------------------<비즈니스 로직에 필요한 함수들>--------------------------------*/
@@ -112,6 +122,19 @@ public class PostListService {
     //댓글 개수 얻기 로직
     public int getCommentCnt(Post post){
         return commentRepository.findAllByPost(post).size();
+    }
+
+    //지역별 카패 리뷰 게시글 리스트 만들기
+    public List<Post> getPostListOfRegion(String region){
+        List<Cafe> cafeList = cafeRepository.findAllByAddressContains(region);
+        List<Post> posts = new ArrayList<>();
+
+        for(Cafe cafe : cafeList){
+            List<Post> postList = postListRepository.findAllByCafeOrderByModifiedAtDesc(cafe);
+            posts.addAll(postList);
+
+        }
+        return posts;
     }
 
     //imageDto 리스트 만들기 로직

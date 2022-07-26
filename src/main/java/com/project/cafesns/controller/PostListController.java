@@ -45,4 +45,15 @@ public class PostListController {
         return postListService.getPostListInCafePage(cafeId);
     }
 
+    //카페 상세페이지 리뷰 조회 좋아요 순
+    @GetMapping("/api/cafes/{cafeId}/posts/like")
+    public ResponseEntity<?> getPostListInCafePage_OrderByLike(@PathVariable Long cafeId){
+        return postListService.getPostListIncafePage_OrderByLike(cafeId);
+    }
+
+    //카페 상세페이지 리뷰 조회 별점 순
+    @GetMapping("/api/cafes/{cafeId}/posts/star")
+    public ResponseEntity<?> getPostListInCafePage_OrderByStar(@PathVariable Long cafeId){
+        return postListService.getPostListInCafePage_OrderByStar(cafeId);
+    }
 }
