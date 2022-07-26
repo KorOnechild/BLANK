@@ -34,6 +34,34 @@ public class PostListService {
 
     //메인페이지 게시글 목록 최신순 조회
     public ResponseEntity<?> getPostListOrderByDesc(String region) {
+
+        List<Post> sortedList = getPostListOfRegion(region).stream()
+                .sorted(Comparator.comparing(Post :: getLocalDateTime).reversed())
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("지역목록 조회에 성공했습니다.").data(getMainPostListDtos(sortedList)).build());
+    }
+
+    //카페 메인페이지 게시글 좋아요순 필터
+    public ResponseEntity<?> getPostListOrderByLike(String region) {
+
+        List<Post> sortedList = getPostListOfRegion(region).stream()
+                .sorted(Comparator.comparing(Post :: getLike).reversed().thenComparing(Comparator.comparing(Post :: getLocalDateTime).reversed()))
+                        .collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("지역목록 조회에 성공했습니다.").data(getMainPostListDtos(sortedList)).build());
+    }
+
+    //카페 메인페이지 게시글 별점순 필터
+    public ResponseEntity<?> getPostListOrderByStar(String region) {
+        List<Post> sortedList = getPostListOfRegion(region).stream()
+                .sorted(Comparator.comparing(Post :: getStar).reversed().thenComparing(Comparator.comparing(Post :: getLocalDateTime).reversed()))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("지역목록 조회에 성공했습니다.").data(getMainPostListDtos(sortedList)).build());
+    }
+
+    public List<Post> getPostListOfRegion(String region){
         List<Cafe> cafeList = cafeRepository.findAllByAddressContains(region);
         List<Post> posts = new ArrayList<>();
 
@@ -42,12 +70,7 @@ public class PostListService {
             posts.addAll(postList);
 
         }
-
-        List<Post> sortedList = posts.stream()
-                .sorted(Comparator.comparing(Post :: getLocalDateTime).reversed())
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("지역목록 조회에 성공했습니다.").data(getMainPostListDtos(sortedList)).build());
+        return posts;
     }
 
 
@@ -76,6 +99,8 @@ public class PostListService {
         List<Post> postList = postListRepository.findAllByCafeOrderByModifiedAtDesc(cafe);
         return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("카페 상세페이지 리뷰 목록을 조회했습니다.").data(getPostListDtos(postList)).build());
     }
+
+
 
     /*---------------------------<비즈니스 로직에 필요한 함수들>--------------------------------*/
 

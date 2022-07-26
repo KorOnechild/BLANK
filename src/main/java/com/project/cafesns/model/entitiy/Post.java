@@ -68,4 +68,8 @@ public class Post extends Timestamped {
     public static LocalDateTime getLocalDateTime(Post o) {
         return o.getModifiedAt();
     }
+
+    public static int getLike(Post o){
+        return o.getLikeList().size();
+    }
 }

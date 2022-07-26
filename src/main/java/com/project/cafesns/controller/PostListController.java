@@ -20,7 +20,17 @@ public class PostListController {
     public ResponseEntity<?> getPostListOrderByDesc(@PathVariable String region){
         return postListService.getPostListOrderByDesc(region);
     }
+    //메인페이지 게시글 목록 조회 좋아요 순
+    @GetMapping("api/posts/list/{region}/like")
+    public ResponseEntity<?> getPostListOrderByLike(@PathVariable String region){
+        return postListService.getPostListOrderByLike(region);
+    }
 
+    //메인페이지 게시글 목록 조회 별점 순
+    @GetMapping("api/posts/list/{region}/star")
+    public ResponseEntity<?> getPostListOrderByStar(@PathVariable String region){
+        return postListService.getPostListOrderByStar(region);
+    }
 
     //마이페이지 게시글 조회
     @GetMapping("/api/user/posts")
