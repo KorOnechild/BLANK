@@ -24,7 +24,6 @@ public class CommentService {
     private final UserValidator userValidator;
 
     public Long addComment(Long postId, CommentRequestDto commentRequestDto, Long userId, String role) {
-        userValidator.userCheck(role);
         Post post = postRepository.findById(postId).orElseThrow(() -> new NullPointerException("해당 카페가 존재하지 않습니다."));
         User user = userRepository.findById(userId).orElseThrow(() -> new NullPointerException("해당 유저가 존재하지 않습니다."));
         Comment comment = new Comment(commentRequestDto, user, post);
@@ -34,7 +33,6 @@ public class CommentService {
     //댓글 수정 로직
     @Transactional
     public void updateComment(Long commentId, CommentRequestDto commentRequestDto, Long userId, String role) {
-        userValidator.userCheck(role);
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new NullPointerException("해당 댓글이 존재하지 않습니다."));
          userValidator.authorCheck(comment.getUser().getId(), userId);
             comment.ChangeComment(commentRequestDto.getContents());
@@ -44,7 +42,6 @@ public class CommentService {
     //댓글 삭제 로직
     @Transactional
     public void deleteComment(Long commentId, Long userId, String role) {
-        userValidator.userCheck(role);
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new NullPointerException("해당 댓글이 존재하지 않습니다."));
         userValidator.authorCheck(comment.getUser().getId(),userId);
             commentRepository.deleteById(commentId);
