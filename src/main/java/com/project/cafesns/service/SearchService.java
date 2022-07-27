@@ -93,11 +93,15 @@ public class SearchService {
         }
 
         //keyword로 카페리스트에서 이름으로 검색 -> 검색 결과 존재시 keyword는 카페 이름으로 검색한것으로 판단
-        for (String a : alphabet) {
-            filterNameList.addAll(cafeList.stream()
-                    .filter(cafe -> (cafe.getCafename().contains(a) || cafe.getCafename().contains(a.toUpperCase())))
-                    .collect(Collectors.toList()));
+        filterNameList.stream().filter(cafe -> cafe.getCafename().equals(keyword)).collect(Collectors.toList());
+        if(filterNameList.isEmpty()){
+            for (String a : alphabet) {
+                filterNameList.addAll(cafeList.stream()
+                        .filter(cafe -> (cafe.getCafename().contains(a) || cafe.getCafename().contains(a.toUpperCase())))
+                        .collect(Collectors.toList()));
+            }
         }
+
 
         //검색어의 타입을 판단해서 지정
         //키워드가 주소 목록에 존재하면 검색어 타입에 지역 추가
