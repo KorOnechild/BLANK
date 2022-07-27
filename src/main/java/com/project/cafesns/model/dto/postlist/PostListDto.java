@@ -9,6 +9,7 @@ import java.util.List;
 @Getter
 public class PostListDto {
     private Long postid;
+    private String profileimg;
     private String nickname;
     private List<ImageDto> image;
     private List<HashtagDto> hashtagList;

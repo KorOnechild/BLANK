@@ -208,6 +208,7 @@ public class PostListService {
             postListDtos.add(
                     PostListDto.builder()
                             .postid(post.getId())
+                            .profileimg(post.getUser().getProfileimg())
                             .nickname(post.getUser().getNickname())
                             .image(getImageDtoList(post))
                             .hashtagList(getHashtagDtoList(post))
