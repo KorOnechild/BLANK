@@ -2,6 +2,7 @@ package com.project.cafesns.controller;
 
 import com.project.cafesns.model.dto.oauth.NaverOAuthDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -14,10 +15,10 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class NaverController {
 
-//    @Value("${client-id}")
+    @Value("${naver_client_id}")
     private String clientid;
 
-//    @Value("${client-secret}")
+    @Value("${naver_client_secret}")
     private String clientsecret;
 
     @GetMapping("/api/naver/auth")
@@ -35,8 +36,8 @@ public class NaverController {
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
-        params.add("client_id", "qF6prEII7uI4LdzuKI5V");
-        params.add("client_secret", "z2SQNRC_hm");
+        params.add("client_id", clientid);
+        params.add("client_secret", clientsecret);
         params.add("code",code);
         params.add("state",state);
         return new HttpEntity<>(params, headers);
