@@ -33,6 +33,9 @@ public class KakaoController {
                 .build().toUriString();
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(URI.create(uri));
-        return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY).headers(headers).body(ResponseDto.builder().result(true).message("게시글이 작성되었습니다.").build());
+        return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY).headers(headers).body(ResponseDto.builder()
+                .result(true)
+                .message("카카오 로그인이 완료되었습니다.")
+                .build());
     }
 }

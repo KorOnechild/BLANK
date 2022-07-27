@@ -1,6 +1,8 @@
 package com.project.cafesns.service.oauth;
 
 import com.project.cafesns.model.dto.oauth.NaverOAuthDto;
+import com.project.cafesns.model.dto.ouath.OauthLoginDto;
+import com.project.cafesns.model.dto.ouath.OauthUserInfoDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -13,6 +15,8 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class NaverService {
 
+    private final OauthService oauthService;
+
     @Value("${naver_client_id}")
     private String clientid;
 
@@ -20,7 +24,7 @@ public class NaverService {
     private String clientsecret;
 
     // AccessToken 받기
-    public HttpEntity<MultiValueMap<String,String>> generateAuthCodeRequest(String code, String state){
+    public OauthLoginDto generateAuthCodeRequest(String code, String state){
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -31,7 +35,11 @@ public class NaverService {
         params.add("client_secret", clientsecret);
         params.add("code",code);
         params.add("state",state);
-        return new HttpEntity<>(params, headers);
+        HttpEntity httpEntity = new HttpEntity<>(params, headers);
+        String accessToken = requestAccessToken(httpEntity);
+        OauthUserInfoDto oauthUserInfoDto = generateProfileRequest(accessToken);
+
+        return oauthService.oauthlogin(oauthUserInfoDto, "naver");
     }
 
     public String requestAccessToken(HttpEntity request){
@@ -41,12 +49,7 @@ public class NaverService {
         return responseEntity.getBody().getAccess_token();
     }
 
-    public ResponseEntity<String> requestProfile(HttpEntity request){
-        RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.exchange("https://openapi.naver.com/v1/nid/me", HttpMethod.GET, request, String.class);
-    }
-
-    public String generateProfileRequest(String accessToken){
+    public OauthUserInfoDto generateProfileRequest(String accessToken){
         RestTemplate rest = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type","application/x-www-form-urlencoded");
@@ -66,11 +69,14 @@ public class NaverService {
         String email = response.getResponse().getEmail();
 
         System.out.println("Response status: "+status);
-        System.out.println(nickname);
-        System.out.println(profileImage);
-        System.out.println(email);
 
-        return nickname;
+        OauthUserInfoDto oauthUserInfoDto = OauthUserInfoDto.builder()
+                                                            .email(email)
+                                                            .nickname(nickname)
+                                                            .profileimg(profileImage)
+                                                            .build();
+
+        return oauthUserInfoDto;
     }
 
     static class NaverInfoOAuthDto {

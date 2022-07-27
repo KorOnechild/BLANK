@@ -35,7 +35,7 @@ public class OauthService {
             //회원가입 + 로그인
             User user = new User(oauthUserInfoDto.getEmail(),oauthUserInfoDto.getNickname(),oauthUserInfoDto.getProfileimg(),oauthtype);
             userRepository.save(user);
-            return   oauthreturn(user,oauthUserInfoDto);
+            return  oauthreturn(user,oauthUserInfoDto);
         }
     }
     // 로그인 시 필요한 데이터 생성 로직
