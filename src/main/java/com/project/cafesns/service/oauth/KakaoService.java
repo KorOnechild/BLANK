@@ -24,6 +24,8 @@ public class KakaoService {
 
     private final JwtTokenProvider jwtTokenProvider;
 
+    private final OauthService oauthService;
+
     @Value("${kakao_client_id}")
     private String client_id;
 
@@ -70,43 +72,9 @@ public class KakaoService {
                 .nickname(profileimg)
                 .profileimg(nickname)
                 .build();
-        return kakaologin(oauthUserInfoDto);
+        return oauthService.oauthlogin(oauthUserInfoDto,"kakao");
     }
 
-    public OauthLoginDto kakaologin(OauthUserInfoDto oauthUserInfoDto){
-        if(userRepository.existsByEmail(oauthUserInfoDto.getEmail())){
-            //해당 유저 로그인시키기
-            User user = userRepository.findByEmail(oauthUserInfoDto.getEmail());
-
-            if(refreshTokenRepository.existsByUser(user)) {
-                RefreshToken refreshTokenCheck = refreshTokenRepository.findByUser(user);
-                refreshTokenRepository.delete(refreshTokenCheck);
-            }
-               return oauthlogin(user, oauthUserInfoDto);
-        }
-        else {
-            //회원가입 + 로그인
-            User user = new User(oauthUserInfoDto.getEmail(),oauthUserInfoDto.getNickname(),oauthUserInfoDto.getProfileimg(),"kakao");
-            userRepository.save(user);
-          return   oauthlogin(user,oauthUserInfoDto);
-        }
-    }
-
-    public OauthLoginDto oauthlogin (User user, OauthUserInfoDto oauthUserInfoDto){
-        String accessToken = jwtTokenProvider.createAccessToken(user);
-        RefreshToken refreshToken = jwtTokenProvider.createRefreshToken(user);
-
-        refreshTokenRepository.save(refreshToken);
-
-        OauthLoginDto oauthLoginDto = OauthLoginDto.builder()
-                .email(oauthUserInfoDto.getEmail())
-                .nickname(oauthUserInfoDto.getNickname())
-                .profileimg(oauthUserInfoDto.getProfileimg())
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
-        return oauthLoginDto;
-    }
 
     static class KakaoUserInfoResponseDto {
 
