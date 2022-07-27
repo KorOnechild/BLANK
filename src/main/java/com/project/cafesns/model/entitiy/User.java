@@ -57,4 +57,12 @@ public class User {
         this.profileimg = profileimg;
         this.logoimg = logoimg;
     }
+
+    public User(String email,String nickname, String profileimg, String oauthType){
+        this.email = email;
+        this.role = "user";
+        this.nickname = nickname;
+        this.profileimg = profileimg;
+        this.password = oauthType;
+    }
 }
