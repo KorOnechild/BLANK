@@ -100,7 +100,7 @@ public class CafeController {
     }
 
     //검색
-    @GetMapping("/api/search")
+    @PostMapping("/api/search")
     public ResponseEntity<?> search(@RequestBody SearchRequestDto searchRequestDto) throws IOException, ParseException {
         if(searchRequestDto.getKeyword().replace(" ", "").isEmpty()){
             return ResponseEntity.status(404).body(ResponseDto.builder().result(false).message("검색 결과가 없습니다.").build());
