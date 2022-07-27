@@ -1,26 +1,41 @@
 package com.project.cafesns.service;
 
+import com.project.cafesns.jwt.JwtTokenProvider;
 import com.project.cafesns.model.dto.ouath.KakaoAthenResponseDto;
+import com.project.cafesns.model.dto.ouath.OauthLoginDto;
+import com.project.cafesns.model.dto.ouath.OauthUserInfoDto;
+import com.project.cafesns.model.entitiy.RefreshToken;
+import com.project.cafesns.model.entitiy.User;
+import com.project.cafesns.repository.RefreshTokenRepository;
+import com.project.cafesns.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
+@RequiredArgsConstructor
 public class OauthService {
 
-    @Value("${client_id}")
+    private final UserRepository userRepository;
+
+    private final RefreshTokenRepository refreshTokenRepository;
+
+    private final JwtTokenProvider jwtTokenProvider;
+
+    @Value("${kakao_client_id}")
     private String client_id;
 
-    @Value("${redirect_uri}")
+    @Value("${kakao_redirect_uri}")
     private String redirect_uri;
     //액세스 토큰 요청
-    public String getAcToken(String code) {
+    public OauthLoginDto getAcToken(String code) {
         RestTemplate rest = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/x-www-form-urlencoded");
         StringBuilder sb = new StringBuilder();
-        sb.append("grant_type=authorization_code&client_id=" + client_id + "&redirect_uri=" + redirect_uri + "&code=" + code);
+        sb.append("grant_type=authorization_code&client_id=" + 	client_id + "&redirect_uri=" + redirect_uri + "&code=" + code);
         String body = sb.toString();
         HttpEntity<String> requestEntity = new HttpEntity<String>(body, headers);
         ResponseEntity<KakaoAthenResponseDto> responseEntity = rest.exchange("https://kauth.kakao.com/oauth/token", HttpMethod.POST, requestEntity, KakaoAthenResponseDto.class);
@@ -32,7 +47,7 @@ public class OauthService {
         return maketoken(response.getAccess_token());
     }
     // 액세스 토큰을 통해 토큰을 만드는 로직
-    public String maketoken(String accToken) {
+    public OauthLoginDto maketoken(String accToken) {
         RestTemplate rest = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/x-www-form-urlencoded");
@@ -50,9 +65,47 @@ public class OauthService {
         System.out.println("Response status: " + status);
         System.out.println(nickname + profileimg + email);
 
+        OauthUserInfoDto oauthUserInfoDto = OauthUserInfoDto.builder()
+                .email(email)
+                .nickname(profileimg)
+                .profileimg(nickname)
+                .build();
+        return kakaologin(oauthUserInfoDto);
+    }
 
-        return nickname;
+    public OauthLoginDto kakaologin(OauthUserInfoDto oauthUserInfoDto){
+        if(userRepository.existsByEmail(oauthUserInfoDto.getEmail())){
+            //해당 유저 로그인시키기
+            User user = userRepository.findByEmail(oauthUserInfoDto.getEmail());
 
+            if(refreshTokenRepository.existsByUser(user)) {
+                RefreshToken refreshTokenCheck = refreshTokenRepository.findByUser(user);
+                refreshTokenRepository.delete(refreshTokenCheck);
+            }
+               return oauthlogin(user, oauthUserInfoDto);
+        }
+        else {
+            //회원가입 + 로그인
+            User user = new User(oauthUserInfoDto.getEmail(),oauthUserInfoDto.getNickname(),oauthUserInfoDto.getProfileimg(),"kakao");
+            userRepository.save(user);
+          return   oauthlogin(user,oauthUserInfoDto);
+        }
+    }
+
+    public OauthLoginDto oauthlogin (User user, OauthUserInfoDto oauthUserInfoDto){
+        String accessToken = jwtTokenProvider.createAccessToken(user);
+        RefreshToken refreshToken = jwtTokenProvider.createRefreshToken(user);
+
+        refreshTokenRepository.save(refreshToken);
+
+        OauthLoginDto oauthLoginDto = OauthLoginDto.builder()
+                .email(oauthUserInfoDto.getEmail())
+                .nickname(oauthUserInfoDto.getNickname())
+                .profileimg(oauthUserInfoDto.getProfileimg())
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+        return oauthLoginDto;
     }
 
     static class KakaoUserInfoResponseDto {
