@@ -69,8 +69,8 @@ public class KakaoService {
 
         OauthUserInfoDto oauthUserInfoDto = OauthUserInfoDto.builder()
                 .email(email)
-                .nickname(profileimg)
-                .profileimg(nickname)
+                .nickname(nickname)
+                .profileimg(profileimg)
                 .build();
         return oauthService.oauthlogin(oauthUserInfoDto,"kakao");
     }
