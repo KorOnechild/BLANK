@@ -35,6 +35,9 @@ dependencies {
 
 	//mailsender
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	//tym리프
+	implementation group: 'org.thymeleaf', name: 'thymeleaf-spring5', version: '3.0.11.RELEASE'
 }
 
 tasks.named('test') {
