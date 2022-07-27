@@ -21,16 +21,18 @@ import java.security.NoSuchAlgorithmException;
 public class UserController {
     private final UserService userService;
 
-    //회원가입
-    @PostMapping("/api/user/signup")
+    //회원가입 (이미지 첨부시)
+    @PostMapping("/api/user/signup-image")
     public ResponseEntity<?> signup(@RequestPart(value = "file", required = false) MultipartFile file,
                                     @RequestPart(value = "data") SignupRequestDto signupRequestDto) throws NoSuchAlgorithmException, RuntimeException {
-        if(file.isEmpty()){
-            return userService.signup(null, signupRequestDto);
-        }else{
-            return userService.signup(file, signupRequestDto);
-        }
 
+        return userService.signup(file, signupRequestDto);
+    }
+
+    //회원가입(이미지 미첨부시)
+    @PostMapping("/api/user/signup")
+    public ResponseEntity<?> signup(@RequestBody SignupRequestDto signupRequestDto) throws NoSuchAlgorithmException, RuntimeException {
+            return userService.signup(null, signupRequestDto);
     }
 
     //로그인
