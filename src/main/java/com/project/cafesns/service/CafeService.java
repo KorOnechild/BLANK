@@ -9,9 +9,9 @@ import com.project.cafesns.model.dto.menu.MenuDto;
 import com.project.cafesns.model.dto.menu.MenuListDto;
 import com.project.cafesns.model.dto.menu.ModifyMenuDto;
 import com.project.cafesns.model.dto.menu.RegistMenuRequestDto;
-import com.project.cafesns.model.dto.search.SearchDto;
 import com.project.cafesns.model.entitiy.*;
 import com.project.cafesns.repository.*;
+import com.project.cafesns.result.CalculatorImp;
 import com.project.cafesns.s3.FileUploadService;
 import com.project.cafesns.validator.OwnerValidator;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -35,8 +34,10 @@ public class CafeService {
     private final CafeRepository cafeRepository;
     private final MenuRepository menuRepository;
     private final UserRepository userRepository;
-    private final HashtagRepository hashtagRepository;
 
+    //calculator
+    private final CalculatorImp calculatorImp;
+    //validator
     private final OwnerValidator ownerValidator;
 
     // 카페 상세 페이지 배너조회
@@ -60,7 +61,7 @@ public class CafeService {
                         .imageList(imageList)
                         .logoimg(cafe.getUser() == null ? "" : cafe.getUser().getLogoimg())
                         .cafename(cafe.getCafename())
-                        .avgstar(getAvgStar(postList))
+                        .avgstar(calculatorImp.getAvgStar(postList))
                         .postCnt(postRepository.findAllByCafe(cafe).size())
                         .opentime(cafe.getOpentime())
                         .closetime(cafe.getClosetime())
@@ -297,68 +298,6 @@ public class CafeService {
             );
         }
         return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("카페 조회에 성공했습니다.").data(cafeDtos).build());
-    }
-
-    //검색
-    //TODO : 아직 Stream 사용법을 몰라서 키워드마다 Repository조회를 안해도 될거같고, 굉장히 비효율적인것 같다 Stream공부해서 전체 리스트 한번만 조회받고 거기서 찾아내는 방식을 시도해보자
-    public ResponseEntity<?> search(String keyword){
-        List<Cafe> cafeList = new ArrayList<>();
-        //키워드가 카페 이름일 경우
-        if(!cafeRepository.findAllByCafenameContains(keyword).isEmpty()){
-            cafeList = cafeRepository.findAllByCafenameContains(keyword);
-            return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("카페 이름을 통한 카페 검색").data(getSearchResult(cafeList)).build());
-        }
-        //키워드가 지역일 경우
-        if(!cafeRepository.findAllByAddressContains(keyword).isEmpty()){
-            cafeList = cafeRepository.findAllByAddressContains(keyword);
-            return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("지역을 통한 카페 검색").data(getSearchResult(cafeList)).build());
-        } else if (!cafeRepository.findAllByAddressdetailContains(keyword).isEmpty()) {
-            cafeList = cafeRepository.findAllByAddressdetailContains(keyword);
-            return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("상세정보를 통한 카페 검색").data(getSearchResult(cafeList)).build());
-        }
-
-        //키워드가 해시태그일 경우
-        if(keyword.startsWith("#")){
-            List<Hashtag> hashtagList = hashtagRepository.findAllByHashtagContains(keyword);
-            List<Post> postList = new ArrayList<>();
-
-            for(Hashtag hashtag : hashtagList){
-                postList.add(hashtag.getPost());
-            }
-            for(Post post : postList){
-                cafeList.add(post.getCafe());
-            }
-            LinkedHashSet<Cafe> linkedHashSet = new LinkedHashSet<>(cafeList);
-            cafeList.clear();
-            cafeList.addAll(linkedHashSet);
-            return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("해시태그를 통한 카페 검색").data(getSearchResult(cafeList)).build());
-        }
-        return ResponseEntity.status(404).body(ResponseDto.builder().result(false).message("카페이름 또는 카페주소 또는 해시태그로 검색해주세요.").build());
-    }
-
-    //검색 결과 만드는 함수
-    public List<SearchDto> getSearchResult(List<Cafe> cafeList){
-        List<SearchDto> searchResult = new ArrayList<>();
-        for(Cafe cafe : cafeList){
-            searchResult.add(SearchDto.builder().cafeid(cafe.getId())
-                    .cafeid(cafe.getId())
-                    .cafename(cafe.getCafename())
-                    .avgstar(getAvgStar(cafe.getPostList()))
-                    .logoimg(cafe.getUser() == null ? "" : cafe.getUser().getLogoimg())
-                    .address(cafe.getAddress())
-                    .addressdetail(cafe.getAddressdetail())
-                    .zonenum(cafe.getZonenum()).build());
-        }
-        return searchResult;
-    }
-
-    //카페 별점 평균 구하는 함수
-    public float getAvgStar(List<Post> postList){
-        float sumStar = 0F;
-        for(Post post : postList){
-            sumStar += post.getStar();
-        }
-        return postList.isEmpty() ? 0F : sumStar / postList.size();
     }
 }
 

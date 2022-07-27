@@ -26,6 +26,6 @@ public class Hashtag {
 
     public Hashtag(String hashkey, Post post ){
         this.post = post;
-        this.hashtag= hashkey;
+        this.hashtag= hashkey.replace(" ", "");
     }
 }
