@@ -45,6 +45,7 @@ public class UserService {
     //회원가입
     //TODO : 회원가입시 프로필, 로고 이미지 받는거 처리 따로(해결)
     //TODO : 별로 효율적인 코드같지 않아서 수정할것
+    @Transactional
     public ResponseEntity<?> signup(MultipartFile file, SignupRequestDto signupRequestDto) throws NoSuchAlgorithmException {
 
         userValidator.checkDubpEmail(signupRequestDto.getEmail());
@@ -139,10 +140,9 @@ public class UserService {
 
         User user = userRepository.findByNickname(nickname);
 
-        if(!userValidator.checkexistRefreshToken(refreshToken, user)){
-            throw new NotExistTokenException(ErrorCode.NOTEXIST_TOKEN_EXCEPTION);
-            //존재하지 않는 토큰이라는 예외처리
-        }
+        //존재하지 않는 토큰이라는 예외처리
+        userValidator.checkexistRefreshToken(refreshToken, user);
+
 
         String accessToken = jwtTokenProvider.createAccessToken(user);
         ReissueTokenDto reissueTokenDto = ReissueTokenDto.builder().accessToken(accessToken).refreshToken(refreshToken).build();
