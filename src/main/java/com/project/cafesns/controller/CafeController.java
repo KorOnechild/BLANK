@@ -6,20 +6,24 @@ import com.project.cafesns.model.dto.ResponseDto;
 import com.project.cafesns.model.dto.cafe.ModifyCafeRequestDto;
 import com.project.cafesns.model.dto.menu.ModifyMenuDto;
 import com.project.cafesns.model.dto.menu.RegistMenuRequestDto;
+import com.project.cafesns.model.dto.search.SearchRequestDto;
 import com.project.cafesns.service.CafeService;
+import com.project.cafesns.service.SearchService;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.parser.ParseException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
 public class CafeController {
 
     private final CafeService cafeService;
-
+    private final SearchService searchService;
     private final UserInfoInJwt userInfoInJwt;
 
     // 카페 상세 페이지 배너 조회
@@ -96,9 +100,12 @@ public class CafeController {
     }
 
     //검색
-    @GetMapping("/api/search/{keyword}")
-    public ResponseEntity<?> search(@PathVariable String keyword){
-        return cafeService.search(keyword);
+    @GetMapping("/api/search")
+    public ResponseEntity<?> search(@RequestBody SearchRequestDto searchRequestDto) throws IOException, ParseException {
+        if(searchRequestDto.getKeyword().replace(" ", "").isEmpty()){
+            return ResponseEntity.status(404).body(ResponseDto.builder().result(false).message("검색 결과가 없습니다.").build());
+        }
+        return searchService.search(searchRequestDto.getKeyword().replace(" ", ""));
     }
 
 }
