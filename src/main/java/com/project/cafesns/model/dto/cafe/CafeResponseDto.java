@@ -17,7 +17,7 @@ public class CafeResponseDto {
 
     public CafeResponseDto(Cafe cafe){
         this.cafeid = cafe.getId();
-        this.cafename = cafe.getCafename();
+        this.cafename = cafe.getAddress();
         this.address = cafe.getAddress();
         this.addressdetail = cafe.getAddressdetail();
         this.zonenum = cafe.getZonenum();
