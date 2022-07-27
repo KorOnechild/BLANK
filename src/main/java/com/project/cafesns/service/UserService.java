@@ -55,12 +55,12 @@ public class UserService {
 
         if (file == null) {
             if (signupRequestDto.getRole().equals("user")) {
-                String profileimg = s3Service.getFileUrl("profile/basicprofile.png");
+                String profileimg = s3Service.getFileUrl("blank.png");
                 User user = User.builder().signupRequestDto(signupRequestDto).encodedPw(encodedPW).profileimg(profileimg).logoimg("").build();
                 userRepository.save(user);
                 return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("회원가입에 성공했습니다.").build());
             } else {
-                String logoimg = s3Service.getFileUrl("logo/basiclogo.png");
+                String logoimg = s3Service.getFileUrl("blank.png");
                 User user = User.builder().signupRequestDto(signupRequestDto).encodedPw(encodedPW).profileimg("").logoimg(logoimg).build();
                 userRepository.save(user);
                 return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("회원가입에 성공했습니다.").build());
