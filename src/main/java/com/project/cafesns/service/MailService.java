@@ -17,7 +17,6 @@ import javax.mail.internet.MimeMessage;
 public class MailService {
     private final JavaMailSender mailSender;
     private final TemplateEngine templateEngine;
-    private static final String FROM_ADDRESS = "tmdcks940827@naver.com";
 
 //    public void mailSend(Register register) {
 //        SimpleMailMessage message = new SimpleMailMessage();
