@@ -1,7 +1,7 @@
-package com.project.cafesns.service;
+package com.project.cafesns.service.oauth;
 
 import com.project.cafesns.jwt.JwtTokenProvider;
-import com.project.cafesns.model.dto.ouath.KakaoAthenResponseDto;
+import com.project.cafesns.model.dto.ouath.kakao.KakaoAthenResponseDto;
 import com.project.cafesns.model.dto.ouath.OauthLoginDto;
 import com.project.cafesns.model.dto.ouath.OauthUserInfoDto;
 import com.project.cafesns.model.entitiy.RefreshToken;
@@ -16,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 @RequiredArgsConstructor
-public class OauthService {
+public class KakaoService {
 
     private final UserRepository userRepository;
 

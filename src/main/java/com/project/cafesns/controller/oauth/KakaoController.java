@@ -1,8 +1,8 @@
-package com.project.cafesns.controller;
+package com.project.cafesns.controller.oauth;
 
 import com.project.cafesns.model.dto.ResponseDto;
 import com.project.cafesns.model.dto.ouath.OauthLoginDto;
-import com.project.cafesns.service.OauthService;
+import com.project.cafesns.service.oauth.KakaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,14 +12,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
-public class KakaoOauth {
-    private final OauthService oauthService;
+public class KakaoController {
+    private final KakaoService oauthService;
 
     @GetMapping("/api/oauth2/kakao")
     public ResponseEntity<?> kakaologin(@RequestParam ("code") String code) throws IOException {

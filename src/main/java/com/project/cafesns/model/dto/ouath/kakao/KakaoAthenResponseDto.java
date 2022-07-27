@@ -1,4 +1,4 @@
-package com.project.cafesns.model.dto.ouath;
+package com.project.cafesns.model.dto.ouath.kakao;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
