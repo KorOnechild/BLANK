@@ -29,6 +29,7 @@ public class NaverController {
                 .queryParam("profileimg",value.getProfileimg())
                 .queryParam("accessToken",value.getAccessToken())
                 .queryParam("RefreshToken",value.getRefreshToken())
+                .queryParam("role","user")
                 .build().toUriString();
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(URI.create(uri));
