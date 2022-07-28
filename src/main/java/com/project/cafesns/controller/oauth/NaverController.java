@@ -1,4 +1,4 @@
-package com.project.cafesns.controller;
+package com.project.cafesns.controller.oauth;
 
 import com.project.cafesns.model.dto.ResponseDto;
 import com.project.cafesns.model.dto.oauth.NaverOAuthDto;
