@@ -1,8 +1,7 @@
-package com.project.cafesns.controller.oauth;
+package com.project.cafesns.oauth.kakao;
 
 import com.project.cafesns.model.dto.ResponseDto;
 import com.project.cafesns.model.dto.ouath.OauthLoginDto;
-import com.project.cafesns.service.oauth.KakaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

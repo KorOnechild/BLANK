@@ -1,4 +1,4 @@
-package com.project.cafesns.service.oauth;
+package com.project.cafesns.oauth;
 
 import com.project.cafesns.jwt.JwtTokenProvider;
 import com.project.cafesns.model.dto.ouath.OauthLoginDto;

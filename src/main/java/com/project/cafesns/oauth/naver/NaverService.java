@@ -1,8 +1,9 @@
-package com.project.cafesns.service.oauth;
+package com.project.cafesns.oauth.naver;
 
 import com.project.cafesns.model.dto.oauth.NaverOAuthDto;
 import com.project.cafesns.model.dto.ouath.OauthLoginDto;
 import com.project.cafesns.model.dto.ouath.OauthUserInfoDto;
+import com.project.cafesns.oauth.OauthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;

@@ -1,11 +1,10 @@
-package com.project.cafesns.service.oauth;
+package com.project.cafesns.oauth.kakao;
 
 import com.project.cafesns.jwt.JwtTokenProvider;
 import com.project.cafesns.model.dto.ouath.kakao.KakaoAthenResponseDto;
 import com.project.cafesns.model.dto.ouath.OauthLoginDto;
 import com.project.cafesns.model.dto.ouath.OauthUserInfoDto;
-import com.project.cafesns.model.entitiy.RefreshToken;
-import com.project.cafesns.model.entitiy.User;
+import com.project.cafesns.oauth.OauthService;
 import com.project.cafesns.repository.RefreshTokenRepository;
 import com.project.cafesns.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
