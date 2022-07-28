@@ -21,6 +21,10 @@ public class OauthService {
     private final JwtTokenProvider jwtTokenProvider;
     // 유저 데이터 기반 로그인 및 회원가입 로직
     public OauthLoginDto oauthlogin(OauthUserInfoDto oauthUserInfoDto, String oauthtype){
+
+        if(oauthUserInfoDto.getEmail() == null){
+            oauthUserInfoDto.setEmail(oauthUserInfoDto.getNickname());
+        }
         if(userRepository.existsByEmail(oauthUserInfoDto.getEmail())){
             //해당 유저 로그인시키기
             User user = userRepository.findByEmail(oauthUserInfoDto.getEmail());
