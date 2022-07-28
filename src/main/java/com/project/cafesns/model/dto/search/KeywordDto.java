@@ -9,5 +9,8 @@ import java.util.List;
 @Data
 public class KeywordDto {
     private List<String> type;
-    private List<String> keyword;
+    private List<String> keywordOfAddress;
+    private List<String> keywordOfAddressDetail;
+    private List<String> keywordOfCafename;
+    private List<String> keywordOfSmallAddress;
 }
