@@ -190,7 +190,7 @@ public class SearchService {
             if (keywordDto.getType().contains("카페이름")) {
                 for (String a : keywordDto.getKeywordOfCafename()) {
                     filterNameList.addAll(cafeList.stream()
-                            .filter(cafe -> cafe.getCafename().contains(a))
+                            .filter(cafe -> cafe.getCafename().contains(a) || cafe.getCafename().contains(a.toUpperCase()))
                             .collect(Collectors.toList()));
                 }
                 System.out.println("카페 이름으로 검색했습니다.");
