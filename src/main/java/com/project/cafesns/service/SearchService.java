@@ -97,7 +97,6 @@ public class SearchService {
                 }
             }
         }
-
         /*--------------------------------------<여기서부터 검색어 타입 판단 로직>--------------------------------------*/
 
         //해시태그로 검색했는지 판단
@@ -113,14 +112,14 @@ public class SearchService {
             typeList.add("지역");
             keywordDto.setType(typeList);
             keywordDto.setKeywordOfAddress(keywordOfAddressList.stream().distinct().collect(Collectors.toList())); //중복되는 검색어 제거
+            for(int i = 0; i < keywordDto.getKeywordOfAddress().size(); i++){
+                System.out.println(keywordDto.getKeywordOfAddress().get(i));
+            }
         } else {
             //keyword로 상세주소와 도,시,군,구보다 더 작은 단위로 검색한 결과가 있는지 찾기
-            for (String a : alphabet) {
-                cafeList.forEach(cafe -> keywordOfSmallAddressList.add((cafe.getAddress().contains(a)) ? a : null));
-                cafeList.forEach(cafe -> keywordOfAddressDetailList.add((cafe.getAddressdetail().contains(a)) ? a : null));
-                cafeList.forEach(cafe -> keywordOfCafenameList.add((cafe.getCafename().contains(a) || cafe.getCafename().contains(a.toUpperCase())) ? a : null));
-            }
-
+                cafeList.forEach(cafe -> keywordOfSmallAddressList.add((cafe.getAddress().contains(keyword)) ? keyword : null));
+                cafeList.forEach(cafe -> keywordOfAddressDetailList.add((cafe.getAddressdetail().contains(keyword)) ? keyword : null));
+                cafeList.forEach(cafe -> keywordOfCafenameList.add((cafe.getCafename().contains(keyword) || cafe.getCafename().contains(keyword.toUpperCase())) ? keyword : null));
             keywordOfSmallAddressList.removeAll(Arrays.asList("", null));
             keywordOfAddressDetailList.removeAll(Arrays.asList("", null));
             keywordOfCafenameList.removeAll(Arrays.asList("", null));
