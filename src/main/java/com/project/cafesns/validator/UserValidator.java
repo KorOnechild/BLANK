@@ -34,7 +34,7 @@ public class UserValidator {
 
     //존재하지 않는 토큰이라는 예외처리
     public void checkexistRefreshToken(String refreshToken, User user){
-        if(refreshTokenRepository.existsRefreshTokenByRefreshtokenAndUser(refreshToken, user)){
+        if(!refreshTokenRepository.existsRefreshTokenByRefreshtokenAndUser(refreshToken, user)){
             throw new NotExistTokenException(ErrorCode.NOTEXIST_TOKEN_EXCEPTION);
         }
     }
