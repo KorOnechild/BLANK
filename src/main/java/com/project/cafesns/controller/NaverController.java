@@ -1,19 +1,13 @@
 package com.project.cafesns.controller;
 
 import com.project.cafesns.model.dto.ResponseDto;
-import com.project.cafesns.model.dto.oauth.NaverOAuthDto;
 import com.project.cafesns.model.dto.ouath.OauthLoginDto;
 import com.project.cafesns.service.oauth.NaverService;
-import com.project.cafesns.service.oauth.OauthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
