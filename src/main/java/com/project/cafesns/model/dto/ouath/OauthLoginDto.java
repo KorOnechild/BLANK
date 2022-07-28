@@ -1,6 +1,5 @@
 package com.project.cafesns.model.dto.ouath;
 
-import com.project.cafesns.model.entitiy.RefreshToken;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -11,5 +10,5 @@ public class OauthLoginDto {
     String nickname;
     String profileimg;
     String accessToken;
-    RefreshToken refreshToken;
+    String refreshToken;
 }

@@ -54,7 +54,7 @@ public class OauthService {
                 .nickname(oauthUserInfoDto.getNickname())
                 .profileimg(oauthUserInfoDto.getProfileimg())
                 .accessToken(accessToken)
-                .refreshToken(refreshToken)
+                .refreshToken(refreshToken.getRefreshtoken())
                 .build();
         return oauthLoginDto;
     }
