@@ -29,7 +29,7 @@ public class MailService {
 //    }
 
     public void sendmail(Register register) throws MessagingException {
-        Context context = new Context(); context.setVariable("massage", "상기 xxx과 xxxx이유로 귀하의"+register.getCafename()+"의신청이 거절되었습니다");
+        Context context = new Context(); context.setVariable("massage", "아래 이유로 인해 "+register.getCafename()+" 등록이 거절되었습니다.");
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         mimeMessage.addRecipients(MimeMessage.RecipientType.TO, register.getUser().getEmail());
