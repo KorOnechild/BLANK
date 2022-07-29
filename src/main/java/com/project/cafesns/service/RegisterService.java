@@ -30,9 +30,7 @@ public class RegisterService {
     private final RegisterRepository registerRepository;
     private final CafeRepository cafeRepository;
     private final UserInfoInJwt userInfoInJwt;
-
     private final UserValidator userValidator;
-
     private final OwnerValidator ownerValidator;
 
     // 유저일 때 신청

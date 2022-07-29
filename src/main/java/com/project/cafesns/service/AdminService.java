@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,8 @@ public class AdminService {
     private final PostRepository postRepository;
 
     private final AdminValidator adminValidator;
+
+    private final MailService mailService;
     //승인목록조회
     public List<RegisterResponseDto> readok(String userRole) {
         adminValidator.adminCheck(userRole);
@@ -63,7 +66,7 @@ public class AdminService {
 
     @Transactional
     //신청 permit 변경부분분
-    public void permitset(Long registerId, Boolean permit, String userRole) {
+    public void permitset(Long registerId, Boolean permit, String userRole) throws MessagingException {
         adminValidator.adminCheck(userRole);
         Register register = registerRepository.findById(registerId).orElseThrow( () -> new NullPointerException("존재하지않는 신청입니다"));
 
@@ -73,6 +76,7 @@ public class AdminService {
         }
         else {
             register.changePermit(false);
+            mailService.sendmail(register);
             registerRepository.save(register);
         }
     }

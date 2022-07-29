@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
 @RequiredArgsConstructor
@@ -35,7 +36,7 @@ public class AdminController {
     //미처리 내역 승인/거절
     @PatchMapping("/api/registers/{registerId}/{permit}")
     public ResponseEntity<?> permitset(@PathVariable Long registerId,
-                                       @PathVariable  Boolean permit,HttpServletRequest httpRequest){
+                                       @PathVariable  Boolean permit,HttpServletRequest httpRequest) throws MessagingException {
         userInfoInJwt.getUserInfo_InJwt(httpRequest.getHeader("Authorization"));
         String userRole = userInfoInJwt.getRole();
         adminService.permitset(registerId,permit,userRole);

@@ -50,6 +50,7 @@ public class UserController {
         return userService.reissueAccessToken(reissueTokenRequestDto);
     }
 
+    //프로필 수정
     @PatchMapping("/api/user/profile")
     public ResponseEntity<?> changeProfileimg(@RequestPart(value = "file") MultipartFile file, HttpServletRequest httpServletRequest){
         return userService.changeProfileimg(file, httpServletRequest);
