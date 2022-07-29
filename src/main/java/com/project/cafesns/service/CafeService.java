@@ -50,8 +50,8 @@ public class CafeService {
         List<Image> imageList = new ArrayList<>();
 
         for(int i=0; i < postList.size(); i++){
-            imageList.add(postList.get(i).getImageList().get(0));
-            if(i == 2){break;}
+            imageList.addAll(postList.get(i).getImageList());
+            if(imageList.size() == 15){break;}
         }
 
         return ResponseEntity.ok().body(ResponseDto.builder()
