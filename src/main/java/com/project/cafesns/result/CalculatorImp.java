@@ -11,13 +11,11 @@ public class CalculatorImp implements Calculator {
     @Override
 
     //카페 별점 평균 구하는 함수
-    public float getAvgStar(List<Post> postList){
+    public double getAvgStar(List<Post> postList){
         float sumStar = 0F;
         for(Post post : postList){
             sumStar += post.getStar();
         }
-        return postList.isEmpty() ? 0F : sumStar / postList.size();
+        return postList.isEmpty() ? 0.0 : Math.floor(sumStar*10)/10.0 / postList.size();
     }
-
-
 }
