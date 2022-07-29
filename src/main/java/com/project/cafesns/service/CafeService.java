@@ -51,11 +51,14 @@ public class CafeService {
 
         for (Post value : postList) {
             List<Image> imageList1 = value.getImageList();
-            for (Image image : imageList1) {
-                if (imageList.size() == 15) {
-                    break;
+
+            if(imageList.size() != 16){
+                for (Image image : imageList1) {
+                    if (imageList.size() == 15) {
+                        break;
+                    }
+                    imageList.add(image);
                 }
-                imageList.add(image);
             }
         }
         postList.forEach(post -> imageList.addAll(post.getImageList()));
