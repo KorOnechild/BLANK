@@ -159,6 +159,7 @@ public class UserService {
         User user = userRepository.findById(userInfoInJwt.getUserid()).orElseThrow(
                 ()-> new NullPointerException("사용자 정보가 없습니다.")
         );
+        String img = "";
 
         //기존 프로필 사진 삭제
         int length = user.getProfileimg().length();
@@ -167,11 +168,18 @@ public class UserService {
         if(!filePath.equals("blank.png")){
             fileUploadService.deleteFile(filePath);
         }
+        if(user.getRole().equals("user")) {
+            img = fileUploadService.uploadImage(file, "profile");
+            user.changeImg(img, user.getRole());
+            return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("프로필 사진이 변경되었습니다.").data(img).build());
+        }
+        if(user.getRole().equals("owner")){
+            img = fileUploadService.uploadImage(file, "logo");
+            user.changeImg(img, user.getRole());
+            return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("프로필 사진이 변경되었습니다.").data(img).build());
+        }
 
-        String img = fileUploadService.uploadImage(file, "profile");
-
-        user.changeImg(img, user.getRole());
         userRepository.save(user);
-        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("프로필 사진이 변경되었습니다.").data(img).build());
+        return ResponseEntity.status(404).body(ResponseDto.builder().result(false).message("프로필 사진 변경에 실패했습니다.").build());
     }
 }
