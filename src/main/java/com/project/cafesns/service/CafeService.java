@@ -49,9 +49,13 @@ public class CafeService {
         List<Post> postList = postRepository.findAllByCafe(cafe);
         List<Image> imageList = new ArrayList<>();
 
-        for(int i=0; i < postList.size(); i++){
-            imageList.add(postList.get(i).getImageList().get(0));
-            if(i == 2){break;}
+        for(int i =0; i < postList.size(); i++){
+            for(int j = 0; j < postList.get(i).getImageList().size(); j++){
+                if(imageList.size() == 15){
+                    break;
+                }
+                imageList.add(postList.get(i).getImageList().get(j));
+            }
         }
 
         return ResponseEntity.ok().body(ResponseDto.builder()

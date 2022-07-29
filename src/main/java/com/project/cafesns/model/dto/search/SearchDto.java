@@ -8,7 +8,7 @@ import lombok.Getter;
 public class SearchDto {
     private Long cafeid;
     private String cafename;
-    private float avgstar;
+    private double avgstar;
     private String logoimg;
     private String address;
     private String addressdetail;
