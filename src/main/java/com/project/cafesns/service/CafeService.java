@@ -50,10 +50,10 @@ public class CafeService {
         List<Image> imageList = new ArrayList<>();
 
         for(int i=0; i < postList.size(); i++){
-            imageList.addAll(postList.get(i).getImageList());
             if(imageList.size() == 15){break;}
+            imageList.addAll(postList.get(i).getImageList());
         }
-
+        
         return ResponseEntity.ok().body(ResponseDto.builder()
                 .result(true)
                 .message("배너 조회에 성공했습니다.")
