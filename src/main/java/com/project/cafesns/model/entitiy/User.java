@@ -66,7 +66,12 @@ public class User {
         this.password = oauthType;
     }
 
-    public void changeProfileimg(String profileimg){
-        this.profileimg = profileimg;
+    public void changeImg(String img, String role){
+        if(role.equals("user")){
+            this.profileimg = img;
+        }
+        if(role.equals("owner")){
+            this.logoimg = img;
+        }
     }
 }

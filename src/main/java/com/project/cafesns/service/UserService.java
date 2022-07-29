@@ -159,6 +159,7 @@ public class UserService {
         User user = userRepository.findById(userInfoInJwt.getUserid()).orElseThrow(
                 ()-> new NullPointerException("사용자 정보가 없습니다.")
         );
+
         //기존 프로필 사진 삭제
         int length = user.getProfileimg().length();
         String filePath = user.getProfileimg().substring(47,length);
@@ -167,10 +168,10 @@ public class UserService {
             fileUploadService.deleteFile(filePath);
         }
 
-        String profileimg = fileUploadService.uploadImage(file, "profile");
+        String img = fileUploadService.uploadImage(file, "profile");
 
-        user.changeProfileimg(profileimg);
+        user.changeImg(img, user.getRole());
         userRepository.save(user);
-        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("프로필 사진이 변경되었습니다.").build());
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("프로필 사진이 변경되었습니다.").data(img).build());
     }
 }
