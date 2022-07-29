@@ -65,4 +65,8 @@ public class User {
         this.profileimg = profileimg;
         this.password = oauthType;
     }
+
+    public void changeProfileimg(String profileimg){
+        this.profileimg = profileimg;
+    }
 }

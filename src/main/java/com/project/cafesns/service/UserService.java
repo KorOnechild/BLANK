@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import javax.xml.ws.Response;
 import java.security.NoSuchAlgorithmException;
 
 @Service
@@ -148,5 +149,28 @@ public class UserService {
         ReissueTokenDto reissueTokenDto = ReissueTokenDto.builder().accessToken(accessToken).refreshToken(refreshToken).build();
 
         return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("액세스 토큰이 재발급되었습니다.").data(reissueTokenDto).build());
+    }
+
+    @Transactional
+    public ResponseEntity<?> changeProfileimg(MultipartFile file, HttpServletRequest httpServletRequest) {
+
+        userInfoInJwt.getUserInfo_InJwt(httpServletRequest.getHeader("Authorization"));
+
+        User user = userRepository.findById(userInfoInJwt.getUserid()).orElseThrow(
+                ()-> new NullPointerException("사용자 정보가 없습니다.")
+        );
+        //기존 프로필 사진 삭제
+        int length = user.getProfileimg().length();
+        String filePath = user.getProfileimg().substring(47,length);
+
+        if(!filePath.equals("blank.png")){
+            fileUploadService.deleteFile(filePath);
+        }
+
+        String profileimg = fileUploadService.uploadImage(file, "profile");
+
+        user.changeProfileimg(profileimg);
+        userRepository.save(user);
+        return ResponseEntity.ok().body(ResponseDto.builder().result(true).message("프로필 사진이 변경되었습니다.").build());
     }
 }

@@ -7,10 +7,7 @@ import com.project.cafesns.model.dto.user.SignupRequestDto;
 import com.project.cafesns.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,6 +48,11 @@ public class UserController {
     @PostMapping("/api/auth/refresh")
     public ResponseEntity<?> reissueAccessToken(@RequestBody ReissueTokenRequestDto reissueTokenRequestDto) throws RuntimeException{
         return userService.reissueAccessToken(reissueTokenRequestDto);
+    }
+
+    @PatchMapping("/api/user/profile")
+    public ResponseEntity<?> changeProfileimg(@RequestPart(value = "file") MultipartFile file, HttpServletRequest httpServletRequest){
+        return userService.changeProfileimg(file, httpServletRequest);
     }
 }
 
