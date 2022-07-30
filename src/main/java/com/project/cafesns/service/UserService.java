@@ -162,12 +162,13 @@ public class UserService {
         String img = "";
 
         //기존 프로필 사진 삭제
-        int length = user.getProfileimg().length();
-        String filePath = user.getProfileimg().substring(47,length);
+        int length =  user.getRole().equals("user") ? user.getProfileimg().length() : user.getLogoimg().length();
+        String filePath = user.getRole().equals("user") ? user.getProfileimg().substring(47,length) : user.getLogoimg().substring(47,length);
 
         if(!filePath.equals("blank.png")){
             fileUploadService.deleteFile(filePath);
         }
+
         if(user.getRole().equals("user")) {
             img = fileUploadService.uploadImage(file, "profile");
             user.changeImg(img, user.getRole());
