@@ -22,7 +22,7 @@ public class KakaoController {
     @GetMapping("/api/oauth2/kakao")
     public ResponseEntity<?> kakaologin(@RequestParam ("code") String code) throws IOException {
         OauthLoginDto value = oauthService.getAcToken(code);
-        String uri = UriComponentsBuilder.fromUriString("http://doridori.shop.s3-website.ap-northeast-2.amazonaws.com/Ouath")
+        String uri = UriComponentsBuilder.fromUriString("https://doridori.shop/Ouath")
                 .encode()
                 .queryParam("email",value.getEmail())
                 .queryParam("nickname",value.getNickname())

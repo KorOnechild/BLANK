@@ -43,7 +43,7 @@ public class GoogleController {
     public ResponseEntity<?> redirectGoogleLogin(
             @RequestParam(value = "code") String code) {
         OauthLoginDto value = googleService.getAcToken(code);
-        String uri = UriComponentsBuilder.fromUriString("http://doridori.shop.s3-website.ap-northeast-2.amazonaws.com/Ouath")
+        String uri = UriComponentsBuilder.fromUriString("https://doridori.shop/Ouath")
                 .encode()
                 .queryParam("email",value.getEmail())
                 .queryParam("nickname",value.getNickname())

@@ -21,7 +21,7 @@ public class NaverController {
     public ResponseEntity<?> naverlogin(@RequestParam ("code") String code, @RequestParam ("state") String state){
         OauthLoginDto value = naverService.generateAuthCodeRequest(code,state);
 
-        String uri = UriComponentsBuilder.fromUriString("http://doridori.shop.s3-website.ap-northeast-2.amazonaws.com/Ouath")
+        String uri = UriComponentsBuilder.fromUriString("https://doridori.shop/Ouath")
                 .encode()
                 .queryParam("email",value.getEmail())
                 .queryParam("nickname",value.getNickname())
