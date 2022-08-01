@@ -88,7 +88,7 @@ public class UserService {
         String email = signinReqeustDto.getEmail();
         String encodedPW = SHA256.encrypt(signinReqeustDto.getPassword());
 
-        if(!userRepository.existsByPassword(encodedPW) || !userRepository.existsByEmail(email)){
+        if(userRepository.existsByEmailAndPassword(email, encodedPW)){
             throw new NotmatchUserException(ErrorCode.NOTMATCH_USER_EXCEPTION);
         }
 
