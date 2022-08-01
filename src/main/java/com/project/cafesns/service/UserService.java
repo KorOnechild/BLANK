@@ -2,7 +2,6 @@ package com.project.cafesns.service;
 
 import com.project.cafesns.encoder.SHA256;
 import com.project.cafesns.error.ErrorCode;
-import com.project.cafesns.error.exceptions.token.NotExistTokenException;
 import com.project.cafesns.error.exceptions.user.NotmatchUserException;
 import com.project.cafesns.jwt.JwtTokenProvider;
 import com.project.cafesns.jwt.UserInfoInJwt;
@@ -22,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-import javax.xml.ws.Response;
 import java.security.NoSuchAlgorithmException;
 
 @Service

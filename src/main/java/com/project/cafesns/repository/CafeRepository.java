@@ -11,7 +11,7 @@ public interface CafeRepository extends JpaRepository<Cafe, Long> {
 
     Cafe findByUser(User user);
 
-    boolean existsByAddressAndCafename(String address,String Cafename);
+    boolean existsByAddressContaionsAndCafename(String address,String Cafename);
 
     List<Cafe> findAllByAddressContains(String address);
 
