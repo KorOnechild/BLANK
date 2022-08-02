@@ -22,7 +22,7 @@ public class FileUploadService {
     //한개 파일 올리기
     public String uploadImage(MultipartFile file, String dirName){
         if(file.isEmpty()){
-            return "";
+            throw new PostCreateException(ErrorCode.POST_CREATE_EXCEPTION);
         }
         String fileName = dirName + "/" + createFileName(file.getOriginalFilename());
         ObjectMetadata objectMetadata = new ObjectMetadata();
