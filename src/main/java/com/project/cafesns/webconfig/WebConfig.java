@@ -23,6 +23,8 @@ public class WebConfig implements WebMvcConfigurer {
 
                 //일반유저
                 .addPathPatterns(
+                        "/api/{cafeId}/like-list",          //사용자 좋아요 목록 조회,
+                        "/api/user/like-list",              //사용자 마이페이지 좋아요 목록 조회
                         "/api/posts/{postId}",              //게시글 수정, 삭제
                         "/api/{cafeId}/posts",              //게시글 작성
                         "/api/user/regist-cafe",           //카페 신청
