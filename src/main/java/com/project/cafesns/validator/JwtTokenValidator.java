@@ -28,7 +28,7 @@ public class JwtTokenValidator {
             throw new ReissueTokenException(ErrorCode.REISSUE_TOKEN_EXCEPTION);
         } catch (JwtException exception) {
             System.out.println("Token Tampered");
-            return false;
+            throw new ReissueTokenException(ErrorCode.REISSUE_TOKEN_EXCEPTION);
         }
     }
 }
