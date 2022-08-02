@@ -13,6 +13,8 @@ public interface CafeRepository extends JpaRepository<Cafe, Long> {
 
     boolean existsByAddressContaionsAndCafename(String address,String Cafename);
 
+    boolean existsByAddressAndCafename(String address,String Cafename);
+
     List<Cafe> findAllByAddressContains(String address);
 
     List<Cafe> findAllByAddressdetailContains(String address);
