@@ -42,7 +42,7 @@ public class RegisterService {
         );
         String role = userInfoInJwt.getRole();
         userValidator.userCheck(role);
-            if(cafeRepository.existsByAddressContaionsAndCafename(registerRequestDto.getAddress(), registerRequestDto.getCafename())){
+            if(cafeRepository.existsByAddressContainsAndCafename(registerRequestDto.getAddress(), registerRequestDto.getCafename())){
                 throw new AlreadyExistCafeException(ErrorCode.ALREADY_EXIST_CAFE_EXCEPTION);
             }else if (registerRepository.existsByAddressAndCafename(registerRequestDto.getAddress(), registerRequestDto.getCafename())){
                 throw new AlreadyExistRegistedException(ErrorCode.ALREADY_EXIST_REGISTED_EXCEPTION);
@@ -64,7 +64,7 @@ public class RegisterService {
         );
         String role = userInfoInJwt.getRole();
             ownerValidator.ownerCheck(role);
-            if(cafeRepository.existsByAddressContaionsAndCafename(registerOwnerRequestDto.getAddress(), user.getBusinessname())){
+            if(cafeRepository.existsByAddressContainsAndCafename(registerOwnerRequestDto.getAddress(), user.getBusinessname())){
                 Cafe cafe = cafeRepository.findByCafename(user.getBusinessname());
                 cafe.getOwnership(user);
                 cafeRepository.save(cafe);
