@@ -1,6 +1,61 @@
-# Project.final
+![BLANKlogo](https://user-images.githubusercontent.com/104212768/182787882-1f383846-f91a-4335-81a0-85c997f36809.png)
 
-## 커밋 컨벤션
+
+# <b>서비스 소개</b>
+
+![목업 사진](https://user-images.githubusercontent.com/104212768/182790064-6613e27d-5579-4796-a12c-af67e972bb14.png)
+
+    여러분의 리뷰로 개인카페를 채워주세요!
+    전국의 개인 카페만을 위한 공간을 마련한 곳, 바로 BLANK입니다.
+
+---
+## <b>핵심 기능</b>
+- 개인 카페에 대한 리뷰를 SNS 게시글 형식으로 작성하여 유저와 유저, 유저와 사장유저 간의 양방향 소통 가능
+- 사장 유저의 경우 자신의 카페 페이지를 개설 후 관리해서 유저에게 정보를 제공하고 홍보
+- 일반 유저의 경우 카페 신청 기능을 통해 카페 페이지 개설 신청 후 리뷰 작성 가능
+- 관리자 페이지에서 등록된 카페 페이지 관리, 카페 페이지 개설 신청 내역 관리 및 조회
+
+---
+## <b>서비스 아키텍처</b>
+![진짜 아키텍처](https://user-images.githubusercontent.com/104212768/182804194-cf5469e9-3a1a-4bf8-923f-33d1a00efccc.PNG)
+
+---
+## <b>기술 스택</b>
+**develope tool**   
+![IntelliJ IDEA](https://img.shields.io/badge/IntelliJIDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white)
+![Gradle](https://img.shields.io/badge/Gradle-02303A.svg?style=for-the-badge&logo=Gradle&logoColor=white)
+
+**언어**   
+![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white)
+
+**프레임 워크**   
+ ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
+ <img src="https://img.shields.io/badge/Springboot-6DB33F?style=for-the-badge&logo=Springboot&logoColor=white">
+ ![Apache Tomcat](https://img.shields.io/badge/apache%20tomcat-%23F8DC75.svg?style=for-the-badge&logo=apache-tomcat&logoColor=black)
+ 
+ **보안**   
+ ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
+
+ **배포**   
+ <img src="https://img.shields.io/badge/AwsEC2-232F3E?style=for-the-badge&logo=AmazonAWS&logoColor=white"/>
+
+**CI/CD**   
+ ![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
+ <img src="https://img.shields.io/badge/codedeploy-6DB33F?style=for-the-badge&logo=codedeploy&logoColor=white">
+ <img src="https://img.shields.io/badge/AwsS3-232F3E?style=for-the-badge&logo=AmazonS3&logoColor=white"/>
+
+**DB**  
+<img src="https://img.shields.io/badge/AwsRDS-232F3E?style=for-the-badge&logo=AmazonAWS&logoColor=white"/> 
+![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
+<img src="https://img.shields.io/badge/AwsS3-232F3E?style=for-the-badge&logo=AmazonS3&logoColor=white"/>
+
+---
+## **ERD**
+![ERD](https://user-images.githubusercontent.com/104212768/182824495-df8c16d6-8396-4afb-b814-884a0209154b.PNG)
+
+---
+
+## <b>커밋 컨벤션</b>
 ### 양식
     [type] 제목
     <BLANK LINE>
@@ -36,7 +91,7 @@
 ### reference
     https://koreapy.tistory.com/1150
 ---
-## 코드 컨벤션
+## <b>코드 컨벤션</b>
 ### DTO
 #### DTO 형식
 - Http 응답 메시지 작성 시 Body에 들어갈 Dto는 한개만 사용(ResponseDto\<T>)
@@ -57,7 +112,7 @@
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---------MainPostDto.java  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---------CafePostDto.java
 ---
-## Git 전략
+## <b>Git 전략</b>
 ### 우리 팀은 Git전략으로 GitHub Flow를 사용합니다.(CI/CD에 적합)
 #### Branch 구성
 - main : 릴리즈에 있어서 절대적인 역할(항상 최신버전 유지)
