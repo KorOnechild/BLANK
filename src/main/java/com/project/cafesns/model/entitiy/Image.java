@@ -15,7 +15,7 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "postid")
     @JsonBackReference(value = "image-post-FK")
     private Post post;

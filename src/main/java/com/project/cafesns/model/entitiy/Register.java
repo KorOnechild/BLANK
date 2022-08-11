@@ -36,7 +36,7 @@ public class Register extends Timestamped {
     @Column
     private Boolean permit;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userid")
     private User user;
 

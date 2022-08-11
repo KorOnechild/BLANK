@@ -18,7 +18,7 @@ public class Hashtag {
     @Column(length = 500)
     private String hashtag;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "postid")
     @JsonBackReference(value = "comment-post-FK")
     private Post post;

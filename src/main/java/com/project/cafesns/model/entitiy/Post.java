@@ -25,12 +25,12 @@ public class Post extends Timestamped {
     @Column(nullable = false)
     private String contents;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userid")
     @JsonBackReference(value = "user-post-FK")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cafeid")
     @JsonBackReference(value = "cafe-post-FK")
     private Cafe cafe;

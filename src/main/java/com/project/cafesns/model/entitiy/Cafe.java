@@ -53,7 +53,7 @@ public class Cafe {
     @Column(nullable = false)
     private String longitude;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ownerid")
     @JsonBackReference(value = "user-cafe-FK")
     private User user;
