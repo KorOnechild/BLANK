@@ -130,7 +130,7 @@ public class PostListService {
         List<Cafe> cafeList = new ArrayList<>();
 
         if(region.equals("전지역")){
-            cafeList.addAll(cafeRepository.findAll());
+            cafeList.addAll(cafeRepository.findAllCafes());
         }else{
             cafeList.addAll(cafeRepository.findAllByAddressContains(region));
         }
@@ -138,9 +138,13 @@ public class PostListService {
         List<Post> posts = new ArrayList<>();
 
         for(Cafe cafe : cafeList){
-            List<Post> postList = postListRepository.findAllByCafeOrderByModifiedAtDesc(cafe);
-            posts.addAll(postList);
+            posts.addAll(cafe.getPostList());
         }
+
+//        for(Cafe cafe : cafeList){
+//            List<Post> postList = postListRepository.findAllByCafeOrderByModifiedAtDesc(cafe);
+//            posts.addAll(postList);
+//        }
         return posts;
     }
 
