@@ -4,7 +4,6 @@ import com.project.cafesns.model.entitiy.Cafe;
 import com.project.cafesns.model.entitiy.Post;
 import com.project.cafesns.model.entitiy.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 

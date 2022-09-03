@@ -130,7 +130,7 @@ public class PostListService {
         List<Cafe> cafeList = new ArrayList<>();
 
         if(region.equals("전지역")){
-            cafeList.addAll(cafeRepository.findAllCafes());
+            cafeList.addAll(cafeRepository.findAll());
         }else{
             cafeList.addAll(cafeRepository.findAllByAddressContains(region));
         }
