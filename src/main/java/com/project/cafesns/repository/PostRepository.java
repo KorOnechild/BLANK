@@ -11,7 +11,7 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Long> {
 
 
-    @Query("select p from Post p join fetch p.imageList")
+//    @Query("select p from Post p join fetch p.imageList")
     List<Post> findAllByCafeOrderByModifiedAtDesc(Cafe cafe);
     List<Post> findAllByUserOrderByModifiedAtDesc(User user);
     List<Post> findAllByCafe(Cafe cafe);
